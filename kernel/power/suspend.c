@@ -36,6 +36,19 @@
 const char *pm_labels[] = { "mem", "standby", "freeze", NULL };
 const char *pm_states[PM_SUSPEND_MAX];
 
+static const char * const mem_sleep_labels[] = {
+	[PM_SUSPEND_FREEZE] = "s2idle",
+	[PM_SUSPEND_STANDBY] = "shallow",
+	[PM_SUSPEND_MEM] = "deep",
+};
+const char *mem_sleep_states[PM_SUSPEND_MAX];
+
+suspend_state_t mem_sleep_current = PM_SUSPEND_FREEZE;
+suspend_state_t mem_sleep_default = PM_SUSPEND_MAX;
+
+unsigned int pm_suspend_global_flags;
+EXPORT_SYMBOL_GPL(pm_suspend_global_flags);
+
 static const struct platform_suspend_ops *suspend_ops;
 static const struct platform_freeze_ops *freeze_ops;
 static DECLARE_WAIT_QUEUE_HEAD(suspend_freeze_wait_head);
@@ -146,6 +159,17 @@ void suspend_set_ops(const struct platform_suspend_ops *ops)
 		}
 
 	pm_states[PM_SUSPEND_FREEZE] = pm_labels[j];
+	if (valid_state(PM_SUSPEND_STANDBY)) {
+		mem_sleep_states[PM_SUSPEND_STANDBY] = mem_sleep_labels[PM_SUSPEND_STANDBY];
+		pm_states[PM_SUSPEND_STANDBY] = pm_labels[PM_SUSPEND_STANDBY];
+		if (mem_sleep_default == PM_SUSPEND_STANDBY)
+			mem_sleep_current = PM_SUSPEND_STANDBY;
+	}
+	if (valid_state(PM_SUSPEND_MEM)) {
+		mem_sleep_states[PM_SUSPEND_MEM] = mem_sleep_labels[PM_SUSPEND_MEM];
+		if (mem_sleep_default >= PM_SUSPEND_MEM)
+			mem_sleep_current = PM_SUSPEND_MEM;
+	}
 
 	unlock_system_sleep();
 }
