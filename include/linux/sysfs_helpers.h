@@ -2,7 +2,11 @@
  *
  *  Author: Andrei F. <luxneb@gmail.com>
  *  Derived from function implementation from Gokhan Moral
+<<<<<<< HEAD
  *
+=======
+ *  
+>>>>>>> 56a075fc4b7... Add sysfs helpers
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2, or (at your option)
@@ -20,7 +24,11 @@ static inline int read_into(int *container, int size, const char *buf, size_t co
 	for(j = 0; i < count; i++) {
 		char c = buf[i];
 		if(c >= '0' && c <= '9') {
+<<<<<<< HEAD
 			if(t < (j + 1))
+=======
+			if(t < (j + 1)) 
+>>>>>>> 56a075fc4b7... Add sysfs helpers
 				t = j + 1;
 			if(t > size)
 				return -EINVAL;
