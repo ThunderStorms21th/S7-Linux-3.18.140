@@ -162,6 +162,13 @@ config CPU_FREQ_DEFAULT_GOV_CULTIVATION
 	select CPU_FREQ_GOV_CULTIVATION
 	help
 	Use the CPUFreq governor 'cultivation' as default.
+
+config CPU_FREQ_DEFAULT_GOV_SMARTMAX_EPS
+	bool "smartmax_eps"
+	select CPU_FREQ_GOV_SMARTMAX_EPS
+	help
+	  Use the CPUFreq governor 'smartmax eps' as defau
+
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE
@@ -313,6 +320,12 @@ config CPU_FREQ_GOV_SCHED
 	  does) but instead is event-driven by the scheduler.
 
 	  If in doubt, say N.
+
+config CPU_FREQ_GOV_SMARTMAX_EPS
+	tristate "'smartmax EPS' cpufreq policy governor"
+	select CPU_FREQ_TABLE
+	help
+	  'smartmax EPS' is the extreme powersaving version of smartmax
 
 comment "CPU frequency scaling drivers"
 
