@@ -178,7 +178,7 @@ static ssize_t store_sampling_rate(struct dbs_data *dbs_data, const char *buf,
 	if (ret != 1)
 		return -EINVAL;
 
-	cs_tuners->sampling_rate = max(input, dbs_data->min_sampling_rate);
+	cs_tuners->sampling_rate = input;
 	return count;
 }
 
@@ -378,8 +378,6 @@ static int cs_init(struct dbs_data *dbs_data, struct cpufreq_policy *policy)
 	}
 
 	dbs_data->tuners = tuners;
-	dbs_data->min_sampling_rate = MIN_SAMPLING_RATE_RATIO *
-		jiffies_to_usecs(10);
 	mutex_init(&dbs_data->mutex);
 	return 0;
 }
