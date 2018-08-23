@@ -528,8 +528,9 @@ struct request_queue {
 #define QUEUE_FLAG_NO_SG_MERGE 21	/* don't attempt to merge SG segments*/
 #define QUEUE_FLAG_SG_GAPS     22	/* queue doesn't support SG gaps */
 #ifdef CONFIG_JOURNAL_DATA_TAG
-#define QUEUE_FLAG_JOURNAL_TAG     31      /* supports JOURNAL_DATA_TAG */
+#define QUEUE_FLAG_JOURNAL_TAG     31	/* supports JOURNAL_DATA_TAG */
 #endif
+#define QUEUE_FLAG_FAST        23	/* fast block device (e.g. ram based) */
 
 #define QUEUE_FLAG_DEFAULT	((1 << QUEUE_FLAG_IO_STAT) |		\
 				 (1 << QUEUE_FLAG_STACKABLE)	|	\
