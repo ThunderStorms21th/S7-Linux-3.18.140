@@ -74,8 +74,8 @@ int decon_s_register_irq(struct platform_device *pdev, struct decon_device *deco
 	/* Get IRQ resource and register IRQ handler. */
 	/* 0: FIFO irq */
 	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-	ret = devm_request_irq(dev, res->start, decon_s_irq_handler, 0,
-			pdev->name, decon);
+	ret = devm_request_irq(dev, res->start, decon_s_irq_handler, 
+	 	IRQF_PERF_CRITICAL, pdev->name, decon);
 	if (ret) {
 		decon_err("failed to install irq\n");
 		return ret;
@@ -83,8 +83,8 @@ int decon_s_register_irq(struct platform_device *pdev, struct decon_device *deco
 
 	/* 1: VStatus irq */
 	res = platform_get_resource(pdev, IORESOURCE_IRQ, 1);
-	ret = devm_request_irq(dev, res->start, decon_s_irq_handler, 0,
-			pdev->name, decon);
+	ret = devm_request_irq(dev, res->start, decon_s_irq_handler,
+		IRQF_PERF_CRITICAL, pdev->name, decon);
 	if (ret) {
 		decon_err("failed to install irq\n");
 		return ret;
@@ -92,8 +92,8 @@ int decon_s_register_irq(struct platform_device *pdev, struct decon_device *deco
 
 	/* 2: FrameDone irq */
 	res = platform_get_resource(pdev, IORESOURCE_IRQ, 2);
-	ret = devm_request_irq(dev, res->start, decon_s_irq_handler, 0,
-			pdev->name, decon);
+	ret = devm_request_irq(dev, res->start, decon_s_irq_handler,
+		IRQF_PERF_CRITICAL, pdev->name, decon);
 	if (ret) {
 		decon_err("failed to install irq\n");
 		return ret;
@@ -101,8 +101,8 @@ int decon_s_register_irq(struct platform_device *pdev, struct decon_device *deco
 
 	/* 3: Extra Interrupts: Resource Conflict irq */
 	res = platform_get_resource(pdev, IORESOURCE_IRQ, 3);
-	ret = devm_request_irq(dev, res->start, decon_s_irq_handler, 0,
-			pdev->name, decon);
+	ret = devm_request_irq(dev, res->start, decon_s_irq_handler,
+		IRQF_PERF_CRITICAL, pdev->name, decon);
 	if (ret) {
 		decon_err("failed to install irq\n");
 		return ret;

@@ -5652,7 +5652,7 @@ static int decon_probe(struct platform_device *pdev)
 	decon->update_regs_list_cnt = 0;
 	decon->tracing_mark_write( decon->systrace_pid, 'C', "update_regs_list", decon->update_regs_list_cnt);
 
-	decon->update_regs_thread = kthread_run(kthread_worker_fn,
+	decon->update_regs_thread = kthread_run_perf_critical(kthread_worker_fn,
 			&decon->update_regs_worker, device_name);
 	if (IS_ERR(decon->update_regs_thread)) {
 		ret = PTR_ERR(decon->update_regs_thread);

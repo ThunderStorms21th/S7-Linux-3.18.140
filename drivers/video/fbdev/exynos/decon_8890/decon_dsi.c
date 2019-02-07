@@ -558,7 +558,7 @@ int decon_config_eint_for_te(struct platform_device *pdev, struct decon_device *
 
 	decon_dbg("%s: gpio(%d)\n", __func__, gpio);
 	ret = devm_request_irq(dev, gpio, decon_fb_isr_for_eint,
-			IRQF_TRIGGER_RISING, pdev->name, decon);
+			IRQF_TRIGGER_RISING | IRQF_PERF_CRITICAL, pdev->name, decon);
 
 	decon->eint_status = 1;
 
@@ -626,7 +626,7 @@ int decon_f_create_vsync_thread(struct decon_device *decon)
 		return ret;
 	}
 
-	decon->vsync_info.thread = kthread_run(decon_wait_for_vsync_thread,
+	decon->vsync_info.thread = kthread_run_perf_critical(decon_wait_for_vsync_thread,
 			decon, "s3c-fb-vsync");
 	if (decon->vsync_info.thread == ERR_PTR(-ENOMEM)) {
 		decon_err("failed to run vsync thread\n");
