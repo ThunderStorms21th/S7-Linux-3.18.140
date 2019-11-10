@@ -100,6 +100,13 @@ module_param_named(enabled, zswap_enabled, bool, 0444);
 #else
 #define ZSWAP_COMPRESSOR_DEFAULT "lzo"
 #endif
+
+#ifdef CONFIG_CRYPTO_ZSTD
+#define ZSWAP_COMPRESSOR_DEFAULT "zstd"
+#else
+#define ZSWAP_COMPRESSOR_DEFAULT "lzo"
+#endif
+
 static char *zswap_compressor = ZSWAP_COMPRESSOR_DEFAULT;
 module_param_named(compressor, zswap_compressor, charp, 0644);
 
