@@ -11,9 +11,9 @@
 # Copyright (C) 1995-2001 by Russell King
 
 ifeq ($(CONFIG_RELOCATABLE_KERNEL), y) 
-LDFLAGS_vmlinux	:=--no-undefined -X -pie -Bsymbolic
+LDFLAGS_vmlinux	:=-p --no-undefined -X -pie -Bsymbolic
 else 
-LDFLAGS_vmlinux	:=--no-undefined -X
+LDFLAGS_vmlinux	:=-p --no-undefined -X
 endif 
 
 CPPFLAGS_vmlinux.lds = -DTEXT_OFFSET=$(TEXT_OFFSET)
@@ -61,6 +61,13 @@ core-$(CONFIG_NET) += arch/arm64/net/
 core-$(CONFIG_KVM) += arch/arm64/kvm/
 core-$(CONFIG_XEN) += arch/arm64/xen/
 core-$(CONFIG_CRYPTO) += arch/arm64/crypto/
+
+# HotPlugs #
+obj-y		:= autosmp.o aio_hotplug.o msm_zen_decision.o 
+core-$(CONFIG_ASMPTS)	+= arch/arm64/hotplug/AUTOSMPTS/
+core-$(CONFIG_AIO_HOTPLUG)	+= arch/arm64/hotplug/AIO_PLUG/
+core-$(CONFIG_ZEN_DECISION)	+= arch/arm64/hotplug/ZENDECISION/
+
 libs-y		:= arch/arm64/lib/ $(libs-y)
 libs-y		+= $(LIBGCC)
 libs-$(CONFIG_EFI_STUB) += drivers/firmware/efi/libstub/
