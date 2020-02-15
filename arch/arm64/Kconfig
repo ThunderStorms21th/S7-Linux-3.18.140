@@ -1167,3 +1167,9 @@ source "arch/arm64/crypto/Kconfig"
 endif
 
 source "lib/Kconfig"
+
+source "arch/arm64/hotplug/AUTOSMPTS/Kconfig"
+
+source "arch/arm64/hotplug/AIO_PLUG/Kconfig"
+
+source "arch/arm64/hotplug/ZENDECISION/Kconfig"
