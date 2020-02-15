@@ -12,9 +12,9 @@ export ARCH=arm64
 export SUBARCH=arm64
 # NO WORKS export BUILD_CROSS_COMPILE=~/kernel/toolchain/gcc-linaro-5.5.0-2017.10-i686_aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc
 # export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9-master/bin/aarch64-linux-android-
-# export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9-o-mr1-iot-preview-8/bin/aarch64-linux-android-
+export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9-o-mr1-iot-preview-8/bin/aarch64-linux-android-
 # export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9-LAST/bin/aarch64-linux-android-
-export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+# export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 # NO WORKS export BUILD_CROSS_COMPILE=~kernel/toolchain/arm-eabi-4.8-master/bin/arm-eabi-
 # NO WORKS export BUILD_CROSS_COMPILE=~/kernel/toolchain/arm32_arm64_cross_toolchain-master/bin/aarch64-linux-aarch64-linux-
 # BL - export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-gnu-7.3-master/bin/aarch64-linux-gnu-
@@ -46,9 +46,11 @@ INCDIR=$RDIR/include
 PAGE_SIZE=2048
 DTB_PADDING=0
 
-DEFCONFIG=ts-o-kernel_defconfig
-DEFCONFIG_S7EDGE=hero2lte_defconfig
-DEFCONFIG_S7FLAT=herolte_defconfig
+DEFCONFIG=ts_defconfig
+DEFCONFIG_S7EDGE=ts-edge_defconfig
+DEFCONFIG_S7FLAT=ts-flat_defconfig
+DEFCONFIG_OREO=ts-oreo_defconfig
+DEFCONFIG_PIE=ts-pie_defconfig
 
 export K_VERSION="v2.7T"
 export K_BASE="U4CSK1"
@@ -90,6 +92,7 @@ FUNC_BUILD_KERNEL()
         echo "build variant config="$MODEL ""
 
 	cp -f $RDIR/arch/$ARCH/configs/$DEFCONFIG $RDIR/arch/$ARCH/configs/tmp_defconfig
+	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_OREO >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$KERNEL_DEFCONFIG >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 
 	#FUNC_CLEAN_DTB
@@ -180,6 +183,7 @@ FUNC_BUILD_RAMDISK()
 
 	./repackimg.sh
 
+	echo SEANDROIDENFORCE >> image-new.img
 	cp -f image-new.img $RDIR/builds
 	cd ..
 	rm -rf temp

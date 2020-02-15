@@ -13,7 +13,7 @@ export SUBARCH=arm64
 # NOT WORKS export BUILD_CROSS_COMPILE=~/kernel/toolchain/gcc-linaro-5.5.0-2017.10-i686_aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc
 # export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-elf-gcc-9.x/bin/aarch64-elf-
 # export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9-master/bin/aarch64-linux-android-
-# export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9-o-mr1-iot-preview-8/bin/aarch64-linux-android-
+export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9-o-mr1-iot-preview-8/bin/aarch64-linux-android-
 # export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9-LAST/bin/aarch64-linux-android-
 # export BUILD_CROSS_COMPILE=~/kernel/toolchain/linaro-exynos/bin/aarch64-linux-gnu-
 ## export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9/bin/aarch64-linux-android-
@@ -27,7 +27,7 @@ export SUBARCH=arm64
 #export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-6.3/bin/aarch64-linux-android-
 # NOT WORKS export BUILD_CROSS_COMPILE=~/kernel/toolchain/linaro-7.2.1-master/bin/arm-linaro-linux-androideabi-
 # NOT WORKS export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-7.0-kernel/bin/aarch64-linux-android-
-export BUILD_CROSS_COMPILE=~/kernel/toolchain/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
+# export BUILD_CROSS_COMPILE=~/kernel/toolchain/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
 export CROSS_COMPILE=$BUILD_CROSS_COMPILE
 export BUILD_JOB_NUMBER=`grep processor /proc/cpuinfo|wc -l`
 
@@ -48,9 +48,11 @@ INCDIR=$RDIR/include
 PAGE_SIZE=2048
 DTB_PADDING=0
 
-DEFCONFIG=ts-p-kernel_defconfig
-DEFCONFIG_S7EDGE=hero2lte_defconfig
-DEFCONFIG_S7FLAT=herolte_defconfig
+DEFCONFIG=ts_defconfig
+DEFCONFIG_S7EDGE=ts-edge_defconfig
+DEFCONFIG_S7FLAT=ts-flat_defconfig
+DEFCONFIG_OREO=ts-oreo_defconfig
+DEFCONFIG_PIE=ts-pie_defconfig
 
 export K_VERSION="v2.4T"
 export K_BASE="U4CSK1"
@@ -92,6 +94,7 @@ FUNC_BUILD_KERNEL()
         echo "build variant config="$MODEL ""
 
 	cp -f $RDIR/arch/$ARCH/configs/$DEFCONFIG $RDIR/arch/$ARCH/configs/tmp_defconfig
+	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_PIE >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$KERNEL_DEFCONFIG >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 
 	#FUNC_CLEAN_DTB
@@ -183,6 +186,7 @@ FUNC_BUILD_RAMDISK()
 
 	./repackimg.sh
 
+	echo SEANDROIDENFORCE >> image-new.img
 	cp -f image-new.img $RDIR/builds
 	cd ..
 	rm -rf temp

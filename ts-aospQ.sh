@@ -3,7 +3,7 @@
 # Thanks to Tkkg1994 and djb77 for the script
 #
 # Thanks to MoRoGoku for the script
-# Kernel Build Script v1.9, modified by ThunderStorms Team
+# Kernel Build Script v2.0, modified by ThunderStorms Team
 #
 
 # SETUP
@@ -90,7 +90,10 @@ FUNC_BUILD_KERNEL()
         echo "build variant config="$MODEL ""
 
 	cp -f $RDIR/arch/$ARCH/configs/$DEFCONFIG $RDIR/arch/$ARCH/configs/tmp_defconfig
+	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_OREO >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$KERNEL_DEFCONFIG >> $RDIR/arch/$ARCH/configs/tmp_defconfig
+
+	sed -i 's/CONFIG_USB_ANDROID_SAMSUNG_MTP=y/# CONFIG_USB_ANDROID_SAMSUNG_MTP is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
 
 	#FUNC_CLEAN_DTB
 
@@ -178,6 +181,7 @@ FUNC_BUILD_RAMDISK()
 
 	./repackimg.sh
 
+	echo SEANDROIDENFORCE >> image-new.img
 	cp -f image-new.img $RDIR/builds
 	cd ..
 	rm -rf temp

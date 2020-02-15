@@ -3,7 +3,7 @@
 # Thanks to Tkkg1994 and djb77 for the script
 #
 # Thanks to MoRoGoku for the script
-# Kernel Build Script v1.9, modified by ThunderStorms Team
+# Kernel Build Script v2.0, modified by ThunderStorms Team
 #
 
 # SETUP
@@ -46,9 +46,11 @@ INCDIR=$RDIR/include
 PAGE_SIZE=2048
 DTB_PADDING=0
 
-DEFCONFIG=ts-t-oneui-kernel_defconfig
-DEFCONFIG_S7EDGE=hero2lte_defconfig
-DEFCONFIG_S7FLAT=herolte_defconfig
+DEFCONFIG=ts_defconfig
+DEFCONFIG_S7EDGE=ts-edge_defconfig
+DEFCONFIG_S7FLAT=ts-flat_defconfig
+DEFCONFIG_OREO=ts-oreo_defconfig
+DEFCONFIG_PIE=ts-pie_defconfig
 
 export K_VERSION="v1.1T"
 export K_BASE="U4CSK1"
@@ -90,6 +92,7 @@ FUNC_BUILD_KERNEL()
         echo "build variant config="$MODEL ""
 
 	cp -f $RDIR/arch/$ARCH/configs/$DEFCONFIG $RDIR/arch/$ARCH/configs/tmp_defconfig
+	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_PIE >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$KERNEL_DEFCONFIG >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 
 	#FUNC_CLEAN_DTB
@@ -178,6 +181,7 @@ FUNC_BUILD_RAMDISK()
 
 	./repackimg.sh
 
+	echo SEANDROIDENFORCE >> image-new.img
 	cp -f image-new.img $RDIR/builds
 	cd ..
 	rm -rf temp
