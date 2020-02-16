@@ -141,7 +141,7 @@ FUNC_BUILD_DTB()
 		$DTCTOOL -p $DTB_PADDING -i "$DTSDIR" -O dtb -o "${dts}.dtb" "${dts}.dts"
 	done
 	echo "Generating dtb.img."
-	$RDIR/scripts/dtbtool_exynos/dtbtool -o "$OUTDIR/dtb.img" -d "$DTBDIR/" -s $PAGE_SIZE
+	$RDIR/tools/dtbtool2 -o "$OUTDIR/dtb.img" -d "$DTBDIR/" -s $PAGE_SIZE
 	echo "Done."
 }
 
