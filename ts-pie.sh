@@ -96,6 +96,9 @@ FUNC_BUILD_KERNEL()
 	cp -f $RDIR/arch/$ARCH/configs/$DEFCONFIG $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_PIE >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$KERNEL_DEFCONFIG >> $RDIR/arch/$ARCH/configs/tmp_defconfig
+	
+	sed -i 's/CONFIG_USB_ANDROID_SAMSUNG_MTP is not set/# CONFIG_USB_ANDROID_SAMSUNG_MTP=y/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
+	sed -i 's/CONFIG_NETFILTER_XT_TARGET_CT=y/# CONFIG_NETFILTER_XT_TARGET_CT is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
 
 	#FUNC_CLEAN_DTB
 
