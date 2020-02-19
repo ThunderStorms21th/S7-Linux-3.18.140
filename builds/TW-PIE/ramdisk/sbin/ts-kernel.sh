@@ -9,6 +9,12 @@ RESETPROP="/sbin/resetprop -v -n"
 TS_DIR="/data/.tskernel"
 LOG="$TS_DIR/tskernel.log"
 
+# Mount
+mount -t rootfs -o rw,remount rootfs;
+mount -o rw,remount /system;
+mount -o rw,remount /data;
+mount -o rw,remount /;
+
 # Create ThundeRSTormS kernel folder
 if [ ! -d $TS_DIR ]; then
 	mkdir -p $TS_DIR;
@@ -18,12 +24,6 @@ rm -f $LOG
 
 echo $(date) "ThundeRSTormS-Kernel LOG" >> $LOG;
 echo " " >> $LOG;
-
-# Mount
-mount -t rootfs -o rw,remount rootfs;
-mount -o rw,remount /system;
-mount -o rw,remount /data;
-mount -o rw,remount /;
 
 # Set KNOX to 0x0 on running /system
 $RESETPROP ro.boot.warranty_bit "0"
@@ -97,7 +97,7 @@ if [ -d /system/priv-app/Rlc ]; then
 fi
 
 ## ThunderStormS kill Google and Media servers script
-sleep 3
+sleep 5
 # START LOOP 3600sec = 1h
 RUN_EVERY=3600
 (
@@ -108,14 +108,14 @@ echo "## -- GooglePlay wakelock fix $( date +"%d-%m-%Y %H:%M:%S" )" >> $LOG;
 if [ "`pgrep media`" ] && [ "`pgrep mediaserver`" ]; then
 # busybox killall -9 android.process.media
 # busybox killall -9 mediaserver
-# busybox killall -9 com.google.android.gms
-# busybox killall -9 com.google.android.gms.persistent
-# busybox killall -9 com.google.process.gapps
-# busybox killall -9 com.google.android.gsf
-# busybox killall -9 com.google.android.gsf.persistent
+busybox killall -9 com.google.android.gms
+busybox killall -9 com.google.android.gms.persistent
+busybox killall -9 com.google.process.gapps
+busybox killall -9 com.google.android.gsf
+busybox killall -9 com.google.android.gsf.persistent
 fi
 
-sleep 1
+sleep 3
 # FIX GOOGLE PLAY SERVICE
 pm enable com.google.android.gms/.update.SystemUpdateActivity
 pm enable com.google.android.gms/.update.SystemUpdateService

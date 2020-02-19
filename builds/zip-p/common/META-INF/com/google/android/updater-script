@@ -1,6 +1,3 @@
-run_program("/sbin/busybox", "mount", "/system");
-run_program("/sbin/busybox", "mount", "/data");
-
 ui_print("*******************************************************************");
 ui_print("                        ThunderStorm Kernel Pie                    ");
 ui_print("                         For Samsung Galaxy S7                     ");
@@ -12,8 +9,8 @@ set_progress(0.01);
 
 # Thanks to @MoRoGoKu for oryginal script
 
-run_program("/sbin/mount", "-t", "auto", "/system");
-run_program("/sbin/mount", "-t", "auto", "/data");
+# run_program("/sbin/mount", "-t", "auto", "/system");
+# run_program("/sbin/mount", "-t", "auto", "/data");
 
 # Copy scripts
 package_extract_dir("ts", "/tmp/ts");
