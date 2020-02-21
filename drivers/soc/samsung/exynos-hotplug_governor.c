@@ -24,10 +24,10 @@
 #define RETRY_BOOT_ENABLE_MS (100)		/* 100 ms */
 
 /* @nalas - DUAL and normal mode for how many cores is ON */
-int big_mode_DUAL = 6; 		/* big mode for DUAL behavior  - added : range from 5 to 8*/
-int big_mode_normal = 5;	/* big mode for normal behavior - org 6 : range from 5 to 8*/
-// module_param(big_mode_DUAL, int, 0644);
-// module_param(big_mode_normal, int, 0644);
+#define DEFAULT_BIG_MODE_DUAL (7)				/* @nalas - DUAL mode default	*/
+#define DEFAULT_BIG_MODE_NORMAL (6)				/* @nalas - normal mode	default	*/
+short big_mode_dual = DEFAULT_BIG_MODE_DUAL;			/* big mode for DUAL behavior  - added : range from 5 to 8 */
+short big_mode_normal = DEFAULT_BIG_MODE_NORMAL;			/* big mode for normal behavior - org 6 : range from 5 to 8 */
 
 enum hpgov_event {
 	HPGOV_SLACK_TIMER_EXPIRED = 1,	/* slack timer expired */
@@ -37,6 +37,8 @@ enum hpgov_event {
 struct hpgov_attrib {
 	struct kobj_attribute	enabled;
 	struct kobj_attribute	dual_change_ms;
+	struct kobj_attribute	big_mode_dual;
+	struct kobj_attribute	big_mode_normal;
 #if defined(CONFIG_HP_EVENT_HMP_SYSTEM_LOAD)
 	struct kobj_attribute	to_quad_ratio;
 	struct kobj_attribute	to_dual_ratio;
@@ -59,6 +61,8 @@ struct {
 	long				use_fast_hp;
 
 	int				dual_change_ms;
+	short				big_mode_dual;		/* init DUAL mode	*/
+	short				big_mode_normal;	/* init normal mode	*/
 	struct hpgov_attrib		attrib;
 	struct mutex			attrib_lock;
 	struct task_struct		*task;
@@ -152,7 +156,7 @@ static void exynos_hpgov_big_mode_update(int big_mode)
 /* @nalas - added min 6 cores on (2 cores of BIG_CLUSTER) if DUAL MODE is ON */	
 	else
 	if (big_mode == BIG_DUAL_MODE)
-		exynos_hpgov.data.req_cpu_min = big_mode_DUAL; 		/* 6 to 7, new */
+		exynos_hpgov.data.req_cpu_min = big_mode_dual; 		/* 6 to 7, new */
 	else
 		exynos_hpgov.data.req_cpu_min = big_mode_normal;	/* 5 to 6, org 6 */
 	spin_unlock_irqrestore(&hpgov_lock, flags);
@@ -401,6 +405,25 @@ static int exynos_hpgov_set_dual_change_ms(int val)
 	return 0;
 }
 
+/* @nalas - added big_mode_DUAL & big_mode_normal for edit parameters in some range */
+static int exynos_hpgov_set_big_mode_dual(int val)
+{
+	if ((val > 7) || (val < 6))
+		return -EINVAL;
+
+	exynos_hpgov.big_mode_dual = val;
+	return 0;
+}	
+
+static int exynos_hpgov_set_big_mode_normal(int val)
+{
+	if ((val > 6) || (val < 5))
+		return -EINVAL;
+
+	exynos_hpgov.big_mode_normal = val;
+	return 0;
+}
+/* end */
 #if defined(CONFIG_HP_EVENT_HMP_SYSTEM_LOAD)
 /* Currently max value of to_quad_ratio is 100. */
 /* TODO: Change max value for ratio to 1024 (permille) */
@@ -487,6 +510,8 @@ static ssize_t exynos_hpgov_attr_##_name##_store(struct kobject *kobj, \
 
 HPGOV_PARAM(enabled, exynos_hpgov.enabled);
 HPGOV_PARAM(dual_change_ms, exynos_hpgov.dual_change_ms);
+HPGOV_PARAM(big_mode_dual, exynos_hpgov.big_mode_dual);
+HPGOV_PARAM(big_mode_normal, exynos_hpgov.big_mode_normal);
 #if defined(CONFIG_HP_EVENT_HMP_SYSTEM_LOAD)
 HPGOV_PARAM(to_quad_ratio, *exynos_hpgov.to_quad_ratio);
 HPGOV_PARAM(to_dual_ratio, *exynos_hpgov.to_dual_ratio);
@@ -504,7 +529,7 @@ static void hpgov_boot_enable(struct work_struct *work)
 static int __init exynos_hpgov_init(void)
 {
 	int ret = 0;
-	const int attr_count = 5;
+	const int attr_count = 7;
 	int i_attr = attr_count;
 
 	hrtimer_init(&exynos_hpgov.slack_timer, CLOCK_MONOTONIC,
@@ -527,6 +552,8 @@ static int __init exynos_hpgov_init(void)
 
 	HPGOV_RW_ATTRIB(attr_count - (i_attr--), enabled);
 	HPGOV_RW_ATTRIB(attr_count - (i_attr--), dual_change_ms);
+	HPGOV_RW_ATTRIB(attr_count - (i_attr--), big_mode_dual);
+	HPGOV_RW_ATTRIB(attr_count - (i_attr--), big_mode_normal);
 #if defined(CONFIG_HP_EVENT_HMP_SYSTEM_LOAD)
 	HPGOV_RW_ATTRIB(attr_count - (i_attr--), to_quad_ratio);
 	HPGOV_RW_ATTRIB(attr_count - (i_attr--), to_dual_ratio);
@@ -545,6 +572,8 @@ static int __init exynos_hpgov_init(void)
 		pr_err("Unable to create sysfs objects :%d\n", ret);
 
 	exynos_hpgov.dual_change_ms = DEFAULT_DUAL_CHANGE_MS;
+	exynos_hpgov.big_mode_dual = DEFAULT_BIG_MODE_DUAL;
+	exynos_hpgov.big_mode_normal = DEFAULT_BIG_MODE_NORMAL;
 	exynos_hpgov.cur_cpu_max = PM_QOS_CPU_ONLINE_MAX_DEFAULT_VALUE;
 	exynos_hpgov.cur_cpu_min = PM_QOS_CPU_ONLINE_MIN_DEFAULT_VALUE;
 
