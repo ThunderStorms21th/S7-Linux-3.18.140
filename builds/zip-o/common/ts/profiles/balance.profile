@@ -98,7 +98,7 @@
    chmod 0644 /sys/power/cpuhotplug/governor/to_dual_ratio
    write /sys/power/cpuhotplug/governor/to_dual_ratio 95
    chmod 0644 /sys/power/cpuhotplug/governor/to_quad_ratio
-   write /sys/power/cpuhotplug/governor/to_quad_ratio 98
+   write /sys/power/cpuhotplug/governor/to_quad_ratio 75
 
    # FINGERPRINT BOOST
    write /sys/kernel/fp_boost/enabled 0
