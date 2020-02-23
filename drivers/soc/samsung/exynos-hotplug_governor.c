@@ -26,8 +26,8 @@
 /* @nalas - DUAL and normal mode for how many cores is ON */
 #define DEFAULT_BIG_MODE_DUAL (7)				/* @nalas - DUAL mode default	*/
 #define DEFAULT_BIG_MODE_NORMAL (6)				/* @nalas - normal mode	default	*/
-short big_mode_dual = DEFAULT_BIG_MODE_DUAL;			/* big mode for DUAL behavior  - added : range from 5 to 8 */
-short big_mode_normal = DEFAULT_BIG_MODE_NORMAL;			/* big mode for normal behavior - org 6 : range from 5 to 8 */
+short big_mode_dual = 6;					/* big mode for DUAL behavior  - added : range from 5 to 8 */
+short big_mode_normal = 5;					/* big mode for normal behavior - org 6 : range from 5 to 8 */
 
 enum hpgov_event {
 	HPGOV_SLACK_TIMER_EXPIRED = 1,	/* slack timer expired */
@@ -408,7 +408,7 @@ static int exynos_hpgov_set_dual_change_ms(int val)
 /* @nalas - added big_mode_DUAL & big_mode_normal for edit parameters in some range */
 static int exynos_hpgov_set_big_mode_dual(int val)
 {
-	if ((val > 7) || (val < 6))
+	if ((val > 8) || (val < 5))
 		return -EINVAL;
 
 	exynos_hpgov.big_mode_dual = val;
@@ -417,7 +417,7 @@ static int exynos_hpgov_set_big_mode_dual(int val)
 
 static int exynos_hpgov_set_big_mode_normal(int val)
 {
-	if ((val > 6) || (val < 5))
+	if ((val > 8) || (val < 5))
 		return -EINVAL;
 
 	exynos_hpgov.big_mode_normal = val;
