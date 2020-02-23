@@ -2,33 +2,31 @@
 <b>KERNEL INFORMATION:</b>
 
 	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-LOS16</#></b>	
-	VERSION	: <b><#selectbg_g>v1.3</#></b>
-	DATE	: <b><#selectbg_g>29/12/2019</#></b>
+	VERSION	: <b><#selectbg_g>v3.0T</#></b>
+	DATE	: <b><#selectbg_g>25/02/2020</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
-<#53a6f4><b> Only For Galaxy S7/S7Edge | LOS16 Roms |</b></#>
+<#53a6f4><b> Only For Galaxy S7/S7Edge | AOSP PIE Roms |</b></#>
 
 
 <b>CHANGELOG:</b>
 
 --------------------------------------------------------------------------
-<u><b><#selectbg_g>ThunderStorms-Kernel-P-v1.3T : 29.12.2019</#></b></u>
+<u><b><#selectbg_g>ThunderStorms-Kernel-P-v3.0T : 25.02.2020</#></b></u>
 <*>Samsung source : N935KKKU4CSK1 </*>
-<*>Linux source : 3.18.91 </*>
+<*>Linux source : 3.18.140.8 </*>
 <*>Spectrum Profiles Updated </*>
 <*>Optimizations in Linux source </*>
    -crypto, drivers, f2fs, arm64,lib and kernel
    -block: cfq, deadline, bfq
    -ramdisk: initial settings, abd, mtp
    -mm, fs, linux, i/o
-<*>MMC, USB drivers updated to Linux 3.18.140 </*>
 <*>Thermal/IPA drivers updated </*>
 <*>Backported Interactive governor from Galaxy S9 </*>
 <*>Added and updated Cultivation & Bluactive governors </*>
 <*>Updated FingerPrint Boost </*>
 <*>Added Thunderstorm governor based on new Interactive </*>
-<*>Added Quick WakeUp for better suspend mode from Motorola </*>
-<*>ThunderTweaks v1.0.4.1 </*>
+<*>ThunderTweaks v1.0.4.2 </*>
 <*>Magisk 20.3 Offcial</*>
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------

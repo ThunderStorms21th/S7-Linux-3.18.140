@@ -78,9 +78,6 @@ fingerprint.unlock=1
 persist.sys.purgeable_assets=1
 # persist.sys.ui.hw=true
 
-ro.securestorage.support=false
-ro.securestorage.knox=false
-
 #
 # BOOTIMAGE_BUILD_PROPERTIES
 #
