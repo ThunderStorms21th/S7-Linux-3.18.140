@@ -363,23 +363,6 @@ const struct cpumask *cpu_coregroup_mask(int cpu)
 	return &cpu_topology[cpu].core_sibling;
 }
 
-static void update_cpu_capacity(unsigned int cpu)
-{
-	unsigned long capacity;
-
-	if (!cpu_core_energy(cpu)) {
-		capacity = SCHED_CAPACITY_SCALE;
-	} else {
-		int max_cap_idx = cpu_core_energy(cpu)->nr_cap_states - 1;
-		capacity = cpu_core_energy(cpu)->cap_states[max_cap_idx].cap;
-	}
-
-	set_capacity_scale(cpu, capacity);
-
-	pr_debug("CPU%d: update cpu_capacity %lu\n",
-		cpu, arch_scale_cpu_capacity(NULL, cpu));
-}
-
 static void update_siblings_masks(unsigned int cpuid)
 {
 	struct cpu_topology *cpu_topo, *cpuid_topo = &cpu_topology[cpuid];
