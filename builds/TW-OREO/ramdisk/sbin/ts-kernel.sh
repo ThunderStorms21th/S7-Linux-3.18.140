@@ -97,9 +97,9 @@ if [ -d /system/priv-app/Rlc ]; then
 fi
 
 ## ThunderStormS kill Google and Media servers script
-sleep 3
+sleep 1
 # START LOOP 3600sec = 1h
-RUN_EVERY=3600
+RUN_EVERY=10800
 (
 while : ; do
 # Google play services wakelock fix
@@ -108,11 +108,11 @@ echo "## -- GooglePlay wakelock fix $( date +"%d-%m-%Y %H:%M:%S" )" >> $LOG;
 if [ "`pgrep media`" ] && [ "`pgrep mediaserver`" ]; then
 # busybox killall -9 android.process.media
 # busybox killall -9 mediaserver
-# busybox killall -9 com.google.android.gms
-# busybox killall -9 com.google.android.gms.persistent
-# busybox killall -9 com.google.process.gapps
-# busybox killall -9 com.google.android.gsf
-# busybox killall -9 com.google.android.gsf.persistent
+busybox killall -9 com.google.android.gms
+busybox killall -9 com.google.android.gms.persistent
+busybox killall -9 com.google.process.gapps
+busybox killall -9 com.google.android.gsf
+busybox killall -9 com.google.android.gsf.persistent
 fi
 
 sleep 1
@@ -122,14 +122,14 @@ pm enable com.google.android.gms/.update.SystemUpdateService
 pm enable com.google.android.gms/.update.SystemUpdateService$ActiveReceiver
 pm enable com.google.android.gms/.update.SystemUpdateService$Receiver
 pm enable com.google.android.gms/.update.SystemUpdateService$SecretCodeReceiver
-# pm enable com.google.android.gsf/.update.SystemUpdateActivity
-# pm enable com.google.android.gsf/.update.SystemUpdatePanoActivity
-# pm enable com.google.android.gsf/.update.SystemUpdateService
-# pm enable com.google.android.gsf/.update.SystemUpdateService$Receiver
-# pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver
+pm enable com.google.android.gsf/.update.SystemUpdateActivity
+pm enable com.google.android.gsf/.update.SystemUpdatePanoActivity
+pm enable com.google.android.gsf/.update.SystemUpdateService
+pm enable com.google.android.gsf/.update.SystemUpdateService$Receiver
+pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver
 echo " " >> $LOG;
 
-sleep 3600
+sleep 10800
 
 done;
 )&
