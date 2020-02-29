@@ -26,8 +26,8 @@
 /* @nalas - DUAL and normal mode for how many cores is ON */
 #define DEFAULT_BIG_MODE_DUAL (7)				/* @nalas - DUAL mode default	*/
 #define DEFAULT_BIG_MODE_NORMAL (6)				/* @nalas - normal mode	default	*/
-short big_mode_dual = 6;					/* big mode for DUAL behavior  - added : range from 5 to 8 */
-short big_mode_normal = 5;					/* big mode for normal behavior - org 6 : range from 5 to 8 */
+short big_mode_dual = DEFAULT_BIG_MODE_DUAL;			/* big mode for DUAL behavior  - added : range from 5 to 8 */
+short big_mode_normal = DEFAULT_BIG_MODE_NORMAL;		/* big mode for normal behavior - org 6 : range from 5 to 8 */
 
 enum hpgov_event {
 	HPGOV_SLACK_TIMER_EXPIRED = 1,	/* slack timer expired */
@@ -123,45 +123,6 @@ static int start_slack_timer(void)
 static inline int slack_timer_is_queued(void)
 {
 	return hrtimer_is_queued(&exynos_hpgov.slack_timer);
-}
-
-static enum hrtimer_restart exynos_hpgov_slack_timer(struct hrtimer *timer)
-{
-	unsigned long flags;
-
-	if (exynos_hpgov.boost_cnt)
-		goto out;
-
-	spin_lock_irqsave(&hpgov_lock, flags);
-	exynos_hpgov.data.event = HPGOV_SLACK_TIMER_EXPIRED;
-	exynos_hpgov.data.req_cpu_min = big_mode_normal;		/* org 6 */
-	spin_unlock_irqrestore(&hpgov_lock, flags);
-
-	wake_up(&exynos_hpgov.wait_q);
-out:
-	return HRTIMER_NORESTART;
-}
-
-static void exynos_hpgov_big_mode_update(int big_mode)
-{
-	unsigned long flags;
-
-	if (!exynos_hpgov.enabled)
-		return;
-
-	spin_lock_irqsave(&hpgov_lock, flags);
-	exynos_hpgov.data.event = HPGOV_BIG_MODE_UPDATED;
-	if (big_mode == BIG_QUAD_MODE)
-		exynos_hpgov.data.req_cpu_min = 8;			/* org 8 */
-/* @nalas - added min 6 cores on (2 cores of BIG_CLUSTER) if DUAL MODE is ON */	
-	else
-	if (big_mode == BIG_DUAL_MODE)
-		exynos_hpgov.data.req_cpu_min = big_mode_dual; 		/* 6 to 7, new */
-	else
-		exynos_hpgov.data.req_cpu_min = big_mode_normal;	/* 5 to 6, org 6 */
-	spin_unlock_irqrestore(&hpgov_lock, flags);
-
-	irq_work_queue(&exynos_hpgov.update_irq_work);
 }
 
 static void exynos_hpgov_irq_work(struct irq_work *irq_work)
@@ -417,13 +378,53 @@ static int exynos_hpgov_set_big_mode_dual(int val)
 
 static int exynos_hpgov_set_big_mode_normal(int val)
 {
-	if ((val > 8) || (val < 5))
+	if ((val > 7) || (val < 5))
 		return -EINVAL;
 
 	exynos_hpgov.big_mode_normal = val;
 	return 0;
 }
 /* end */
+
+static enum hrtimer_restart exynos_hpgov_slack_timer(struct hrtimer *timer)
+{
+	unsigned long flags;
+
+	if (exynos_hpgov.boost_cnt)
+		goto out;
+
+	spin_lock_irqsave(&hpgov_lock, flags);
+	exynos_hpgov.data.event = HPGOV_SLACK_TIMER_EXPIRED;
+	exynos_hpgov.data.req_cpu_min = exynos_hpgov.big_mode_normal;		/* org 6 */
+	spin_unlock_irqrestore(&hpgov_lock, flags);
+
+	wake_up(&exynos_hpgov.wait_q);
+out:
+	return HRTIMER_NORESTART;
+}
+
+void exynos_hpgov_big_mode_update(int big_mode)
+{
+	unsigned long flags;
+
+	if (!exynos_hpgov.enabled)
+		return;
+
+	spin_lock_irqsave(&hpgov_lock, flags);
+	exynos_hpgov.data.event = HPGOV_BIG_MODE_UPDATED;
+	if (big_mode == BIG_QUAD_MODE)
+		exynos_hpgov.data.req_cpu_min = 8;			/* org 8 */
+/* @nalas - added min 6 cores on (2 cores of BIG_CLUSTER) if DUAL MODE is ON */	
+	else
+	if (big_mode == BIG_DUAL_MODE)
+		exynos_hpgov.data.req_cpu_min = exynos_hpgov.big_mode_dual; 	/* 6 to 7, new */
+	else
+		exynos_hpgov.data.req_cpu_min = exynos_hpgov.big_mode_normal;	/* 5 to 6, org 6 */
+	spin_unlock_irqrestore(&hpgov_lock, flags);
+
+	irq_work_queue(&exynos_hpgov.update_irq_work);
+}
+
 #if defined(CONFIG_HP_EVENT_HMP_SYSTEM_LOAD)
 /* Currently max value of to_quad_ratio is 100. */
 /* TODO: Change max value for ratio to 1024 (permille) */
@@ -529,7 +530,7 @@ static void hpgov_boot_enable(struct work_struct *work)
 static int __init exynos_hpgov_init(void)
 {
 	int ret = 0;
-	const int attr_count = 7;
+	const int attr_count = 5;
 	int i_attr = attr_count;
 
 	hrtimer_init(&exynos_hpgov.slack_timer, CLOCK_MONOTONIC,
