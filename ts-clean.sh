@@ -115,3 +115,10 @@ echo "" > $PWD/builds/TREBLE-P/ramdisk/sys/.placeholder
 echo "" > $PWD/builds/TREBLE-P/ramdisk/system/.placeholder
 echo "" > $PWD/builds/TREBLE-P/ramdisk/vendor/.placeholder
 
+echo "" > $PWD/builds/OneUI-Q/ramdisk/apex/.placeholder
+echo "" > $PWD/builds/OneUI-Q/ramdisk/debug_ramdisk/.placeholder
+echo "" > $PWD/builds/OneUI-Q/ramdisk/dev/.placeholder
+echo "" > $PWD/builds/OneUI-Q/ramdisk/mnt/.placeholder
+echo "" > $PWD/builds/OneUI-Q/ramdisk/proc/.placeholder
+echo "" > $PWD/builds/OneUI-Q/ramdisk/sys/.placeholder
+
