@@ -51,6 +51,7 @@ DEFCONFIG_S7EDGE=ts-edge_defconfig
 DEFCONFIG_S7FLAT=ts-flat_defconfig
 DEFCONFIG_OREO=ts-oreo_defconfig
 DEFCONFIG_PIE=ts-pie_defconfig
+DEFCONFIG_AOSP=ts-aosp_defconfig
 
 export K_VERSION="v3.0T"
 export K_BASE="U4CSK1"
@@ -94,9 +95,11 @@ FUNC_BUILD_KERNEL()
 	cp -f $RDIR/arch/$ARCH/configs/$DEFCONFIG $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_OREO >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$KERNEL_DEFCONFIG >> $RDIR/arch/$ARCH/configs/tmp_defconfig
+	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_AOSP >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 
 	sed -i 's/CONFIG_USB_ANDROID_SAMSUNG_MTP=y/# CONFIG_USB_ANDROID_SAMSUNG_MTP is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
 	sed -i 's/CONFIG_NETFILTER_XT_TARGET_CT is not set/# CONFIG_NETFILTER_XT_TARGET_CT=y/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
+	sed -i 's/CONFIG_ASSISTED_SUPERUSER=y/# CONFIG_ASSISTED_SUPERUSER is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
 
 	#FUNC_CLEAN_DTB
 

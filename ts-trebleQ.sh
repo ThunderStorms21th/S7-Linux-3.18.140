@@ -97,6 +97,7 @@ FUNC_BUILD_KERNEL()
 
 	sed -i 's/CONFIG_USB_ANDROID_SAMSUNG_MTP=y/# CONFIG_USB_ANDROID_SAMSUNG_MTP is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
 	sed -i 's/CONFIG_NETFILTER_XT_TARGET_CT is not set/# CONFIG_NETFILTER_XT_TARGET_CT=y/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
+	sed -i 's/CONFIG_ASSISTED_SUPERUSER=y/# CONFIG_ASSISTED_SUPERUSER is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
 
 	#FUNC_CLEAN_DTB
 
