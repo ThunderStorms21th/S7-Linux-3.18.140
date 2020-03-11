@@ -153,7 +153,7 @@ source "drivers/usb/phy/Kconfig"
 
 source "drivers/usb/gadget/Kconfig"
 
-source "drivers/usb/typec/Kconfig"
+## source "drivers/usb/typec/Kconfig"
 
 config USB_LED_TRIG
 	bool "USB LED Triggers"
