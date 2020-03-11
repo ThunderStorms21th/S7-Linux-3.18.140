@@ -3,7 +3,7 @@
 
 	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-LOS17</#></b>	
 	VERSION	: <b><#selectbg_g>v3.0T</#></b>
-	DATE	: <b><#selectbg_g>01/03/2020</#></b>
+	DATE	: <b><#selectbg_g>10/03/2020</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
 <#53a6f4><b> Only For Galaxy S7/S7Edge | OneUI Q Roms |</b></#>
@@ -12,7 +12,7 @@
 <b>CHANGELOG:</b>
 
 --------------------------------------------------------------------------
-<u><b><#selectbg_g>ThunderStorms-Kernel-Q-v3.0T : 01.03.2020</#></b></u>
+<u><b><#selectbg_g>ThunderStorms-Kernel-Q-v3.0T : 10.03.2020</#></b></u>
 <*>Samsung source : N935KKKU4CSK1 </*>
 <*>Linux source : 3.18.140.8 </*>
 <*>Spectrum Profiles Updated </*>
@@ -22,6 +22,7 @@
    -ramdisk: initial settings, abd, mtp
    -mm, fs, linux, i/o
 <*>OneUI Q supported </*>
+<*>OneUI Q Spectrum support - thx to Moro for help </*>
 <*>Thermal/IPA drivers updated </*>
 <*>Powersuspend drivers updated to v2.0 </*>
 <*>Backported Interactive governor from Galaxy S9 </*>

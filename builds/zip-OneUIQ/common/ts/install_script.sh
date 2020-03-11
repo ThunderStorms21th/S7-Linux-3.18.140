@@ -37,6 +37,27 @@ abort() {
 	exit 1;
 }
 
+# Mount system
+export SYSTEM_ROOT=false
+
+block=/dev/block/platform/155a0000.ufs/by-name/SYSTEM
+SYSTEM_MOUNT=/system
+SYSTEM=$SYSTEM_MOUNT
+
+# Try to detect system-as-root through $SYSTEM_MOUNT/init.rc like Magisk does
+# Mount whatever $SYSTEM_MOUNT is, sometimes remount is necessary if mounted read-only
+
+grep -q "$SYSTEM_MOUNT.*\sro[\s,]" /proc/mounts && mount -o remount,rw $SYSTEM_MOUNT || mount -o rw "$block" $SYSTEM_MOUNT
+
+# Remount /system to /system_root if we have system-as-root and bind /system to /system_root/system (like Magisk does)
+# For reference, check https://github.com/topjohnwu/Magisk/blob/master/scripts/util_functions.sh
+if [ -f /system/init.rc ]; then
+  mkdir /system_root
+  mount --move /system /system_root
+  mount -o bind /system_root/system /system
+  export SYSTEM_ROOT=true
+fi
+
 # Initialice TSkernel folder
 mkdir -p -m 777 /data/.tskernel/apk 2>/dev/null
 
@@ -60,6 +81,13 @@ if [ $MODEL == $MODEL2 ]; then MODEL_DESC=$MODEL2_DESC; fi
 
 set_progress 0.01
 
+ui_print "@Mount partitions"
+ui_print "-- Mount /system RW"
+if [ $SYSTEM_ROOT == true ]; then
+	ui_print "-- Device is system-as-root"
+	ui_print "-- Remounting /system as /system_root"
+fi
+
 set_progress 0.10
 show_progress 0.49 -4000
 
@@ -74,7 +102,9 @@ ui_print "-- Flashing ThundeRStormS kernel $MODEL-boot.img"
 dd of=/dev/block/platform/155a0000.ufs/by-name/BOOT if=/tmp/ts/$MODEL-boot.img
 ui_print "-- Done"
 
-
+## RUN INITIAL SCRIPT IMPLEMENTATOR
+sh /tmp/ts/initial_settings.sh
+	
 set_progress 0.49
 
 
