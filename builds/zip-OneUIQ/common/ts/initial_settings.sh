@@ -12,7 +12,7 @@ rm -f /system_root/sbin/moro_init.sh
 rm -f /system_root/sbin/resetprop
 rm -f /system_root/init.spectrum.rc
 rm -f /system_root/init.spectrum.sh
-rm -f /system_root/init.services.sh
+rm -f /system_root/init.services.rc
 rm -f /system_root/init.ts.sh
 rm -f /system_root/sbin/spa
 
@@ -31,9 +31,11 @@ cp /tmp/ts/system2/spa /system_root/sbin
 cp /tmp/ts/system2/resetprop /system_root/sbin
 cp /tmp/ts/system2/init.ts.rc /system_root
 cp /tmp/ts/system2/ts-kernel.sh /system_root/sbin
+cp /tmp/ts/system2/init.spectrum.sh /system_root/sbin
 chmod 750 /system_root/sbin/spa
 chmod 750 /system_root/sbin/resetprop
 chmod 750 /system_root/sbin/ts-kernel.sh
+chmod 750 /system_root/sbin/init.spectrum.sh
 chmod 750 /system_root/init.ts.rc
 
 # Import init.ts.rc and init.spectrum.rc to init.rc

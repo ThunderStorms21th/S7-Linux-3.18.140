@@ -31,7 +31,7 @@ text_no=No
 text_about=About 
 text_calibrating=Calibrating Tools
 text_quit=Quit Installation
-text_quit_msg=Are you sure to quit the installer?
+text_quit_msg=Are you sure you want to quit the installer?
 text_finish=Finish
 
 #
@@ -55,10 +55,10 @@ themes.desc=Please select installer theme that you want to use in this installat
 
 # Welcome
 welcome.title=Welcome
-welcome.text1=You are about to Installing
+welcome.text1=You are about to Install
 welcome.text2=KERNEL INFORMATION
 welcome.text3=ONLY FOR
-welcome.text4=Installation of the <b>ThundeRStormS kernel</b> for <b>Galaxy S7.</b>.
+welcome.text4=Installation of <b>ThundeRStormS kernel</b> for Galaxy S7.
 welcome.version=VERSION
 welcome.codename=CODENAME
 welcome.updated=UPDATED
@@ -68,6 +68,7 @@ welcome.next=Press Next...
 
 terms.title=Terms and Conditions
 terms.desc=Please read carefully The Terms and Conditions Below.
+terms.desc=I'm not responsible for damage Your phone, You are doing this all on Your own risk.
 terms.check=I Agree with this Terms and Conditions...
 terms.confirm=Please check the agreement...
 
@@ -84,15 +85,13 @@ menu.1=Without root
 menu.1desc=Recommended if you are installing another type of root on your own.
 menu.2=Magisk 20.3 Official
 menu.2desc=Magisk Manager with Root integrated.
-menu.5=SuperSU 2.82-SR5 + SuHide 1.09
-menu.5desc=Famous Root of Chainfire.
+#menu.5=SuperSU 2.82-SR5 + SuHide 1.09
+#menu.5desc=Famous Root of Chainfire.
 menu.12=Kernel for ported or deodexed rom
 menu.12desc=Select this if You have ported or deodexed rom
 menu.group2=Other options
 menu.3=ThunderTweaks
 menu.3desc=Application for kernel management modified by @nalas
-# menu.12=SmartPack-Kernel Menager v7.5
-# menu.12desc=Application for kernel management modified version of official Kernel Adiutor.
 menu.4=VNSWAP OFF
 menu.4desc=Copy ts_swapoff script to init.d folder for turn it OFF. Default VNSWAP is ON - so use it only for desable it
 Necessary. Uncheck only if you have a higher version.
@@ -106,8 +105,8 @@ menu.9=Fix Private Mode (Stock Roms) by MoRoGoKu
 menu.9desc=Only with S7 Stock based Roms | is not for ported or deodexed ROMs
 menu.10=Patch for deodexed and ported roms
 menu.10desc=This will patch ported and deodexed roms.
-# menu.11=Install ADB support
-# menu.11desc=Install magisk mod for support ADB NDK
+menu.11=Remove Game Optimizing Services from ROM
+menu.11desc=This removes optimialization for games in PIE roms - case of lags in some games.
 
 # Root
 stock.title=Without root

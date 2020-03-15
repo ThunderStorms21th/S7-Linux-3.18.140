@@ -1,18 +1,18 @@
 	
 <b>KERNEL INFORMATION:</b>
 
-	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-Treble</#></b>	
+	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-Treble P</#></b>	
 	VERSION	: <b><#selectbg_g>v3.0T</#></b>
-	DATE	: <b><#selectbg_g>01/03/2020</#></b>
+	DATE	: <b><#selectbg_g>15/03/2020</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
-<#53a6f4><b> Only For Galaxy S7/S7Edge </b></#>
+<#53a6f4><b> Only For Galaxy S7/S7Edge Treble P Vendor v1</b></#>
 
 
 <b>CHANGELOG:</b>
 
 --------------------------------------------------------------------------
-<u><b><#selectbg_g>ThundeRStormS-Kernel-T-v3.0T : 01.03.2020</#></b></u>
+<u><b><#selectbg_g>ThundeRStormS-Kernel-TP-v3.0 : 15.03.2020</#></b></u>
 <*>Samsung source : N935KKKU4CSK1 </*>
 <*>Linux source : 3.18.140.8 </*>
 <*>Spectrum Profiles Updated </*>
@@ -25,6 +25,7 @@
 <*>Powersuspend drivers updated to v2.0 </*>
 <*>Backported Interactive governor from Galaxy S9 </*>
 <*>Added and updated Cultivation & Bluactive governors </*>
+<*>Added CPU govs: Relaxed, Chill, Smartmax_EPS</*>
 <*>Updated FingerPrint Boost </*>
 <*>Added Thunderstorm governor based on new Interactive </*>
 <*>ThunderTweaks v1.0.4.2 </*>

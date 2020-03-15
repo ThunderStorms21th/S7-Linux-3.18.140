@@ -28,13 +28,13 @@ on boot
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor thunderstorm2
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-   write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 130000
+   write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 234000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1586000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/go_hispeed_load
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/go_hispeed_load 85
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/go_hispeed_load 97
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/above_hispeed_delay "19000 1274000:39000"
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/above_hispeed_delay "50000 1066000:40000"
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/timer_rate
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/timer_rate 30000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/prev_timer_rate
@@ -44,7 +44,7 @@ on boot
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/timer_slack
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/timer_slack 20000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/target_loads
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/target_loads "75 1170000:85"
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/target_loads "65 1066000:70"
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/min_sample_time
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/min_sample_time 40000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/mode
@@ -57,7 +57,7 @@ on boot
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/param_index 0
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/boostpulse_duration
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/boostpulse_duration 30000
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/down_low_load_threshold 6
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/down_low_load_threshold 10
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/screen_off_max
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/screen_off_max 650000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/screen_off_timer_rate
@@ -67,13 +67,13 @@ on boot
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor thunderstorm2
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
-   write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 208000
+   write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 312000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 2288000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/go_hispeed_load
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/go_hispeed_load 89
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/go_hispeed_load 97
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/above_hispeed_delay "59000 1248000:79000 1664000:1900"
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/above_hispeed_delay "50000 1352000:49000 1664000:49000"
    # chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/timer_rate
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/timer_rate 30000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/prev_timer_rate
@@ -83,7 +83,7 @@ on boot
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/timer_slack
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/timer_slack 20000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/target_loads
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/target_loads "80 1040000:81 1352000:87 1664000:90"
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/target_loads "70 1040000:75 1352000:78 1664000:80"
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/min_sample_time
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/min_sample_time 40000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/mode
@@ -96,7 +96,7 @@ on boot
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/param_index 0
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/boostpulse_duration
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/boostpulse_duration 30000
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/down_low_load_threshold 6
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/down_low_load_threshold 10
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/screen_off_max
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/screen_off_max 1040000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/screen_off_timer_rate
@@ -104,9 +104,9 @@ on boot
 
    #HMP settings
    chmod 0664 /sys/kernel/hmp/up_threshold
-   write /sys/kernel/hmp/up_threshold 600
+   write /sys/kernel/hmp/up_threshold 550
    chmod 0664 /sys/kernel/hmp/down_threshold
-   write /sys/kernel/hmp/down_threshold 240
+   write /sys/kernel/hmp/down_threshold 220
    chmod 0664 /sys/kernel/hmp/down_compensation_high_freq
    write /sys/kernel/hmp/down_compensation_high_freq 1066000
    chmod 0664 /sys/kernel/hmp/down_compensation_mid_freq
@@ -122,13 +122,13 @@ on boot
    chmod 0644 /sys/power/cpuhotplug/governor/enabled
    write /sys/power/cpuhotplug/governor/enabled 1
    chmod 0664 /sys/power/cpuhotplug/governor/dual_change_ms
-   write /sys/power/cpuhotplug/governor/dual_change_ms 80
+   write /sys/power/cpuhotplug/governor/dual_change_ms 100
    chmod 0644 /sys/power/cpuhotplug/governor/lit_multi_ratio
    write /sys/power/cpuhotplug/governor/lit_multi_ratio 100
    chmod 0644 /sys/power/cpuhotplug/governor/to_dual_ratio
-   write /sys/power/cpuhotplug/governor/to_dual_ratio 90
+   write /sys/power/cpuhotplug/governor/to_dual_ratio 95
    chmod 0644 /sys/power/cpuhotplug/governor/to_quad_ratio
-   write /sys/power/cpuhotplug/governor/to_quad_ratio 100
+   write /sys/power/cpuhotplug/governor/to_quad_ratio 98
    chmod 0644 /sys/power/cpuhotplug/governor/big_mode_dual
    write /sys/power/cpuhotplug/governor/big_mode_dual 7
    chmod 0644 /sys/power/cpuhotplug/governor/big_mode_normal
@@ -146,7 +146,7 @@ on boot
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_clock
    write /sys/devices/14ac0000.mali/highspeed_clock 419
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_load
-   write /sys/devices/14ac0000.mali/highspeed_load 93
+   write /sys/devices/14ac0000.mali/highspeed_load 90
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_delay
    write /sys/devices/14ac0000.mali/highspeed_delay 1
    write /sys/devices/14ac0000.mali/throttling1 600
@@ -173,7 +173,7 @@ on boot
    write /sys/module/wakeup/parameters/enable_bcmdhd4359_wl 0
    write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 0
    write /sys/module/wakeup/parameters/enable_wlan_wake_wl 0
-   write /sys/module/wakeup/parameters/enable_wlan_ctrl_wake_wl 1
+   write /sys/module/wakeup/parameters/enable_wlan_ctrl_wake_wl 0
    write /sys/module/wakeup/parameters/enable_wlan_rx_wake_wl 0
    write /sys/module/wakeup/parameters/enable_wlan_wd_wake_wl 0
    write /sys/module/wakeup/parameters/enable_mmc0_detect_wl 1
@@ -182,7 +182,7 @@ on boot
 
    # Misc settings
    write /sys/kernel/sched/arch_power 0
-   write /proc/sys/net/ipv4/tcp_congestion_control bic
+   write /proc/sys/net/ipv4/tcp_congestion_control cubic
    write /sys/module/sync/parameters/fsync_enabled 1
    write /sys/kernel/dyn_fsync/Dyn_fsync_active 0
    write /sys/kernel/sched/gentle_fair_sleepers 0
@@ -191,17 +191,17 @@ on boot
    #write /sys/kernel/power_suspend/power_suspend_state 1
    
    # Entropy
-   write /proc/sys/kernel/random/write_wakeup_threshold 320
+   write /proc/sys/kernel/random/write_wakeup_threshold 64
    write /proc/sys/kernel/random/read_wakeup_threshold 64
    
    # VM
-   write /proc/sys/vm/dirty_expire_centisecs 1000
-   write /proc/sys/vm/dirty_writeback_centisecs 2000
+   write /proc/sys/vm/dirty_expire_centisecs 1500
+   write /proc/sys/vm/dirty_writeback_centisecs 3000
 
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,32256,56064,76152"
-   write /proc/sys/vm/vfs_cache_pressure 85
-   write /proc/sys/vm/swappiness 170
+   write /proc/sys/vm/vfs_cache_pressure 75
+   write /proc/sys/vm/swappiness 140
    
    # Internet Speed
    write /proc/sys/net/ipv4/tcp_timestamps 0
@@ -218,4 +218,6 @@ on boot
    write /proc/sys/net/core/wmem_default 256960
    write /proc/sys/net/ipv4/tcp_wmem "4096,16384,404480"
    write /proc/sys/net/ipv4/tcp_rmem "4096,87380,404480"
+   
+
 

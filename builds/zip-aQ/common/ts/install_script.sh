@@ -74,6 +74,8 @@ ui_print "-- Flashing ThundeRStormS kernel $MODEL-boot.img"
 dd of=/dev/block/platform/155a0000.ufs/by-name/BOOT if=/tmp/ts/$MODEL-boot.img
 ui_print "-- Done"
 
+## RUN INITIAL SCRIPT IMPLEMENTATOR
+sh /tmp/ts/initial_settings.sh
 
 set_progress 0.49
 

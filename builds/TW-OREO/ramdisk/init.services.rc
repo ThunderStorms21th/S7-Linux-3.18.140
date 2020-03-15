@@ -6,11 +6,10 @@
 
 on property:sys.boot_completed=1
 	start kernelinit
-	stop proca
+	# stop proca
 	stop secure_storage
 	stop irisd
 
-setprop persist.sys.ui.hw true
 
 service kernelinit /sbin/ts-kernel.sh
     class late_start

@@ -1,9 +1,9 @@
 	
 <b>KERNEL INFORMATION:</b>
 
-	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-LOS17</#></b>	
-	VERSION	: <b><#selectbg_g>v3.0T</#></b>
-	DATE	: <b><#selectbg_g>01/03/2020</#></b>
+	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-AOSP Q</#></b>	
+	VERSION	: <b><#selectbg_g>v3.0</#></b>
+	DATE	: <b><#selectbg_g>15/03/2020</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
 <#53a6f4><b> Only For Galaxy S7/S7Edge | AOSP Q Roms |</b></#>
@@ -12,7 +12,7 @@
 <b>CHANGELOG:</b>
 
 --------------------------------------------------------------------------
-<u><b><#selectbg_g>ThunderStorms-Kernel-P-v3.0T : 01.03.2020</#></b></u>
+<u><b><#selectbg_g>ThunderStorms-Kernel-AOSP Q-v3.0: 15.03.2020</#></b></u>
 <*>Samsung source : N935KKKU4CSK1 </*>
 <*>Linux source : 3.18.140.8 </*>
 <*>Spectrum Profiles Updated </*>
@@ -22,16 +22,18 @@
    -ramdisk: initial settings, abd, mtp
    -mm, fs, linux, i/o
 <*>AOSP Q supported (LOS17 and LOS17.1) </*>
+<*>AOSP Q Spectrum support - thx to Moro for help </*>
 <*>Thermal/IPA drivers updated </*>
 <*>Powersuspend drivers updated to v2.0 </*>
 <*>Backported Interactive governor from Galaxy S9 </*>
 <*>Added and updated Cultivation & Bluactive governors </*>
+<*>Added CPU govs: Relaxed, Chill, Smartmax_EPS</*>
 <*>Updated FingerPrint Boost </*>
 <*>Added Thunderstorm governor based on new Interactive </*>
 <*>ThunderTweaks v1.0.4.2 </*>
 <*>Magisk 20.3 Offcial</*>
 <*>Initial Release</*>
-<*>Rest like AiO v 1.1</*>
+<*>Rest like AiO v 1.2</*>
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
 <u><b><#selectbg_g>ThunderStorms-Kernel-P-v1.0 : 20.12.2019</#></b></u>

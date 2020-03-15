@@ -1,12 +1,11 @@
 #!/sbin/sh
 #
-# TSKernel Flash script 1.0
+# TSKernel Flash script 1.1
 #
 # Credit also goes to @djb77
 # @lyapota, @Tkkg1994, @osm0sis
 # @dwander for bits of code
 # @MoRo
-
 
 # Functions
 ui_print() { echo -n -e "ui_print $1\n"; }
@@ -28,7 +27,12 @@ clean_magisk() {
 	rm -rf /cache/*magisk* /cache/unblock /data/*magisk* /data/cache/*magisk* /data/property/*magisk* \
         /data/Magisk.apk /data/busybox /data/custom_ramdisk_patch.sh /data/app/com.topjohnwu.magisk* \
         /data/user*/*/magisk.db /data/user*/*/com.topjohnwu.magisk /data/user*/*/.tmp.magisk.config \
-        /data/adb/*magisk* 2>/dev/null
+        /data/adb/*magisk* /data/adb/post-fs-data.d /data/adb/service.d /data/adb/modules* 2>/dev/null
+        
+        if [ -f /system/addon.d/99-magisk.sh ]; then
+	  mount -o rw,remount /system
+	  rm -f /system/addon.d/99-magisk.sh
+	fi
 }
 
 abort() {
@@ -37,8 +41,37 @@ abort() {
 	exit 1;
 }
 
+unmount_system() {
+	umount -l /system_root 2>/dev/null
+	umount -l /system 2>/dev/null
+}
+
+# Mount system
+export SYSTEM_ROOT=false
+
+block=/dev/block/platform/155a0000.ufs/by-name/SYSTEM
+SYSTEM_MOUNT=/system
+SYSTEM=$SYSTEM_MOUNT
+
+# Try to detect system-as-root through $SYSTEM_MOUNT/init.rc like Magisk does
+# Mount whatever $SYSTEM_MOUNT is, sometimes remount is necessary if mounted read-only
+
+grep -q "$SYSTEM_MOUNT.*\sro[\s,]" /proc/mounts && mount -o remount,rw $SYSTEM_MOUNT || mount -o rw "$block" $SYSTEM_MOUNT
+
+# Remount /system to /system_root if we have system-as-root and bind /system to /system_root/system (like Magisk does)
+# For reference, check https://github.com/topjohnwu/Magisk/blob/master/scripts/util_functions.sh
+if [ -f /system/init.rc ]; then
+  mkdir /system_root
+  mount --move /system /system_root
+  mount -o bind /system_root/system /system
+  export SYSTEM_ROOT=true
+fi
+
 # Initialice TSkernel folder
-mkdir -p -m 777 /data/.tskernel 2>/dev/null
+rm -rf /data/.morokernel
+rm -rf /data/.helioskernel
+rm -rf /data/.helios
+# mkdir -p -m 777 /data/.tskernel/apk 2>/dev/null
 
 # Variables
 BB=/sbin/busybox
@@ -52,13 +85,18 @@ MODEL2_DESC="S7 Edge G935"
 if [ $MODEL == $MODEL1 ]; then MODEL_DESC=$MODEL1_DESC; fi
 if [ $MODEL == $MODEL2 ]; then MODEL_DESC=$MODEL2_DESC; fi
 
-
-
 #======================================
 # AROMA INIT
 #======================================
 
 set_progress 0.02
+
+ui_print "@Mount partitions"
+ui_print "-- Mount /system RW"
+if [ $SYSTEM_ROOT == true ]; then
+	ui_print "-- Device is system-as-root"
+	ui_print "-- Remounting /system as /system_root"
+fi
 
 set_progress 0.10
 show_progress 0.49 -4000
@@ -75,4 +113,73 @@ dd of=/dev/block/platform/155a0000.ufs/by-name/BOOT if=/tmp/ts/$MODEL-boot.img
 ui_print "-- Done"
 
 set_progress 0.49
+
+#======================================
+# OPTIONS
+#======================================
+
+set_progress 0.50
+show_progress 0.56 -4000
+
+## System patch
+	ui_print " "
+	ui_print "@ThundeRStormS - System Patching..."
+	cp -rf ts/system /system
+
+# REMOVE RO.LMK... FROM BUILD.PROP
+sed -i '/ro.lmk/d' /system/build.prop
+
+## THUNDERTWEAKS
+if [ "$(file_getprop /tmp/aroma/menu.prop chk3)" == 1 ]; then
+	ui_print " "
+	ui_print "@Installing ThunderTweaks App..."
+	sh /tmp/ts/ts_clean.sh com.moro.mtweaks -as
+        sh /tmp/ts/ts_clean.sh com.thunder.thundertweaks -as
+        sh /tmp/ts/ts_clean.sh com.hades.hKtweaks -as
+
+	# mkdir -p /data/media/0/ThunderTweaks
+
+## DELETE OLDER APPS
+	rm -f /sdcard/ThunderTweaks/*.*
+	rm -rf /data/.mtweaks*
+	rm -rf /data/.hktweaks*
+	rm -rf /data/magisk_backup*
+	# rm -rf /sdcard/ThunderTweaks/*.*
+
+# COPY NEW APP
+	# cp -rf /tmp/apps/com.thunder.thundertweaks-1 /data/app/com.thunder.thundertweaks-1
+fi
+
+## Private mode 
+if [ "$(file_getprop /tmp/aroma/menu.prop chk9)" == 1 ]; then
+	ui_print " "
+	ui_print "@Fix for Private Mode..."
+	sh /tmp/ts/privatemode.sh
+	cp -rf /tmp/ts/private_mode/*.* /system
+fi
+
+## TS swap off
+if [ "$(file_getprop /tmp/aroma/menu.prop chk4)" == 1 ]; then
+	ui_print " "
+	ui_print "@Installing ThundeRStormS VNSWAP OFF..."
+	cp -rf /tmp/ts/swapoff/*.* /system/etc/init.d
+fi
+
+## SPECTRUM PROFILES
+if [ "$(file_getprop /tmp/aroma/menu.prop chk6)" == 1 ]; then
+	ui_print " "
+	ui_print "@Install Spectrum Profiles..."
+	mkdir -p /data/media/0/Spectrum/profiles 2>/dev/null;
+	cp -rf /tmp/ts/profiles/. /data/media/0/Spectrum/profiles/
+fi
+
+## Remove GameOptimizing Services
+if [ "$(file_getprop /tmp/aroma/menu.prop chk11)" == 1 ]; then
+	ui_print " "
+	ui_print "@Removing GameOptimizer..."
+	rm -rf /system/app/GameOptimizer
+	rm -rf /system/app/GameOptimizingService
+fi
+
+set_progress 0.57
 

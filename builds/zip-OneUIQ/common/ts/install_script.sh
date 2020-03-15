@@ -28,13 +28,23 @@ clean_magisk() {
 	rm -rf /cache/*magisk* /cache/unblock /data/*magisk* /data/cache/*magisk* /data/property/*magisk* \
         /data/Magisk.apk /data/busybox /data/custom_ramdisk_patch.sh /data/app/com.topjohnwu.magisk* \
         /data/user*/*/magisk.db /data/user*/*/com.topjohnwu.magisk /data/user*/*/.tmp.magisk.config \
-        /data/adb/*magisk* 2>/dev/null
+        /data/adb/*magisk* /data/adb/post-fs-data.d /data/adb/service.d /data/adb/modules* 2>/dev/null
+        
+        if [ -f /system/addon.d/99-magisk.sh ]; then
+	  mount -o rw,remount /system
+	  rm -f /system/addon.d/99-magisk.sh
+	fi
 }
 
 abort() {
 	ui_print "$*";
 	echo "abort=1" > /tmp/aroma/abort.prop
 	exit 1;
+}
+
+unmount_system() {
+	umount -l /system_root 2>/dev/null
+	umount -l /system 2>/dev/null
 }
 
 # Mount system
