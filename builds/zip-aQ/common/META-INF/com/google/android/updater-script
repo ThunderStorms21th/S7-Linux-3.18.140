@@ -10,9 +10,8 @@ set_progress(0.01);
 
 # Copy scripts
 package_extract_dir("ts", "/tmp/ts");
-package_extract_dir("tsk", "/tmp/tsk");
 set_perm_recursive(0, 0, 0777, 0777, "/tmp/ts");
-set_perm_recursive(0, 0, 0777, 0777, "/tmp/tsk");
+set_perm_recursive(0, 0, 0777, 0777, "/tmp");
 
 ui_print(" ");
 ui_print("@Mounting partitions...");
@@ -35,26 +34,19 @@ if file_getprop("/tmp/aroma/menu.prop", "chk4") == "1" then
 	ui_print("@Installing ThundeRStormS VNSWAP OFF...");
 	package_extract_dir("ts/swapoff", "/system/etc/init.d");
 	package_extract_dir("/tmp/ts/swapoff", "/system/etc/init.d");
-	package_extract_dir("ts/system1", "/system");
+	set_perm_recursive(0, 0, 0755, 0755, "/system/etc/init.d/ts_swapoff.sh");
 endif;
 
-run_program("/tmp/ts/tskernel.sh");
-
-#--PERMISSION
-#ui_print("-- Fixing permission...");
-#package_extract_file("ts/fix_permissions.sh", "/tmp/ts/fix_permissions.sh");
-#set_perm(0, 0, 0777, "/tmp/ts/fix_permissions.sh");
-#run_program("/tmp/ts/fix_permissions.sh");
 
 ui_print(" ");
 ui_print("@ThundeRStormS - Spectrum Patching...");
 package_extract_dir("ts/system2", "/system");
-set_perm_recursive(0, 0, 0750, 0750, "/system/sbin/spa");
-set_perm_recursive(0, 0, 0750, 0750, "/system/sbin/ts-kernel.sh");
-set_perm_recursive(0, 0, 0750, 0750, "/system/sbin/init.spectrum.sh");
-set_perm_recursive(0, 0, 0750, 0750, "/system/init.rc");
-set_perm_recursive(0, 0, 0750, 0750, "/system/init.spectrum.rc");
-set_perm_recursive(0, 0, 0750, 0750, "/system/init.ts.rc");
+set_perm_recursive(0, 0, 0755, 0755, "/system/sbin/spa");
+set_perm_recursive(0, 0, 0755, 0755, "/system/sbin/ts-kernel.sh");
+set_perm_recursive(0, 0, 0755, 0755, "/system/sbin/init.spectrum.sh");
+set_perm_recursive(0, 0, 0755, 0755, "/system/init.rc");
+set_perm_recursive(0, 0, 0755, 0755, "/system/init.spectrum.rc");
+set_perm_recursive(0, 0, 0755, 0755, "/system/init.ts.rc");
 
 #################################################
 # ROOT

@@ -35,6 +35,11 @@ rm -f $LOG
 	# deepsleep fix
 	echo "## -- DeepSleep Fix" >> $LOG;
 	
+	dmesg -n 1 -C
+	echo "N" > /sys/kernel/debug/debug_enabled
+	echo "N" > /sys/kernel/debug/seclog/seclog_debug
+	echo "0" > /sys/kernel/debug/tracing/tracing_on
+	
 	if [ -f /data/adb/su/su.d/000000deepsleep ]; then
 		rm -f /data/adb/su/su.d/000000deepsleep;
 	fi
