@@ -45,4 +45,5 @@ CONFIG_SUNRPC_GSS=y
 ## CONFIG_MALI_JOB_DUMP is not set
 ## CONFIG_MALI_EXYNOS_TRACE is not set
 ## CONFIG_ASSISTED_SUPERUSER is not set
-
+CONFIG_BCMDHD_FW_PATH="/vendor/etc/wifi/bcmdhd_sta.bin"
+CONFIG_BCMDHD_NVRAM_PATH="/vendor/etc/wifi/nvram_net.txt"
