@@ -39,13 +39,18 @@ $RESETPROP ro.boot.veritymode "enforcing"
 $RESETPROP ro.boot.verifiedbootstate "green"
 $RESETPROP ro.boot.flash.locked "1"
 $RESETPROP ro.boot.ddrinfo "00000001"
-$RESETPROP ro.build.selinux "1"
+# $RESETPROP ro.build.selinux "1"
+
+# Stop services
+su -c "stop secure_storage"
+su -c "stop irisd"
+su -c "stop proca"
 
 # SELinux (0 / 640 = Permissive, 1 / 644 = Enforcing)
 echo "## -- Selinux permissive" >> $LOG;
 # chmod 644 /sys/fs/selinux/enforce
 # setenforce 0
-# echo "0" > /sys/fs/selinux/enforce
+echo "0" > /sys/fs/selinux/enforce
 chmod 640 /sys/fs/selinux/enforce
 echo " " >> $LOG;
 
