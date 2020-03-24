@@ -1492,21 +1492,6 @@ static int cpufreq_add_dev(struct device *dev, struct subsys_interface *sif)
 	return __cpufreq_add_dev(dev, sif);
 }
 
-static void update_related_cpus(struct cpufreq_policy *policy)
-{
-	unsigned int j;
-
-	for_each_cpu(j, policy->related_cpus) {
-		if (!cpufreq_driver->setpolicy)
-			strlcpy(per_cpu(cpufreq_policy_save, j).gov,
-				policy->governor->name, CPUFREQ_NAME_LEN);
-		per_cpu(cpufreq_policy_save, j).min = policy->user_policy.min;
-		per_cpu(cpufreq_policy_save, j).max = policy->user_policy.max;
-		pr_debug("Saving CPU%d user policy min %d and max %d\n",
-		 j, policy->user_policy.min, policy->user_policy.max);
-	}
-}
-
 static int __cpufreq_remove_dev_prepare(struct device *dev,
 					struct subsys_interface *sif)
 {
@@ -1546,12 +1531,13 @@ static int __cpufreq_remove_dev_prepare(struct device *dev,
 		}
 	}
 
+	if (!cpufreq_driver->setpolicy)
+		strncpy(per_cpu(cpufreq_cpu_governor, cpu),
+			policy->governor->name, CPUFREQ_NAME_LEN);
+
 	down_read(&policy->rwsem);
 	cpus = cpumask_weight(policy->cpus);
 	up_read(&policy->rwsem);
-
-	if (cpus == 1)
-		update_related_cpus(policy);
 
 	if (cpu != policy->cpu) {
 		sysfs_remove_link(&dev->kobj, "cpufreq");
@@ -1871,14 +1857,17 @@ void cpufreq_suspend(void)
 	pr_debug("%s: Suspending Governors\n", __func__);
 
 	list_for_each_entry(policy, &cpufreq_policy_list, policy_list) {
-		if (cpufreq_driver->suspend
+		if (__cpufreq_governor(policy, CPUFREQ_GOV_STOP))
+			pr_err("%s: Failed to stop governor for policy: %p\n",
+				__func__, policy);
+		else if (cpufreq_driver->suspend
 		    && cpufreq_driver->suspend(policy))
 			pr_err("%s: Failed to suspend driver: %p\n", __func__,
 				policy);
 	}
 
 suspend:
-	cpufreq_suspended = false;
+	cpufreq_suspended = true;
 }
 
 /**
@@ -1908,6 +1897,10 @@ void cpufreq_resume(void)
 		if (cpufreq_driver->resume && cpufreq_driver->resume(policy))
 			pr_err("%s: Failed to resume driver: %p\n", __func__,
 				policy);
+		else if (__cpufreq_governor(policy, CPUFREQ_GOV_START)
+		    || __cpufreq_governor(policy, CPUFREQ_GOV_LIMITS))
+			pr_err("%s: Failed to start governor for policy: %p\n",
+				__func__, policy);
 	}
 
 	/*
