@@ -51,6 +51,16 @@ static DEFINE_PER_CPU(char[CPUFREQ_NAME_LEN], cpufreq_cpu_governor);
 /* Flag to suspend/resume CPUFreq governors */
 static bool cpufreq_suspended;
 
+/*
+ * This one keeps track of the previously set governor and user-set
+ * min/max freq of a removed CPU
+ */
+struct cpufreq_cpu_save_data {
+	char gov[CPUFREQ_NAME_LEN];
+	unsigned int max, min;
+};
+static DEFINE_PER_CPU(struct cpufreq_cpu_save_data, cpufreq_policy_save);
+
 static inline bool has_target(void)
 {
 	return cpufreq_driver->target_index || cpufreq_driver->target;
