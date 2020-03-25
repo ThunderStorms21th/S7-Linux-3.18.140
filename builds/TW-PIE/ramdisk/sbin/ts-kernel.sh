@@ -26,19 +26,19 @@ echo $(date) "ThundeRSTormS-Kernel LOG" >> $LOG;
 echo " " >> $LOG;
 
 # Set KNOX to 0x0 on running /system
-$RESETPROP ro.boot.warranty_bit "0"
-$RESETPROP ro.warranty_bit "0"
+# $RESETPROP ro.boot.warranty_bit "0"
+# $RESETPROP ro.warranty_bit "0"
 
 # Fix Samsung Related Flags
-$RESETPROP ro.fmp_config "1"
-$RESETPROP ro.boot.fmp_config "1"
-$RESETPROP sys.oem_unlock_allowed "0"
+# $RESETPROP ro.fmp_config "1"
+# $RESETPROP ro.boot.fmp_config "1"
+# $RESETPROP sys.oem_unlock_allowed "0"
 
 # Fix safetynet flags
-$RESETPROP ro.boot.veritymode "enforcing"
-$RESETPROP ro.boot.verifiedbootstate "green"
-$RESETPROP ro.boot.flash.locked "1"
-$RESETPROP ro.boot.ddrinfo "00000001"
+# $RESETPROP ro.boot.veritymode "enforcing"
+# $RESETPROP ro.boot.verifiedbootstate "green"
+# $RESETPROP ro.boot.flash.locked "1"
+# $RESETPROP ro.boot.ddrinfo "00000001"
 # $RESETPROP ro.build.selinux "1"
 
 # Stop services
@@ -48,8 +48,6 @@ su -c "stop proca"
 
 # SELinux (0 / 640 = Permissive, 1 / 644 = Enforcing)
 echo "## -- Selinux permissive" >> $LOG;
-# chmod 644 /sys/fs/selinux/enforce
-# setenforce 0
 echo "0" > /sys/fs/selinux/enforce
 chmod 640 /sys/fs/selinux/enforce
 echo " " >> $LOG;
@@ -135,6 +133,7 @@ pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver
 echo " " >> $LOG;
 
 sleep 10800
+
 done;
 )&
 # END OF LOOP
