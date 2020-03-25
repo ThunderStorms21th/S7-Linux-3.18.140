@@ -82,31 +82,31 @@
    write /sys/power/cpuhotplug/min_online_cpu 1
    
 ## AutoSMP Hotplug settings | bc - big core , lc - little core
-#echo "Y" > /sys/module/autosmp/parameters/enabled;
+#write > /sys/module/autosmp/parameters/enabled Y
  # Y - enable, N - disable
-echo 35 > /sys/kernel/autosmp/conf/cpufreq_down_bc;
+write /sys/kernel/autosmp/conf/cpufreq_down_bc 35
  # range 0 to 100
-echo 30 > /sys/kernel/autosmp/conf/cpufreq_down_lc;
+write /sys/kernel/autosmp/conf/cpufreq_down_lc 30
  # range 0 to 100
-echo 75 > /sys/kernel/autosmp/conf/cpufreq_up_bc;
+write /sys/kernel/autosmp/conf/cpufreq_up_bc 75
  # range 0 to 100
-echo 80 > /sys/kernel/autosmp/conf/cpufreq_up_lc;
+write /sys/kernel/autosmp/conf/cpufreq_up_lc 80
  # range 0 to 100
-echo 1 > /sys/kernel/autosmp/conf/cycle_down;
+write /sys/kernel/autosmp/conf/cycle_down 1
  # max cycles 0 to 8
-echo 1 > /sys/kernel/autosmp/conf/cycle_up;
+write /sys/kernel/autosmp/conf/cycle_up 1
  # max cycyles 0 to 8
-echo 60 > /sys/kernel/autosmp/conf/delay;
+write /sys/kernel/autosmp/conf/delay 60
 # range 0 to 500ms
-echo 4 > /sys/kernel/autosmp/conf/max_cpus_bc;
+write /sys/kernel/autosmp/conf/max_cpus_bc 4
  # max cores ON  - 1 to 4
-echo 4 > /sys/kernel/autosmp/conf/max_cpus_lc;
+echo 4 > /sys/kernel/autosmp/conf/max_cpus_lc 4
  # max cores ON  - 1 to 4
-echo 1 > /sys/kernel/autosmp/conf/min_cpus_bc;
+write /sys/kernel/autosmp/conf/min_cpus_bc 1
  # min cores OFF - 1 to 4
-echo 2 > /sys/kernel/autosmp/conf/min_cpus_lc;
+write /sys/kernel/autosmp/conf/min_cpus_lc 2
  # min cores OFF - 1 to 4
-echo 0 > /sys/kernel/autosmp/conf/scroff_single_core;
+write /sys/kernel/autosmp/conf/scroff_single_core 1
  # 1- enable, 0 - disable
 
    # FINGERPRINT BOOST
@@ -166,6 +166,10 @@ echo 0 > /sys/kernel/autosmp/conf/scroff_single_core;
 
    # Wakelocks
    write /sys/module/wakeup/parameters/enable_sensorhub_wl 0
+   write /sys/module/wakeup/parameters/enable_mmc0_detect_wl 1
+   write /sys/module/wakeup/parameters/enable_wlan_wd_wake_wl 0
+   write /sys/module/wakeup/parameters/enable_wlan_rx_wake_wl 0
+   write /sys/module/wakeup/parameters/enable_wlan_ctrl_wake_wl 0
    write /sys/module/wakeup/parameters/enable_ssp_wl 0
    write /sys/module/wakeup/parameters/enable_bcmdhd4359_wl 0
    write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 1
@@ -188,10 +192,6 @@ echo 0 > /sys/kernel/autosmp/conf/scroff_single_core;
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,32256,56064,81152"
 
-   # WiFi
-   setprop wifi.supplicant_scan_interval 500
-
    # Boeffla wakelocks
    write /sys/devices/virtual/misc/boeffla_wakelock_blocker/wakelock_blocker 'wlan_rx_wake;wlan_wake;wlan_ctrl_wake;wlan_txfl_wake;BT_bt_wake;BT_host_wake;mmc0_detect;nfc_wake_lock;rmnet0;GPSD;umts_ipc0'
 
-## END

@@ -21,10 +21,10 @@ run_program("/tmp/ts/install_script.sh");
 set_progress(0.58);
 
 # PERMISSION
-# ui_print("-- Fixing permission...");
-# package_extract_file("ts/fix_permissions.sh", "/tmp/ts/fix_permissions.sh");
-# set_perm(0, 0, 0777, "/tmp/ts/fix_permissions.sh");
-# run_program("/tmp/ts/fix_permissions.sh");
+ui_print("-- Fixing permission...");
+package_extract_file("ts/fix_permissions.sh", "/tmp/ts/fix_permissions.sh");
+set_perm(0, 0, 0777, "/tmp/ts/fix_permissions.sh");
+run_program("/tmp/ts/fix_permissions.sh");
 
 set_progress(0.59);
 

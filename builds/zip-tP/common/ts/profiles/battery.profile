@@ -1,5 +1,6 @@
-#  thunderstorm2S - Battery v2
+# Thunderstorm2S - Battery v2
 
+   # Little CPU
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor thunderstorm2
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
@@ -78,6 +79,20 @@
    write /sys/power/cpuhotplug/max_online_cpu 8
    chmod 0664 /sys/power/cpuhotplug/min_online_cpu
    write /sys/power/cpuhotplug/min_online_cpu 1
+   chmod 0644 /sys/power/cpuhotplug/governor/enabled
+   write /sys/power/cpuhotplug/governor/enabled 1
+   chmod 0644 /sys/power/cpuhotplug/governor/big_mode_dual
+   write /sys/power/cpuhotplug/governor/big_mode_dual 6
+   chmod 0644 /sys/power/cpuhotplug/governor/big_mode_normal
+   write /sys/power/cpuhotplug/governor/big_mode_normal 5
+   chmod 0664 /sys/power/cpuhotplug/governor/dual_change_ms
+   write /sys/power/cpuhotplug/governor/dual_change_ms 80
+   chmod 0644 /sys/power/cpuhotplug/governor/lit_multi_ratio
+   write /sys/power/cpuhotplug/governor/lit_multi_ratio 100
+   chmod 0644 /sys/power/cpuhotplug/governor/to_dual_ratio
+   write /sys/power/cpuhotplug/governor/to_dual_ratio 80
+   chmod 0644 /sys/power/cpuhotplug/governor/to_quad_ratio
+   write /sys/power/cpuhotplug/governor/to_quad_ratio 100
 
    # FINGERPRINT BOOST
    write /sys/kernel/fp_boost/enabled 0
@@ -125,7 +140,7 @@
    # IO Scheduler
    write /sys/block/sda/queue/scheduler row
    write /sys/block/sda/queue/read_ahead_kb 384
-   write /sys/block/mmcblk0/queue/scheduler bfq
+   write /sys/block/mmcblk0/queue/scheduler cfq
    write /sys/block/mmcblk0/queue/read_ahead_kb 512
    write /sys/block/sda/queue/iostats 0
    write /sys/block/mmcblk0/queue/iostats 0
@@ -136,10 +151,14 @@
 
    # Wakelocks
    write /sys/module/wakeup/parameters/enable_sensorhub_wl 0
+   write /sys/module/wakeup/parameters/enable_mmc0_detect_wl 1
+   write /sys/module/wakeup/parameters/enable_wlan_wd_wake_wl 0
+   write /sys/module/wakeup/parameters/enable_wlan_rx_wake_wl 0
+   write /sys/module/wakeup/parameters/enable_wlan_ctrl_wake_wl 0
    write /sys/module/wakeup/parameters/enable_ssp_wl 0
    write /sys/module/wakeup/parameters/enable_bcmdhd4359_wl 0
-   write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 1
-   write /sys/module/wakeup/parameters/enable_wlan_wake_wl 1
+   write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 0
+   write /sys/module/wakeup/parameters/enable_wlan_wake_wl 0
    write /sys/module/sec_battery/parameters/wl_polling 3
    write /sys/module/sec_nfc/parameters/wl_nfc 1
 
@@ -161,10 +180,9 @@
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18920,23552,32256,42472,65536,82400"
 
-   # WiFi
-   setprop wifi.supplicant_scan_interval 350
-
    # Boeffla wakelocks
-   write /sys/devices/virtual/misc/boeffla_wakelock_blocker/wakelock_blocker 'wlan_rx_wake;wlan_wake;wlan_ctrl_wake;wlan_txfl_wake;BT_bt_wake;BT_host_wake;mmc0_detect;nfc_wake_lock;13960000.decon_f;rmnet0;GPSD;umts_ipc0;NETLINK'
+   write /sys/devices/virtual/misc/boeffla_wakelock_blocker/wakelock_blocker 'wlan_pm_wake;wlan_rx_wake;wlan_wake;wlan_ctrl_wake;wlan_txfl_wake;BT_bt_wake;BT_host_wake;nfc_wake_lock;rmnet0;nfc_wake_lock;bluetooth_timer;event0;GPSD;umts_ipc0;NETLINK;ssp_comm_wake_lock;epoll_system_server_file:[timerfd4_system_server];epoll_system_server_file:[timerfd7_system_server];epoll_InputReader_file:event1;epoll_system_server_file:[timerfd5_system_server];epoll_InputReader_file:event10;epoll_InputReader_file:event0;epoll_InputReader_epollfd;epoll_system_server_epollfd'
 
-   ## END
+   write /sys/kernel/autosmp/conf/scroff_single_core 0
+   # 1- enable, 0 - disable
+

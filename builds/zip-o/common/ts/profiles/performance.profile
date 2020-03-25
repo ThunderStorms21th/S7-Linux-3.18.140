@@ -75,6 +75,20 @@
    write /sys/power/cpuhotplug/max_online_cpu 8
    chmod 0664 /sys/power/cpuhotplug/min_online_cpu
    write /sys/power/cpuhotplug/min_online_cpu 1
+   chmod 0644 /sys/power/cpuhotplug/governor/enabled
+   write /sys/power/cpuhotplug/governor/enabled 1
+   chmod 0644 /sys/power/cpuhotplug/governor/big_mode_dual
+   write /sys/power/cpuhotplug/governor/big_mode_dual 7
+   chmod 0644 /sys/power/cpuhotplug/governor/big_mode_normal
+   write /sys/power/cpuhotplug/governor/big_mode_normal 6
+   chmod 0664 /sys/power/cpuhotplug/governor/dual_change_ms
+   write /sys/power/cpuhotplug/governor/dual_change_ms 80
+   chmod 0644 /sys/power/cpuhotplug/governor/lit_multi_ratio
+   write /sys/power/cpuhotplug/governor/lit_multi_ratio 100
+   chmod 0644 /sys/power/cpuhotplug/governor/to_dual_ratio
+   write /sys/power/cpuhotplug/governor/to_dual_ratio 80
+   chmod 0644 /sys/power/cpuhotplug/governor/to_quad_ratio
+   write /sys/power/cpuhotplug/governor/to_quad_ratio 100
 
    # FINGERPRINT BOOST
    write /sys/kernel/fp_boost/enabled 1
@@ -125,11 +139,15 @@
 
    # Wakelocks
    write /sys/module/wakeup/parameters/enable_sensorhub_wl 1
+   write /sys/module/wakeup/parameters/enable_mmc0_detect_wl 1
+   write /sys/module/wakeup/parameters/enable_wlan_wd_wake_wl 1
+   write /sys/module/wakeup/parameters/enable_wlan_rx_wake_wl 1
+   write /sys/module/wakeup/parameters/enable_wlan_ctrl_wake_wl 1
    write /sys/module/wakeup/parameters/enable_ssp_wl 1
    write /sys/module/wakeup/parameters/enable_bcmdhd4359_wl 1
    write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 1
    write /sys/module/wakeup/parameters/enable_wlan_wake_wl 1
-   write /sys/module/sec_battery/parameters/wl_polling 8
+   write /sys/module/sec_battery/parameters/wl_polling 10
    write /sys/module/sec_nfc/parameters/wl_nfc 2
 
    # Misc
@@ -145,5 +163,7 @@
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "20432,26040,32648,42256,59064,101152"
 
+   write /sys/kernel/autosmp/conf/scroff_single_core 0
+   # 1- enable, 0 - disable
 
 
