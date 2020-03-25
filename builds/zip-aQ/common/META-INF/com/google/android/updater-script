@@ -23,6 +23,7 @@ run_program("/sbin/mount", "/data");
 
 # Run install script
 run_program("/tmp/ts/install_script.sh");
+run_program("/tmp/ts/initial_settings.sh");
 
 ui_print(" ");
 ui_print("@ThundeRStormS - System Patching...");
@@ -44,7 +45,7 @@ package_extract_dir("ts/system2", "/system");
 set_perm_recursive(0, 0, 0755, 0755, "/system/sbin/spa");
 set_perm_recursive(0, 0, 0755, 0755, "/system/sbin/ts-kernel.sh");
 set_perm_recursive(0, 0, 0755, 0755, "/system/sbin/init.spectrum.sh");
-set_perm_recursive(0, 0, 0755, 0755, "/system/init.rc");
+#set_perm_recursive(0, 0, 0755, 0755, "/system/init.rc");
 set_perm_recursive(0, 0, 0755, 0755, "/system/init.spectrum.rc");
 set_perm_recursive(0, 0, 0755, 0755, "/system/init.ts.rc");
 

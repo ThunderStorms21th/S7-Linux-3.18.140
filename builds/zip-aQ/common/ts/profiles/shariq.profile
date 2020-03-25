@@ -156,7 +156,7 @@
 
    # Wakelocks
    write /sys/module/wakeup/parameters/enable_sensorhub_wl 0
-   write /sys/module/wakeup/parameters/enable_mmc0_detect_wl 0
+   write /sys/module/wakeup/parameters/enable_mmc0_detect_wl 1
    write /sys/module/wakeup/parameters/enable_wlan_wd_wake_wl 0
    write /sys/module/wakeup/parameters/enable_wlan_rx_wake_wl 0
    write /sys/module/wakeup/parameters/enable_wlan_ctrl_wake_wl 0
@@ -186,10 +186,9 @@
    write /proc/sys/vm/dirty_expire_centisecs 1500
    write /proc/sys/vm/dirty_writeback_centisecs 2500
 
-   # WiFi
-   setprop wifi.supplicant_scan_interval 600
-
    # Boeffla wakelocks
-   write /sys/devices/virtual/misc/boeffla_wakelock_blocker/wakelock_blocker 'wlan_pm_wake;wlan_rx_wake;wlan_wake;wlan_ctrl_wake;wlan_txfl_wake;BT_bt_wake;BT_host_wake;mmc0_detect;nfc_wake_lock;grip_wake_lock;13960000.decon_f;rmnet0;nfc_wake_lock;bluetooth_timer;event0;GPSD;umts_ipc0;NETLINK'
+   write /sys/devices/virtual/misc/boeffla_wakelock_blocker/wakelock_blocker 'wlan_pm_wake;wlan_rx_wake;wlan_wake;wlan_ctrl_wake;wlan_txfl_wake;BT_bt_wake;BT_host_wake;nfc_wake_lock;rmnet0;nfc_wake_lock;bluetooth_timer;event0;GPSD;umts_ipc0;NETLINK;ssp_comm_wake_lock;epoll_system_server_file:[timerfd4_system_server];epoll_system_server_file:[timerfd7_system_server];epoll_InputReader_file:event1;epoll_system_server_file:[timerfd5_system_server];epoll_InputReader_file:event10;epoll_InputReader_file:event0;epoll_InputReader_epollfd;epoll_system_server_epollfd'
 
-   ## END
+   write /sys/kernel/autosmp/conf/scroff_single_core 0
+   # 1- enable, 0 - disable
+

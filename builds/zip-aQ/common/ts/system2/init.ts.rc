@@ -6,9 +6,9 @@
 
 on property:sys.boot_completed=1
     start kernelinit
-    stop proca
+    #stop proca
     stop secure_storage
-    stop irisd
+    #stop irisd
 
 
 service kernelinit /sbin/ts-kernel.sh
@@ -24,7 +24,7 @@ on boot
    # Set init values of the thunderstorm2 - Stock Kernel
 
    # Kernel Panic off (0 = Disabled, 1 = Enabled)
-   # write /proc/sys/kernel/panic 0
+   write /proc/sys/kernel/panic 0
    
    # PWMFix (0 = Disabled, 1 = Enabled)
    write /sys/class/lcd/panel/smart_on 0
@@ -234,3 +234,5 @@ on boot
    write /proc/sys/net/ipv4/tcp_wmem "4096,16384,404480"
    write /proc/sys/net/ipv4/tcp_rmem "4096,87380,404480"
 
+   write /sys/kernel/autosmp/conf/scroff_single_core 0
+   # 1- enable, 0 - disable
