@@ -14,7 +14,7 @@ mount -o rw,remount /system;
 mount -o rw,remount /data;
 mount -o rw,remount /;
 
-# Create TSkernel folder
+# Create morokernel folder
 if [ ! -d $TS_DIR ]; then
 	mkdir -p $TS_DIR;
 fi
@@ -29,12 +29,13 @@ fi
 	chmod 440 /sys/fs/selinux/policy;
 	echo " " >> $LOG;
 
-
 	# deepsleep fix
 	echo "## -- DeepSleep Fix" >> $LOG;
-	if [ -f /data/adb/su/su.d/000000deepsleep ]; then
-		rm -f /data/adb/su/su.d/000000deepsleep;
-	fi
+
+	dmesg -n 1 -C
+	echo "N" > /sys/kernel/debug/debug_enabled
+	echo "N" > /sys/kernel/debug/seclog/seclog_debug
+	echo "0" > /sys/kernel/debug/tracing/tracing_on
 	
 	for i in `ls /sys/class/scsi_disk/`; do
 		cat /sys/class/scsi_disk/$i/write_protect 2>/dev/null | grep 1 >/dev/null;
@@ -44,26 +45,50 @@ fi
 	done
 	echo " " >> $LOG;
 
-	# Google play services wakelock fix
-	sleep 1
-	echo "## -- GooglePlay wakelock fix" >> $LOG;
-	pm enable com.google.android.gms/.update.SystemUpdateActivity;
-	pm enable com.google.android.gms/.update.SystemUpdateService;
-	pm enable com.google.android.gms/.update.SystemUpdateService$ActiveReceiver;
-	pm enable com.google.android.gms/.update.SystemUpdateService$Receiver;
-	pm enable com.google.android.gms/.update.SystemUpdateService$SecretCodeReceiver;
-	echo " " >> $LOG;
-
-	
 	# Fix personalist.xml
 	if [ ! -f /data/system/users/0/personalist.xml ]; then
-		touch /data/system/users/0/personalist.xml
-	fi
-	if [ ! -r /data/system/users/0/personalist.xml ]; then
- 		chmod 600 /data/system/users/0/personalist.xml
- 		chown system:system /data/system/users/0/personalist.xml
+		touch /data/system/users/0/personalist.xml;
+		chmod 600 /data/system/users/0/personalist.xml;
+		chown system:system /data/system/users/0/personalist.xml;
 	fi
 
+	## ThunderStormS kill Google and Media servers script
+	sleep 1
+	# START LOOP 3600sec = 1h
+	RUN_EVERY=10800
+	(
+	while : ; do
+	# Google play services wakelock fix
+	echo "## -- GooglePlay wakelock fix $( date +"%d-%m-%Y %H:%M:%S" )" >> $LOG;
+	# KILL MEDIA
+	if [ "`pgrep media`" ] && [ "`pgrep mediaserver`" ]; then
+	# busybox killall -9 android.process.media
+	# busybox killall -9 mediaserver
+	busybox killall -9 com.google.android.gms
+	busybox killall -9 com.google.android.gms.persistent
+	busybox killall -9 com.google.process.gapps
+	busybox killall -9 com.google.android.gsf
+	busybox killall -9 com.google.android.gsf.persistent
+	fi
+	
+	# FIX GOOGLE PLAY SERVICE
+	pm enable com.google.android.gms/.update.SystemUpdateActivity
+	pm enable com.google.android.gms/.update.SystemUpdateService
+	pm enable com.google.android.gms/.update.SystemUpdateService$ActiveReceiver
+	pm enable com.google.android.gms/.update.SystemUpdateService$Receiver
+	pm enable com.google.android.gms/.update.SystemUpdateService$SecretCodeReceiver
+	pm enable com.google.android.gsf/.update.SystemUpdateActivity
+	pm enable com.google.android.gsf/.update.SystemUpdatePanoActivity
+	pm enable com.google.android.gsf/.update.SystemUpdateService
+	pm enable com.google.android.gsf/.update.SystemUpdateService$Receiver
+	pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver
+	echo " " >> $LOG;
+	
+	sleep 10800
+
+	done;
+	)&
+	# END OF LOOP
 	
 	# Init.d support
 	echo "## -- Start Init.d support" >> $LOG;
@@ -89,7 +114,7 @@ fi
 			sh $FILE >/dev/null;
 	    	done;
 	else
-		echo "## No files found" >> $LOG;
+		echo "## -- No files found" >> $LOG;
 	fi
 	echo "## -- End Init.d support" >> $LOG;
 	echo " " >> $LOG;
@@ -116,12 +141,10 @@ fi
 			rm $apk;
 		done;
 	else
-		echo "## No files found" >> $LOG;
+		echo "## -- No files found" >> $LOG;
 	fi
 	echo "## -- End Install APK" >> $LOG;
 
-
-) 2>&1 | tee -a ./$LOG;
 
 chmod 777 $LOG;
 

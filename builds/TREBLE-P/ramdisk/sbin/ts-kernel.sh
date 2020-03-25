@@ -53,8 +53,24 @@ fi
 	fi
 
 	## ThunderStormS kill Google and Media servers script
-	echo "## -- GooglePlay wakelock fix $( date +"%d-%m-%Y %H:%M:%S" )" >> $LOG;
 	sleep 1
+	# START LOOP 3600sec = 1h
+	RUN_EVERY=10800
+	(
+	while : ; do
+	# Google play services wakelock fix
+	echo "## -- GooglePlay wakelock fix $( date +"%d-%m-%Y %H:%M:%S" )" >> $LOG;
+	# KILL MEDIA
+	if [ "`pgrep media`" ] && [ "`pgrep mediaserver`" ]; then
+	# busybox killall -9 android.process.media
+	# busybox killall -9 mediaserver
+	busybox killall -9 com.google.android.gms
+	busybox killall -9 com.google.android.gms.persistent
+	busybox killall -9 com.google.process.gapps
+	busybox killall -9 com.google.android.gsf
+	busybox killall -9 com.google.android.gsf.persistent
+	fi
+	
 	# FIX GOOGLE PLAY SERVICE
 	pm enable com.google.android.gms/.update.SystemUpdateActivity
 	pm enable com.google.android.gms/.update.SystemUpdateService
@@ -67,6 +83,12 @@ fi
 	pm enable com.google.android.gsf/.update.SystemUpdateService$Receiver
 	pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver
 	echo " " >> $LOG;
+	
+	sleep 10800
+
+	done;
+	)&
+	# END OF LOOP
 	
 	# Init.d support
 	echo "## -- Start Init.d support" >> $LOG;
@@ -123,8 +145,6 @@ fi
 	fi
 	echo "## -- End Install APK" >> $LOG;
 
-
-) 2>&1 | tee -a ./$LOG;
 
 chmod 777 $LOG;
 
