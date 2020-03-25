@@ -53,7 +53,7 @@ DEFCONFIG_OREO=ts-oreo_defconfig
 DEFCONFIG_PIE=ts-pie_defconfig
 DEFCONFIG_Q=ts-q_defconfig
 
-export K_VERSION="v3.0T"
+export K_VERSION="v3.1"
 export K_BASE="U4CSK1"
 export K_NAME="ThundeRStormS-Kernel"
 export REVISION="RC"
@@ -99,7 +99,6 @@ FUNC_BUILD_KERNEL()
 
 	sed -i 's/CONFIG_USB_ANDROID_SAMSUNG_MTP is not set/# CONFIG_USB_ANDROID_SAMSUNG_MTP=y/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
 	sed -i 's/CONFIG_NETFILTER_XT_TARGET_CT=y/# CONFIG_NETFILTER_XT_TARGET_CT is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
-	sed -i 's/CONFIG_ASSISTED_SUPERUSER is not set/# CONFIG_ASSISTED_SUPERUSER=y/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
 
 	#FUNC_CLEAN_DTB
 
@@ -285,9 +284,9 @@ if [ $prompt == "1" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7FLAT
     LOG=$FLAT_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-Q-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$K_VERSION"
     echo "S7 Flat G930F Selected"
-    ZIP_NAME=$K_NAME-$MODEL-Q-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-$MODEL-OneUI-Q-$K_VERSION-$ZIP_DATE.zip
     MAIN
 elif [ $prompt == "2" ]; then
     MODEL=G935
@@ -295,9 +294,9 @@ elif [ $prompt == "2" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7EDGE
     LOG=$EDGE_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-Q-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$K_VERSION"
     echo "S7 Edge G935F Selected"
-    ZIP_NAME=$K_NAME-$MODEL-Q-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-$MODEL-OneUI-Q-$K_VERSION-$ZIP_DATE.zip
     MAIN
 elif [ $prompt == "3" ]; then
     MODEL=G935
@@ -305,16 +304,16 @@ elif [ $prompt == "3" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7EDGE
     LOG=$EDGE_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-Q-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$K_VERSION"
     echo "S7 EDGE + FLAT Selected"
     echo "Compiling EDGE ..."
     MAIN2
     MODEL=G930
     KERNEL_DEFCONFIG=$DEFCONFIG_S7FLAT
     LOG=$FLAT_LOG
-    export KERNEL_VERSION="$K_NAME-$K_BASE-Q-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$K_VERSION"
     echo "Compiling FLAT ..."
-    ZIP_NAME=$K_NAME-G93X-Q-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-G93X-OneUI-Q-$K_VERSION-$ZIP_DATE.zip
     MAIN
 fi
 

@@ -51,8 +51,9 @@ DEFCONFIG_S7EDGE=ts-edge_defconfig
 DEFCONFIG_S7FLAT=ts-flat_defconfig
 DEFCONFIG_OREO=ts-oreo_defconfig
 DEFCONFIG_PIE=ts-pie_defconfig
+DEFCONFIG_TREBLE=ts-treble_defconfig
 
-export K_VERSION="v3.0T"
+export K_VERSION="v3.1"
 export K_BASE="U4CSK1"
 export K_NAME="ThundeRStormS-Kernel"
 export REVISION="RC"
@@ -94,10 +95,10 @@ FUNC_BUILD_KERNEL()
 	cp -f $RDIR/arch/$ARCH/configs/$DEFCONFIG $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_PIE >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$KERNEL_DEFCONFIG >> $RDIR/arch/$ARCH/configs/tmp_defconfig
+	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_TREBLE >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 	
 	sed -i 's/CONFIG_USB_ANDROID_SAMSUNG_MTP is not set/# CONFIG_USB_ANDROID_SAMSUNG_MTP=y/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
 	sed -i 's/CONFIG_NETFILTER_XT_TARGET_CT=y/# CONFIG_NETFILTER_XT_TARGET_CT is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
-	sed -i 's/CONFIG_ASSISTED_SUPERUSER=y/# CONFIG_ASSISTED_SUPERUSER is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
 
 	#FUNC_CLEAN_DTB
 
@@ -269,7 +270,7 @@ echo "    CUSTOMIZABLE STOCK SAMSUNG KERNEL"
 echo ""
 echo "           Build Kernel for:"
 echo ""
-echo "S7 Treble OneUI"
+echo "S7 Treble OneUI vendor v2"
 echo "(1) S7 Flat SM-G930F/FD"
 echo "(2) S7 Edge SM-G935F/FD"
 echo "(3) S7 Edge + Flat F/FD"

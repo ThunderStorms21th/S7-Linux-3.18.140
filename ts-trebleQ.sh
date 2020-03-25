@@ -51,8 +51,9 @@ DEFCONFIG_S7EDGE=ts-edge_defconfig
 DEFCONFIG_S7FLAT=ts-flat_defconfig
 DEFCONFIG_OREO=ts-oreo_defconfig
 DEFCONFIG_PIE=ts-pie_defconfig
+DEFCONFIG_TREBLE=ts-treble_defconfig
 
-export K_VERSION="v3.0T"
+export K_VERSION="v3.1"
 export K_BASE="U4CSK1"
 export K_NAME="ThundeRStormS-Kernel"
 export REVISION="RC"
@@ -94,10 +95,10 @@ FUNC_BUILD_KERNEL()
 	cp -f $RDIR/arch/$ARCH/configs/$DEFCONFIG $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_PIE >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$KERNEL_DEFCONFIG >> $RDIR/arch/$ARCH/configs/tmp_defconfig
+	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_TREBLE >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 
 	sed -i 's/CONFIG_USB_ANDROID_SAMSUNG_MTP=y/# CONFIG_USB_ANDROID_SAMSUNG_MTP is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
 	sed -i 's/CONFIG_NETFILTER_XT_TARGET_CT is not set/# CONFIG_NETFILTER_XT_TARGET_CT=y/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
-	sed -i 's/CONFIG_ASSISTED_SUPERUSER=y/# CONFIG_ASSISTED_SUPERUSER is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
 
 	#FUNC_CLEAN_DTB
 
@@ -269,7 +270,7 @@ echo "    CUSTOMIZABLE STOCK SAMSUNG KERNEL"
 echo ""
 echo "           Build Kernel for:"
 echo ""
-echo "S7 Treble-Q"
+echo "S7 Treble-P/Q vendor v2"
 echo "(1) S7 Flat SM-G930F/FD"
 echo "(2) S7 Edge SM-G935F/FD"
 echo "(3) S7 Edge + Flat F/FD"
@@ -284,9 +285,9 @@ if [ $prompt == "1" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7FLAT
     LOG=$FLAT_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-TREBLE-Q-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-TREBLE-PQ-$K_VERSION"
     echo "S7 Flat G930F Selected"
-    ZIP_NAME=$K_NAME-$MODEL-TREBLE-Q-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-$MODEL-TREBLE-PQ-$K_VERSION-$ZIP_DATE.zip
     MAIN
 elif [ $prompt == "2" ]; then
     MODEL=G935
@@ -294,9 +295,9 @@ elif [ $prompt == "2" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7EDGE
     LOG=$EDGE_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-TREBLE-Q-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-TREBLE-PQ-$K_VERSION"
     echo "S7 Edge G935F Selected"
-    ZIP_NAME=$K_NAME-$MODEL-TREBLE-Q-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-$MODEL-TREBLE-PQ-$K_VERSION-$ZIP_DATE.zip
     MAIN
 elif [ $prompt == "3" ]; then
     MODEL=G935
@@ -304,16 +305,16 @@ elif [ $prompt == "3" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7EDGE
     LOG=$EDGE_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-TREBLE-Q-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-TREBLE-PQ-$K_VERSION"
     echo "S7 EDGE + FLAT Selected"
     echo "Compiling EDGE ..."
     MAIN2
     MODEL=G930
     KERNEL_DEFCONFIG=$DEFCONFIG_S7FLAT
     LOG=$FLAT_LOG
-    export KERNEL_VERSION="$K_NAME-$K_BASE-TREBLE-Q-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-TREBLE-PQ-$K_VERSION"
     echo "Compiling FLAT ..."
-    ZIP_NAME=$K_NAME-G93X-TREBLE-Q-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-G93X-TREBLE-PQ-$K_VERSION-$ZIP_DATE.zip
     MAIN
 fi
 
