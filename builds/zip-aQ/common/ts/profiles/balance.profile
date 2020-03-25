@@ -91,6 +91,10 @@
    write /sys/power/cpuhotplug/min_online_cpu 1
    chmod 0644 /sys/power/cpuhotplug/governor/enabled
    write /sys/power/cpuhotplug/governor/enabled 1
+   chmod 0644 /sys/power/cpuhotplug/governor/big_mode_dual
+   write /sys/power/cpuhotplug/governor/big_mode_dual 6
+   chmod 0644 /sys/power/cpuhotplug/governor/big_mode_normal
+   write /sys/power/cpuhotplug/governor/big_mode_normal 5
    chmod 0664 /sys/power/cpuhotplug/governor/dual_change_ms
    write /sys/power/cpuhotplug/governor/dual_change_ms 100
    chmod 0644 /sys/power/cpuhotplug/governor/lit_multi_ratio
@@ -151,6 +155,10 @@
 
    # Wakelocks
    write /sys/module/wakeup/parameters/enable_sensorhub_wl 0
+   write /sys/module/wakeup/parameters/enable_mmc0_detect_wl 1
+   write /sys/module/wakeup/parameters/enable_wlan_wd_wake_wl 0
+   write /sys/module/wakeup/parameters/enable_wlan_rx_wake_wl 0
+   write /sys/module/wakeup/parameters/enable_wlan_ctrl_wake_wl 0
    write /sys/module/wakeup/parameters/enable_ssp_wl 0
    write /sys/module/wakeup/parameters/enable_bcmdhd4359_wl 0
    write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 0
@@ -173,4 +181,7 @@
    
    # Boeffla wakelocks
    write /sys/devices/virtual/misc/boeffla_wakelock_blocker/wakelock_blocker 'wlan_pm_wake;wlan_rx_wake;wlan_wake;wlan_ctrl_wake;wlan_txfl_wake;BT_bt_wake;BT_host_wake;nfc_wake_lock;rmnet0;nfc_wake_lock;bluetooth_timer;event0;GPSD;umts_ipc0;NETLINK;ssp_comm_wake_lock;epoll_system_server_file:[timerfd4_system_server];epoll_system_server_file:[timerfd7_system_server];epoll_InputReader_file:event1;epoll_system_server_file:[timerfd5_system_server];epoll_InputReader_file:event10;epoll_InputReader_file:event0;epoll_InputReader_epollfd;epoll_system_server_epollfd'
+
+   write /sys/kernel/autosmp/conf/scroff_single_core 0
+   # 1- enable, 0 - disable
 

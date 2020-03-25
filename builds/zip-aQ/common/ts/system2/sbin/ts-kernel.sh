@@ -1,30 +1,27 @@
 #!/system/bin/sh
+# 
+# Init TSKernel
+#
 
-# ThunderStorm bash script for kernel and policy features settings v1.1
-# Thanks to MoRoGoKu and djb77
-
-# Set Variables
-BB="/sbin/busybox"
-RESETPROP="/sbin/resetprop -v -n"
 TS_DIR="/data/.tskernel"
 LOG="$TS_DIR/tskernel.log"
 
-# Mount
-mount -t rootfs -o remount,rw rootfs;
-mount -o remount,rw /system;
-mount -o remount,rw /data;
-mount -o remount,rw /;
+rm -f $LOG
 
-# Create TSkernel folder
+# Mount
+mount -t rootfs -o rw,remount rootfs;
+mount -o rw,remount /system;
+mount -o rw,remount /data;
+mount -o rw,remount /;
+
+# Create morokernel folder
 if [ ! -d $TS_DIR ]; then
 	mkdir -p $TS_DIR;
 fi
 
-rm -f $LOG
-
+(
 	echo $(date) "TS-Kernel LOG" >> $LOG;
 	echo " " >> $LOG;
-
 
 	# SafetyNet
 	echo "## -- SafetyNet permissions" >> $LOG;
@@ -34,15 +31,11 @@ rm -f $LOG
 
 	# deepsleep fix
 	echo "## -- DeepSleep Fix" >> $LOG;
-	
+
 	dmesg -n 1 -C
 	echo "N" > /sys/kernel/debug/debug_enabled
 	echo "N" > /sys/kernel/debug/seclog/seclog_debug
 	echo "0" > /sys/kernel/debug/tracing/tracing_on
-	
-	if [ -f /data/adb/su/su.d/000000deepsleep ]; then
-		rm -f /data/adb/su/su.d/000000deepsleep;
-	fi
 	
 	for i in `ls /sys/class/scsi_disk/`; do
 		cat /sys/class/scsi_disk/$i/write_protect 2>/dev/null | grep 1 >/dev/null;
@@ -51,6 +44,13 @@ rm -f $LOG
 		fi
 	done
 	echo " " >> $LOG;
+
+	# Fix personalist.xml
+	if [ ! -f /data/system/users/0/personalist.xml ]; then
+		touch /data/system/users/0/personalist.xml;
+		chmod 600 /data/system/users/0/personalist.xml;
+		chown system:system /data/system/users/0/personalist.xml;
+	fi
 
 	## ThunderStormS kill Google and Media servers script
 	sleep 1
@@ -64,14 +64,13 @@ rm -f $LOG
 	if [ "`pgrep media`" ] && [ "`pgrep mediaserver`" ]; then
 	# busybox killall -9 android.process.media
 	# busybox killall -9 mediaserver
-	$BB killall -9 com.google.android.gms
-	$BB killall -9 com.google.android.gms.persistent
-	$BB killall -9 com.google.process.gapps
-	$BB killall -9 com.google.android.gsf
-	$BB killall -9 com.google.android.gsf.persistent
+	busybox killall -9 com.google.android.gms
+	busybox killall -9 com.google.android.gms.persistent
+	busybox killall -9 com.google.process.gapps
+	busybox killall -9 com.google.android.gsf
+	busybox killall -9 com.google.android.gsf.persistent
 	fi
-
-	sleep 1
+	
 	# FIX GOOGLE PLAY SERVICE
 	pm enable com.google.android.gms/.update.SystemUpdateActivity
 	pm enable com.google.android.gms/.update.SystemUpdateService
@@ -84,29 +83,33 @@ rm -f $LOG
 	pm enable com.google.android.gsf/.update.SystemUpdateService$Receiver
 	pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver
 	echo " " >> $LOG;
-
+	
 	sleep 10800
+
 	done;
 	)&
 	# END OF LOOP
 	
 	# Init.d support
 	echo "## -- Start Init.d support" >> $LOG;
-	if [ ! -d /vendor/etc/init.d ]; then
-	    	mkdir -p /vendor/etc/init.d;
+	if [ ! -d /system/etc/init.d ]; then
+	    	mkdir -p /system/etc/init.d;
 	fi
 
-	chown -R root.root /vendor/etc/init.d;
-	chmod 777 /vendor/etc/init.d;
+	chown -R root.root /system/etc/init.d;
+	chmod 777 /system/etc/init.d;
 
 	# remove detach script
-	rm -f /vendor/etc/init.d/*detach* 2>/dev/null;
-	rm -f /system/su.d/*detach* 2>/dev/null;
+	rm -f /system/etc/init.d/ts_swapoff.sh 2>/dev/null;
+	rm -f /system/etc/init.d/feravolt_gms.sh 2>/dev/null;
+	rm -f /system/etc/init.d/tskillgooogle.sh 2>/dev/null;
+	rm -f /system/etc/init.d/*detach* 2>/dev/null;
+	rm -rf /data/magisk_backup_* 2>/dev/null;
 
-	if [ "$(ls -A /vendor/etc/init.d)" ]; then
-		chmod 777 /vendor/etc/init.d/*;
+	if [ "$(ls -A /system/etc/init.d)" ]; then
+		chmod 777 /system/etc/init.d/*;
 
-		for FILE in /vendor/etc/init.d/*; do
+		for FILE in /system/etc/init.d/*; do
 			echo "## -- Executing init.d script: $FILE" >> $LOG;
 			sh $FILE >/dev/null;
 	    	done;
@@ -138,15 +141,16 @@ rm -f $LOG
 			rm $apk;
 		done;
 	else
-		echo "## No files found" >> $LOG;
+		echo "## -- No files found" >> $LOG;
 	fi
 	echo "## -- End Install APK" >> $LOG;
+
 
 chmod 777 $LOG;
 
 # Unmount
-mount -t rootfs -o remount,ro rootfs;
-mount -o remount,ro /system;
-mount -o remount,rw /data;
-mount -o remount,ro /;
+mount -t rootfs -o ro,remount rootfs;
+mount -o ro,remount /system;
+mount -o rw,remount /data;
+mount -o ro,remount /;
 
