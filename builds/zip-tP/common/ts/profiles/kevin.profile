@@ -74,29 +74,29 @@
    write /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_all_cores_max_freq 0
    
    # AutoSMP Hotplug settings | bc - big core , lc - little core
-   echo 15 > /sys/kernel/autosmp/conf/cpufreq_down_bc;
+   write /sys/kernel/autosmp/conf/cpufreq_down_bc 15
    # range 0 to 100
-   echo 10 > /sys/kernel/autosmp/conf/cpufreq_down_lc;
+   write /sys/kernel/autosmp/conf/cpufreq_down_lc 10
    # range 0 to 100
-   echo 85 > /sys/kernel/autosmp/conf/cpufreq_up_bc;
+   write /sys/kernel/autosmp/conf/cpufreq_up_bc 85
    # range 0 to 100
-   echo 65 > /sys/kernel/autosmp/conf/cpufreq_up_lc;
+   write /sys/kernel/autosmp/conf/cpufreq_up_lc 65
    # range 0 to 100
-   echo 2 > /sys/kernel/autosmp/conf/cycle_down;
+   write /sys/kernel/autosmp/conf/cycle_down 2
    # max cycles 0 to 8
-   echo 1 > /sys/kernel/autosmp/conf/cycle_up;
+   write /sys/kernel/autosmp/conf/cycle_up 1
    # max cycyles 0 to 8
-   echo 120 > /sys/kernel/autosmp/conf/delay;
+   write /sys/kernel/autosmp/conf/delay 120
    # range 0 to 500ms
-   echo 4 > /sys/kernel/autosmp/conf/max_cpus_bc;
+   write /sys/kernel/autosmp/conf/max_cpus_bc 4
    # max cores ON  - 1 to 4
-   echo 4 > /sys/kernel/autosmp/conf/max_cpus_lc;
+   echo 4 > /sys/kernel/autosmp/conf/max_cpus_lc 4
    # max cores ON  - 1 to 4
-   echo 2 > /sys/kernel/autosmp/conf/min_cpus_bc;
+   write /sys/kernel/autosmp/conf/min_cpus_bc 2
    # min cores OFF - 1 to 4
-   echo 3 > /sys/kernel/autosmp/conf/min_cpus_lc;
+   write /sys/kernel/autosmp/conf/min_cpus_lc 3
    # min cores OFF - 1 to 4
-   echo 1 > /sys/kernel/autosmp/conf/scroff_single_core;
+   write /sys/kernel/autosmp/conf/scroff_single_core 0
    # 1- enable, 0 - disable
    
 
@@ -153,18 +153,22 @@
 
    # Wakelocks
    write /sys/module/wakeup/parameters/enable_sensorhub_wl 0
+   write /sys/module/wakeup/parameters/enable_mmc0_detect_wl 1
+   write /sys/module/wakeup/parameters/enable_wlan_wd_wake_wl 0
+   write /sys/module/wakeup/parameters/enable_wlan_rx_wake_wl 0
+   write /sys/module/wakeup/parameters/enable_wlan_ctrl_wake_wl 0
    write /sys/module/wakeup/parameters/enable_ssp_wl 0
    write /sys/module/wakeup/parameters/enable_bcmdhd4359_wl 0
    write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 0
    write /sys/module/wakeup/parameters/enable_wlan_wake_wl 0
-   write /sys/module/sec_battery/parameters/wl_polling 2
+   write /sys/module/sec_battery/parameters/wl_polling 3
    write /sys/module/sec_nfc/parameters/wl_nfc 1
 
    # Misc
    write /sys/module/sync/parameters/fsync_enabled 1
-   write /sys/kernel/dyn_fsync/Dyn_fsync_active 1
+   write /sys/kernel/dyn_fsync/Dyn_fsync_active 0
    write /sys/kernel/sched/gentle_fair_sleepers 0
-   write /sys/kernel/sched/arch_power 1
+   write /sys/kernel/sched/arch_power 0
    write /sys/kernel/power_suspend/power_suspend_mode 3
    #write /sys/kernel/power_suspend/power_suspend_mode 1
    #write /sys/kernel/power_suspend/power_suspend_state 1
@@ -178,8 +182,6 @@
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,32256,56064,81152"
 
-   # WiFi
-   setprop wifi.supplicant_scan_interval 200
 
 
 
