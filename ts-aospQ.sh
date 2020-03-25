@@ -53,7 +53,7 @@ DEFCONFIG_OREO=ts-oreo_defconfig
 DEFCONFIG_PIE=ts-pie_defconfig
 DEFCONFIG_AOSP=ts-aosp_defconfig
 
-export K_VERSION="v3.0T"
+export K_VERSION="v3.1"
 export K_BASE="U4CSK1"
 export K_NAME="ThundeRStormS-Kernel"
 export REVISION="RC"
@@ -199,7 +199,7 @@ FUNC_BUILD_FLASHABLES()
 {
 	cd $RDIR/builds
 	mkdir temp2
-	cp -rf zip-a/common/. temp2
+	cp -rf zip-aQ/common/. temp2
     	mv *.img temp2/
 	cd temp2
 	echo ""

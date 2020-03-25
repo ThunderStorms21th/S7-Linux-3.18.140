@@ -52,7 +52,7 @@ DEFCONFIG_S7FLAT=ts-flat_defconfig
 DEFCONFIG_OREO=ts-oreo_defconfig
 DEFCONFIG_PIE=ts-pie_defconfig
 
-export K_VERSION="v3.0T"
+export K_VERSION="v3.1"
 export K_BASE="U4CSK1"
 export K_NAME="ThundeRStormS-Kernel"
 export REVISION="RC"
@@ -97,7 +97,6 @@ FUNC_BUILD_KERNEL()
 	
 	sed -i 's/CONFIG_USB_ANDROID_SAMSUNG_MTP is not set/# CONFIG_USB_ANDROID_SAMSUNG_MTP=y/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
 	sed -i 's/CONFIG_NETFILTER_XT_TARGET_CT=y/# CONFIG_NETFILTER_XT_TARGET_CT is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
-	sed -i 's/CONFIG_ASSISTED_SUPERUSER=y/# CONFIG_ASSISTED_SUPERUSER is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
 
 	#FUNC_CLEAN_DTB
 
@@ -271,7 +270,7 @@ echo "    CUSTOMIZABLE STOCK SAMSUNG KERNEL"
 echo ""
 echo "           Build Kernel for:"
 echo ""
-echo "S7 OREO"
+echo "S7 TW OREO"
 echo "(1) S7 Flat SM-G930F/FD"
 echo "(2) S7 Edge SM-G935F/FD"
 echo "(3) S7 Edge + Flat F/FD"
@@ -286,9 +285,9 @@ if [ $prompt == "1" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7FLAT
     LOG=$FLAT_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-OREO-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-TW-OREO-$K_VERSION"
     echo "S7 Flat G930F Selected"
-    ZIP_NAME=$K_NAME-$MODEL-OREO-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-$MODEL-TW-OREO-$K_VERSION-$ZIP_DATE.zip
     MAIN
 elif [ $prompt == "2" ]; then
     MODEL=G935
@@ -296,9 +295,9 @@ elif [ $prompt == "2" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7EDGE
     LOG=$EDGE_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-OREO-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-TW-OREO-$K_VERSION"
     echo "S7 Edge G935F Selected"
-    ZIP_NAME=$K_NAME-$MODEL-OREO-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-$MODEL-TW-OREO-$K_VERSION-$ZIP_DATE.zip
     MAIN
 elif [ $prompt == "3" ]; then
     MODEL=G935
@@ -306,16 +305,16 @@ elif [ $prompt == "3" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7EDGE
     LOG=$EDGE_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-OREO-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-TW-OREO-$K_VERSION"
     echo "S7 EDGE + FLAT Selected"
     echo "Compiling EDGE ..."
     MAIN2
     MODEL=G930
     KERNEL_DEFCONFIG=$DEFCONFIG_S7FLAT
     LOG=$FLAT_LOG
-    export KERNEL_VERSION="$K_NAME-$K_BASE-OREO-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-TW-OREO-$K_VERSION"
     echo "Compiling FLAT ..."
-    ZIP_NAME=$K_NAME-G93X-OREO-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-G93X-TW-OREO-$K_VERSION-$ZIP_DATE.zip
     MAIN
 fi
 
