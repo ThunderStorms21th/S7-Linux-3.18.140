@@ -207,15 +207,11 @@ static ssize_t sel_write_enforce(struct file *file, const char __user *buf,
 	selinux_enforcing = new_value;
 	selnl_notify_setenforce(new_value);
 	selinux_status_update_setenforce(new_value);
-#elif defined(CONFIG_SECURITY_SELINUX_FAKE_ENFORCE)
+#else
+#ifdef CONFIG_SECURITY_SELINUX_FAKE_ENFORCE
 	user_selinux_enforcing = new_value;
 	length = count;
 	goto out;
-#else
-#ifdef CONFIG_ALWAYS_PERMISSIVE
-    new_value = 0;
-#else
-    new_value = 1;
 #endif
 	if (new_value != selinux_enforcing) {
 		length = task_has_security(current, SECURITY__SETENFORCE);
