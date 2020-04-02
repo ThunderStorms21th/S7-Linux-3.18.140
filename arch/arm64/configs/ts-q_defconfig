@@ -15,3 +15,8 @@ CONFIG_DDK_VERSION_OS="q"
 # CONFIG_MALI_R28P0 is not set
 CONFIG_MALI_R29P0=y
 
+#
+# Mod by Anan for magisk work (ASSISTED_SUPERUSER must be disabled)
+#
+# CONFIG_ALWAYS_PERMISSIVE is not set
+## CONFIG_ASSISTED_SUPERUSER is not set
