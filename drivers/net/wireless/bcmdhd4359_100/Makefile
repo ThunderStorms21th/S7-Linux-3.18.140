@@ -247,8 +247,8 @@ endif
 endif # BUS_IFACE_PCIE
 endif # CONFIG_BROADCOM_WIFI_RESERVED_MEM
 
-# Ioctl timeout 5000ms
-DHDCFLAGS += -DIOCTL_RESP_TIMEOUT=5000
+# Ioctl timeout 8000ms (org 5000)
+DHDCFLAGS += -DIOCTL_RESP_TIMEOUT=8000
 
 # Priority mismatch fix with kernel stack
 DHDCFLAGS += -DPKTPRIO_OVERRIDE
