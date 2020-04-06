@@ -4952,10 +4952,6 @@ int set_cpus_allowed_ptr(struct task_struct *p, const struct cpumask *new_mask)
 	unsigned int dest_cpu;
 	int ret = 0;
 
-	/* Force all performance-critical kthreads onto the big cluster */
-	if (p->flags & PF_PERF_CRITICAL)
-		new_mask = cpu_perf_mask;
-
 	rq = task_rq_lock(p, &flags);
 
 	if (cpumask_equal(&p->cpus_allowed, new_mask))
