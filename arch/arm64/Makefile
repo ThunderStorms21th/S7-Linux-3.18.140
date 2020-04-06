@@ -11,22 +11,33 @@
 # Copyright (C) 1995-2001 by Russell King
 
 ifeq ($(CONFIG_RELOCATABLE_KERNEL), y) 
-LDFLAGS_vmlinux	:=-p --no-undefined -X -pie -Bsymbolic
+LDFLAGS_vmlinux	:= -p --no-undefined -X -pie -Bsymbolic
 else 
-LDFLAGS_vmlinux	:=-p --no-undefined -X
+LDFLAGS_vmlinux	:= -p --no-undefined -X
 endif 
 
 CPPFLAGS_vmlinux.lds = -DTEXT_OFFSET=$(TEXT_OFFSET)
-OBJCOPYFLAGS	:=-O binary -R .note -R .note.gnu.build-id -R .comment -S
-GZFLAGS		:=-9
+OBJCOPYFLAGS	:= -O binary -R .note -R .note.gnu.build-id -R .comment -S
+GZFLAGS		:= -9
 
 LIBGCC 		:= $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
 
 KBUILD_DEFCONFIG := defconfig
 
+#ARM_ARCH_OPT := -mtune=cortex-a72.cortex-a53
+GEN_OPT_FLAGS := $(call cc-option,$(ARM_ARCH_OPT),-march=armv8-a) \
+-g0 \
+-DNDEBUG \
+-fomit-frame-pointer \
+-fmodulo-sched \
+-fmodulo-sched-allow-regmoves \
+-fivopts
+
 KBUILD_CFLAGS	+= -mgeneral-regs-only
 KBUILD_CFLAGS	+= -fno-pic
 KBUILD_CFLAGS	+= $(call cc-option, -mpc-relative-literal-loads)
+
+KBUILD_CFLAGS	+= $(GEN_OPT_FLAGS)
 
 ifeq ($(CONFIG_CPU_BIG_ENDIAN), y)
 KBUILD_CPPFLAGS	+= -mbig-endian
