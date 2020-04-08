@@ -354,17 +354,17 @@ static int max77854_rgb_ramp(struct device *dev, int ramp_up, int ramp_down)
 
 	pr_info("leds-max77854-rgb: %s\n", __func__);
 
-	if (ramp_up <= 800) {
+	if (ramp_up <= led_fade_time_up) {
 		ramp_up /= 100;
 	} else {
-		ramp_up = (ramp_up - 800) * 2 + 800;
+		ramp_up = (ramp_up - led_fade_time_up) * 2 + led_fade_time_up;
 		ramp_up /= 100;
 	}
 
-	if (ramp_down <= 800) {
+	if (ramp_down <= led_fade_time_up) {
 		ramp_down /= 100;
 	} else {
-		ramp_down = (ramp_down - 800) * 2 + 800;
+		ramp_down = (ramp_down - led_fade_time_up) * 2 + led_fade_time_up;
 		ramp_down /= 100;
 	}
 
@@ -686,7 +686,7 @@ static ssize_t store_max77854_rgb_brightness(struct device *dev,
 	led_lowpower_mode = 0;
 
 //	if (brightness > LED_MAX_CURRENT)
-	brightness = LED_MAX_CURRENT;
+//	brightness = LED_MAX_CURRENT;
 /* LED FADE */
 	max_brightness = (led_lowpower_mode) ? leds_control.current_low : leds_control.current_high;
 	brightness = (brightness * max_brightness) / LED_MAX_CURRENT;
@@ -783,14 +783,14 @@ static ssize_t store_max77854_rgb_pattern(struct device *dev,
 	switch (mode) {
 
 	case CHARGING:
-		max77854_rgb_set_state(&max77854_rgb->led[RED], led_dynamic_current, LED_ALWAYS_ON);
-// LED FADE		if (leds_control.noti_ramp_control == 1) {
-//			max77854_rgb_ramp(dev, leds_control.noti_ramp_up, leds_control.noti_ramp_down);
-//			max77854_rgb_blink(dev, 500, 500);
-//			max77854_rgb_set_state(&max77854_rgb->led[RED], led_dynamic_current, LED_BLINK);
-//		} else {
-//			max77854_rgb_set_state(&max77854_rgb->led[RED], led_dynamic_current, LED_ALWAYS_ON);
-//		}
+//		max77854_rgb_set_state(&max77854_rgb->led[RED], led_dynamic_current, LED_ALWAYS_ON);
+		if (leds_control.noti_ramp_control == 1) {
+			max77854_rgb_ramp(dev, leds_control.noti_ramp_up, leds_control.noti_ramp_down);
+			max77854_rgb_blink(dev, 500, 500);
+			max77854_rgb_set_state(&max77854_rgb->led[RED], led_dynamic_current, LED_BLINK);
+		} else {
+			max77854_rgb_set_state(&max77854_rgb->led[RED], led_dynamic_current, LED_ALWAYS_ON);
+		}
 /* end */
 		break;
 	case CHARGING_ERR:
