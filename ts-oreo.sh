@@ -12,9 +12,9 @@ export ARCH=arm64
 export SUBARCH=arm64
 # NO WORKS export BUILD_CROSS_COMPILE=~/kernel/toolchain/gcc-linaro-5.5.0-2017.10-i686_aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc
 # export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9-master/bin/aarch64-linux-android-
-# export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9-o-mr1-iot-preview-8/bin/aarch64-linux-android-
+export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9-o-mr1-iot-preview-8/bin/aarch64-linux-android-
 # export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9-LAST/bin/aarch64-linux-android-
-export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+# export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 # NO WORKS export BUILD_CROSS_COMPILE=~kernel/toolchain/arm-eabi-4.8-master/bin/arm-eabi-
 # NO WORKS export BUILD_CROSS_COMPILE=~/kernel/toolchain/arm32_arm64_cross_toolchain-master/bin/aarch64-linux-aarch64-linux-
 # BL - export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-gnu-7.3-master/bin/aarch64-linux-gnu-
@@ -53,7 +53,7 @@ DEFCONFIG_OREO=ts-oreo_defconfig
 DEFCONFIG_PIE=ts-pie_defconfig
 
 export K_VERSION="v3.1"
-export K_BASE="U4CSK1"
+export K_BASE="CTA4"
 export K_NAME="ThundeRStormS-Kernel"
 export REVISION="RC"
 export KBUILD_BUILD_VERSION="1"
@@ -95,9 +95,6 @@ FUNC_BUILD_KERNEL()
 	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_OREO >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$KERNEL_DEFCONFIG >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 	
-	sed -i 's/CONFIG_USB_ANDROID_SAMSUNG_MTP is not set/# CONFIG_USB_ANDROID_SAMSUNG_MTP=y/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
-	sed -i 's/CONFIG_NETFILTER_XT_TARGET_CT=y/# CONFIG_NETFILTER_XT_TARGET_CT is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
-
 	#FUNC_CLEAN_DTB
 
 	make -j$BUILD_JOB_NUMBER ARCH=$ARCH \
@@ -174,7 +171,7 @@ FUNC_BUILD_RAMDISK()
 	G930)
 		echo "Ramdisk for G930"
 
-		sed -i 's/SRPOI30A003KU/SRPOI17A003KU/g' split_img/boot.img-board
+		# sed -i 's/SRPOI30A003KU/SRPOI17A003KU/g' split_img/boot.img-board
 
 		sed -i 's/G935/G930/g' ramdisk/default.prop
 		sed -i 's/hero2/hero/g' ramdisk/default.prop

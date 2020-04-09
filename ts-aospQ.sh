@@ -54,7 +54,7 @@ DEFCONFIG_PIE=ts-pie_defconfig
 DEFCONFIG_AOSP=ts-aosp_defconfig
 
 export K_VERSION="v3.1"
-export K_BASE="U4CSK1"
+export K_BASE="CTA4"
 export K_NAME="ThundeRStormS-Kernel"
 export REVISION="RC"
 export KBUILD_BUILD_VERSION="1"
@@ -93,13 +93,8 @@ FUNC_BUILD_KERNEL()
         echo "build variant config="$MODEL ""
 
 	cp -f $RDIR/arch/$ARCH/configs/$DEFCONFIG $RDIR/arch/$ARCH/configs/tmp_defconfig
-	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_OREO >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$KERNEL_DEFCONFIG >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_AOSP >> $RDIR/arch/$ARCH/configs/tmp_defconfig
-
-	sed -i 's/CONFIG_USB_ANDROID_SAMSUNG_MTP=y/# CONFIG_USB_ANDROID_SAMSUNG_MTP is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
-	sed -i 's/CONFIG_NETFILTER_XT_TARGET_CT is not set/# CONFIG_NETFILTER_XT_TARGET_CT=y/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
-	sed -i 's/CONFIG_ASSISTED_SUPERUSER=y/# CONFIG_ASSISTED_SUPERUSER is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
 
 	#FUNC_CLEAN_DTB
 
@@ -176,7 +171,7 @@ FUNC_BUILD_RAMDISK()
 	G930)
 		echo "Ramdisk for G930"
 
-		sed -i 's/SRPOI30A003KU/SRPOI17A003KU/g' split_img/boot.img-board
+		# sed -i 's/SRPOI30A003KU/SRPOI17A003KU/g' split_img/boot.img-board
 
 		sed -i 's/G935/G930/g' ramdisk/default.prop
 		sed -i 's/hero2/hero/g' ramdisk/default.prop
