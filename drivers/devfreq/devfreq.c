@@ -30,7 +30,7 @@
 #include "governor.h"
 
 #ifdef CONFIG_SOC_EXYNOS8890
-#define DF_MAX_VOLT		900000
+#define DF_MAX_VOLT		1000000
 #define DF_MIN_VOLT		500000
 #define DF_VOLT_STEP		6250
 #else
