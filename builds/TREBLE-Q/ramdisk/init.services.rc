@@ -9,12 +9,9 @@ on early-init
 
 on boot
     start nuke
- 
-on property:sys.boot_completed=1
-    start kernelinit
-    stop secure_storage
-    stop irisd
 
+on fs
+ 
 # setprop persist.sys.ui.hw true
 
 service kernelinit /sbin/ts-kernel.sh
@@ -30,3 +27,10 @@ service nuke /vendor/etc/nuke.sh
     oneshot
     disabled
 
+on property:sys.boot_completed=1
+    stop proca
+    stop secure_storage
+    start kernelinit
+
+# Run
+   exec u:r:magisk:s0 root root -- /sbin/ts-kernel.sh

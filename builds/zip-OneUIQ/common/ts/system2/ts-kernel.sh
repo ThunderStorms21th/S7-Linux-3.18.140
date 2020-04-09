@@ -3,10 +3,9 @@
 # Init TSKernel
 #
 
+BB="/sbin/busybox"
 TS_DIR="/data/.tskernel"
 LOG="$TS_DIR/tskernel.log"
-
-rm -f $LOG
 
 # Mount
 mount -t rootfs -o rw,remount rootfs;
@@ -14,16 +13,18 @@ mount -o rw,remount /system;
 mount -o rw,remount /data;
 mount -o rw,remount /;
 
+rm -f $LOG
+
 # Create morokernel folder
 if [ ! -d $TS_DIR ]; then
 	mkdir -p $TS_DIR;
 fi
 
-(
 	echo $(date) "TS-Kernel LOG" >> $LOG;
 	echo " " >> $LOG;
 
 	# SafetyNet
+	# SELinux (0 / 640 = Permissive, 1 / 644 = Enforcing)
 	echo "## -- SafetyNet permissions" >> $LOG;
 	chmod 640 /sys/fs/selinux/enforce;
 	chmod 440 /sys/fs/selinux/policy;
@@ -62,13 +63,13 @@ fi
 	echo "## -- GooglePlay wakelock fix $( date +"%d-%m-%Y %H:%M:%S" )" >> $LOG;
 	# KILL MEDIA
 	if [ "`pgrep media`" ] && [ "`pgrep mediaserver`" ]; then
-	# busybox killall -9 android.process.media
-	# busybox killall -9 mediaserver
-	busybox killall -9 com.google.android.gms
-	busybox killall -9 com.google.android.gms.persistent
-	busybox killall -9 com.google.process.gapps
-	busybox killall -9 com.google.android.gsf
-	busybox killall -9 com.google.android.gsf.persistent
+	# $BB killall -9 android.process.media
+	# $BB killall -9 mediaserver
+	$BB killall -9 com.google.android.gms
+	$BB killall -9 com.google.android.gms.persistent
+	$BB killall -9 com.google.process.gapps
+	$BB killall -9 com.google.android.gsf
+	$BB killall -9 com.google.android.gsf.persistent
 	fi
 	
 	# FIX GOOGLE PLAY SERVICE

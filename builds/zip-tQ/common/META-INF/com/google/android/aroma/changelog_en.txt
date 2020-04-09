@@ -13,12 +13,13 @@
 
 --------------------------------------------------------------------------
 <u><b><#selectbg_g>ThunderStorms-Kernel-TPQ-v3.1 : 25.03.2020</#></b></u>
-<*>Samsung source : N935KKKU4CSK1 </*>
+<*>Samsung source : N935KKKU4CTA4 </*>
 <*>Linux source : 3.18.140.8 </*>
 <*>Ramdisk source: N935FXXU6CSK1 </*>
 <*>Added Kernel Drivers RP29R0 from Android Q </*>
 <*>Fixed device for Pokemon Go, Cod Mobile and similar games  </*>
-<*>ThunderTweaks v1.0.5.0 </*>
+<*>ThunderStorm CPU gov updated to v2.1 : added max_freq_hysteresis </*>
+<*>ThunderTweaks v1.0.5.1 </*>
 <*>Magisk 20.4 Offcial</*>
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------

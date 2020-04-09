@@ -57,11 +57,14 @@ on init
     # Backward compatibility.
     symlink /sys/kernel/debug /d
 
-    # Link /odm to /system/odm for devices without a odm partition.
-    symlink /system/odm /odm
-
     # Link /vendor to /system/vendor for devices without a vendor partition.
     symlink /system/vendor /vendor
+
+    # Link /odm to /system/odm for devices without a ODM partition (csc/omc v5).
+    symlink /system/odm /odm
+
+    # Link /product to /system/product for devices without a product partition.
+    symlink /system/product /product
 
     # MirrorLink permission
     mkdir /dev/socket/mlaudio 0770 audioserver system
@@ -655,12 +658,18 @@ on post-fs-data
     mkdir /data/wifi/ 0770 system root
 
     # for WIFI Antenna
-    # Hotspot
-    write /data/vendor/conn/.softap.info 0
-
     write /data/misc/conn/.wificable.info E
     chown system root /data/misc/conn/.wificable.info
     chmod 0666 /data/misc/conn/.wificable.info
+
+# [ SEC_PRODUCT_FEATURE_SECURITY_SUPPORT_FIVE
+    mkdir /data/misc/integrity 0775 vendor_audit system
+# ] SEC_PRODUCT_FEATURE_SECURITY_SUPPORT_FIVE
+	
+# [ SEC_AASA_ASKS_PORTING
+    # Seperate location for storing security policy files on data
+    mkdir /data/security 0701 system system
+# ] SEC_AASA_ASKS_PORTING
 
     mkdir /data/vendor 0771 root root
     mkdir /data/vendor_ce 0771 root root
@@ -1317,6 +1326,8 @@ on boot
     chmod 444 /sys/class/sec/sdcard/sdcard_summary
     chown system system /sys/class/sec/sdinfo/sd_count
     chmod 444 /sys/class/sec/sdinfo/sd_count
+    chown system system /sys/class/sec/sdinfo/data
+    chmod 444 /sys/class/sec/sdinfo/data
 
     # h2k
     mkdir /efs/cpk 0771 radio system
@@ -1633,6 +1644,8 @@ on property:vold.decrypt=trigger_reset_main
     stop vendor.hwcomposer-2-1
     stop vendor.hwcomposer-2-2
     stop ExynosHWCServiceTW
+    stop vndservicemanager
+    start vndservicemanager
     start ExynosHWCServiceTW
     start vendor.hwcomposer-2-1
     start vendor.hwcomposer-2-2

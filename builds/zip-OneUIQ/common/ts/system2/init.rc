@@ -11,7 +11,8 @@ import /vendor/etc/init/hw/init.${ro.hardware}.rc
 import /init.usb.configfs.rc
 import /init.${ro.zygote}.rc
 import /init.container.rc
-import /prism/etc/init/init.rc
+import /init.custom.rc
+import /init.spectrum.rc
 import /init.ts.rc
 
 # Cgroups are mounted right before early-init using list from /etc/cgroups.json
@@ -974,7 +975,7 @@ on post-fs-data
 
 # [ SEC_SELINUX_PORTING_COMMON
     # start auditd
-    start auditd
+    # start auditd
 
     restorecon --recursive --force /efs
     restorecon --recursive --force /cpefs
@@ -2188,56 +2189,6 @@ on property:security.ucm_ese_applet_installed=1
 # hide carrier apps
 on post-fs-data && property:ro.csc.sales_code=*
     mount none /system/carrier/${ro.csc.sales_code} /system/carrier bind
-
-# knox_changer service
-service kap_enable /sbin/knox_changer -e
-    seclabel u:r:kapd:s0
-    class main
-    disabled
-    oneshot
-
-service kap_disable /sbin/knox_changer -d
-    seclabel u:r:kapd:s0
-    class main
-    disabled
-    oneshot
-
-on property:security.knox_kap_mode=true
-    start kap_enable
-
-on property:security.knox_kap_mode=false
-    start kap_disable
-
-# UCM ODE mode
-service ucs_enable /sbin/knox_changer -u
-    class main
-    seclabel u:r:kapd:s0
-    disabled
-    oneshot
-
-service ucs_disable /sbin/knox_changer -v
-    class main
-    seclabel u:r:kapd:s0
-    disabled
-    oneshot
-
-service ucs_reset /sbin/knox_changer -w
-    class main
-    seclabel u:r:kapd:s0
-    disabled
-    oneshot
-
-on property:security.knox_ucs_mode=true
-    chmod 0655 /efs/sec_efs/odeConfig
-    start ucs_enable
-
-on property:security.knox_ucs_mode=false
-    chmod 0655 /efs/sec_efs/odeConfig
-    start ucs_disable
-
-on property:security.knox_ucs_mode=reset
-    chmod 0655 /efs/sec_efs/odeConfig
-    start ucs_reset
     
 #artimer
 service artimer /system/bin/tlc_server ARTIMER
@@ -2260,34 +2211,6 @@ on property:service.dexonpc.running=1
 on property:service.dexonpc.running=0
    write /sys/class/net/lo/queues/rx-0/rps_cpus 0
 
-## SecProductFeature_KNOX.SEC_PRODUCT_FEATURE_KNOX_SUPPORT_MDM {
-## EDM AuditLog
-service edmaudit /system/bin/edmaudit
-    class main
-    user system
-    group system
-    capabilities SYSLOG
-    disabled
-
-on property:security.edmaudit=true
-    start edmaudit
-
-on property:security.edmaudit=false
-    stop edmaudit
-## SecProductFeature_KNOX.SEC_PRODUCT_FEATURE_KNOX_SUPPORT_MDM }
-
-# IO Daemon
-# IOPP-iod-android-v1.0
-service iod /system/bin/iod
-    user system
-    group shell
-    class main
-    oneshot
-    disabled
-
-on property:sys.boot_completed=1
-    start iod
-
 # Pageboostd
 on property:sys.boot_completed=1
     mkdir /data/misc/pageboost 0771 system system
@@ -2298,13 +2221,3 @@ on property:sys.dropdump.on=On
 
 on property:sys.dropdump.on=Off
    write /proc/sys/net/core/support_dropdump 0
- 
-# DSMS
-service dsms_service /system/bin/vendor.samsung.frameworks.security.dsms@1.0-service
-    class core
-    user dsms
-    group dsms
-    disabled
-
-
-

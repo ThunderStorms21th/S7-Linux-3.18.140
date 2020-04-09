@@ -3,31 +3,54 @@
 # Init TSKernel
 #
 
+BB="/sbin/busybox"
+FP="/sbin/fakeprop -n"
 TS_DIR="/data/.tskernel"
 LOG="$TS_DIR/tskernel.log"
 
+# Mount
+mount -o remount,rw -t auto /
+mount -t rootfs -o remount,rw rootfs
+mount -o remount,rw -t auto /system
+mount -o remount,rw /vendor
+mount -o remount,rw /data
+mount -o remount,rw /cache
+
+# Remount vendor rw
+mount -o remount,rw -t auto /vendor
+
 rm -f $LOG
 
-# Mount
-mount -t rootfs -o rw,remount rootfs;
-mount -o rw,remount /system;
-mount -o rw,remount /data;
-mount -o rw,remount /;
-
-# Create morokernel folder
+# Create ThundeRSTormS kernel folder
 if [ ! -d $TS_DIR ]; then
 	mkdir -p $TS_DIR;
 fi
 
-(
 	echo $(date) "TS-Kernel LOG" >> $LOG;
 	echo " " >> $LOG;
 
 	# SafetyNet
+	# SELinux (0 / 640 = Permissive, 1 / 644 = Enforcing)
 	echo "## -- SafetyNet permissions" >> $LOG;
-	chmod 640 /sys/fs/selinux/enforce;
+	chmod 644 /sys/fs/selinux/enforce;
+	setenforce 0
 	chmod 440 /sys/fs/selinux/policy;
 	echo " " >> $LOG;
+
+	## Custom FLAGS reset
+	# Tamper fuse prop set to 0 on running system
+	$FP ro.boot.warranty_bit "0"
+	$FP ro.warranty_bit "0"
+	# Fix safetynet flags
+	$FP ro.boot.veritymode "enforcing"
+	$FP ro.boot.verifiedbootstate "green"
+	$FP ro.boot.flash.locked "1"
+	$FP ro.boot.ddrinfo "00000001"
+	$FP ro.build.selinux "1"
+	# Samsung related flags
+	$FP ro.fmp_config "1"
+	$FP ro.boot.fmp_config "1"
+	$FP sys.oem_unlock_allowed "0"
 
 	# deepsleep fix
 	echo "## -- DeepSleep Fix" >> $LOG;
@@ -62,13 +85,13 @@ fi
 	echo "## -- GooglePlay wakelock fix $( date +"%d-%m-%Y %H:%M:%S" )" >> $LOG;
 	# KILL MEDIA
 	if [ "`pgrep media`" ] && [ "`pgrep mediaserver`" ]; then
-	# busybox killall -9 android.process.media
-	# busybox killall -9 mediaserver
-	busybox killall -9 com.google.android.gms
-	busybox killall -9 com.google.android.gms.persistent
-	busybox killall -9 com.google.process.gapps
-	busybox killall -9 com.google.android.gsf
-	busybox killall -9 com.google.android.gsf.persistent
+	# $BB killall -9 android.process.media
+	# $BB killall -9 mediaserver
+	$BB killall -9 com.google.android.gms
+	$BB killall -9 com.google.android.gms.persistent
+	$BB killall -9 com.google.process.gapps
+	$BB killall -9 com.google.android.gsf
+	$BB killall -9 com.google.android.gsf.persistent
 	fi
 	
 	# FIX GOOGLE PLAY SERVICE
@@ -149,8 +172,10 @@ fi
 chmod 777 $LOG;
 
 # Unmount
-mount -t rootfs -o ro,remount rootfs;
-mount -o ro,remount /system;
-mount -o rw,remount /data;
-mount -o ro,remount /;
+mount -o remount,ro -t auto /
+mount -t rootfs -o remount,ro rootfs
+mount -o remount,ro -t auto /system
+mount -o remount,ro /vendor
+mount -o remount,rw /data
+mount -o remount,rw /cache
 

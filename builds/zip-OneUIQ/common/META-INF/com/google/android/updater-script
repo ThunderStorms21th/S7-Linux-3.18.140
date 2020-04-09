@@ -29,8 +29,8 @@ run_program("/tmp/ts/install_script.sh");
 
 ui_print(" ");
 ui_print("@ThundeRStormS - System Patching...");
-# package_extract_dir("ts/system", "/system");
-package_extract_dir("ts/vendor", "/system/vendor");
+package_extract_dir("ts/system1", "/system");
+# package_extract_dir("ts/vendor", "/system/vendor");
 
 # TS swap off
 if file_getprop("/tmp/aroma/menu.prop", "chk4") == "1" then
@@ -41,7 +41,7 @@ if file_getprop("/tmp/aroma/menu.prop", "chk4") == "1" then
 	package_extract_dir("ts/system1", "/system");
 endif;
 
-run_program("/tmp/ts/tskernel.sh");
+# run_program("/tmp/ts/tskernel.sh");
 
 
 #################################################

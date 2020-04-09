@@ -63,6 +63,9 @@ on init
     # Link /odm to /system/odm for devices without a ODM partition (csc/omc v5).
     symlink /system/odm /odm
 
+    # Link /product to /system/product for devices without a product partition.
+    symlink /system/product /product
+
     # MirrorLink permission
     mkdir /dev/socket/mlaudio 0770 audioserver system
 
@@ -123,7 +126,6 @@ on init
     mkdir /mnt/appfuse 0711 root root
 
     # Storage views to support runtime permissions
-    mkdir /storage 0755 root root
     mkdir /mnt/runtime 0700 root root
     mkdir /mnt/runtime/default 0755 root root
     mkdir /mnt/runtime/default/self 0755 root root
@@ -509,12 +511,27 @@ on post-fs-data
     chmod 0771 /keyrefuge
     restorecon /keyrefuge
 	
+# [ SEC_SELINUX_PORTING_COMMON
+    # sec_efs_file
+    mkdir /efs/sec_efs 0775 radio system
+# ] SEC_SELINUX_PORTING_COMMON
+
     # mobicore
     export MC_AUTH_TOKEN_PATH /efs
     mkdir /efs/TEE  0770 radio system
     chmod 0660 /dev/t-base-tui
     chown system system /dev/t-base-tui
     start mobicore
+
+
+    # snap gpu kernel
+    mkdir /efs/snap 0755 cameraserver cameraserver
+    copy /vendor/etc/snap_gpu_kernel_32.bin /efs/snap/snap_gpu_kernel_32.bin
+    copy /vendor/etc/snap_gpu_kernel_64.bin /efs/snap/snap_gpu_kernel_64.bin
+    chown cameraserver cameraserver /efs/snap/snap_gpu_kernel_32.bin
+    chown cameraserver cameraserver /efs/snap/snap_gpu_kernel_64.bin
+    chmod 0755 /efs/snap/snap_gpu_kernel_32.bin
+    chmod 0755 /efs/snap/snap_gpu_kernel_64.bin
 
     # icd
     check_icd
@@ -611,16 +628,10 @@ on post-fs-data
     mkdir /data/misc/vpn 0770 system vpn
     mkdir /data/misc/shared_relro 0771 shared_relro shared_relro
     mkdir /data/misc/systemkeys 0700 system system
-    mkdir /data/misc/wifi 0770 wifi wifi
-    mkdir /data/misc/wifi/sockets 0770 wifi wifi
-    mkdir /data/misc/wifi/wpa_supplicant 0770 wifi wifi
-    mkdir /data/misc/wifi_hostapd 0771 wifi system
     mkdir /data/misc/ethernet 0770 system system
     mkdir /data/misc/dhcp 0770 dhcp dhcp
     mkdir /data/misc/user 0771 root root
     mkdir /data/misc/perfprofd 0775 root root
-    # give system access to wpa_supplicant.conf for backup and restore
-    chmod 0660 /data/misc/wifi/wpa_supplicant.conf
     mkdir /data/local 0751 root root
     mkdir /data/misc/media 0700 media media
     mkdir /data/misc/audioserver 0700 audioserver audioserver
@@ -661,13 +672,31 @@ on post-fs-data
     mkdir /data/wifi/ 0770 system root
 
     # for WIFI Antenna
-    # Hotspot
-    write /data/vendor/conn/.softap.info 0
-
     write /data/misc/conn/.wificable.info E
     chown system root /data/misc/conn/.wificable.info
     chmod 0666 /data/misc/conn/.wificable.info
     
+# [ SEC_PRODUCT_FEATURE_SECURITY_SUPPORT_FIVE
+    mkdir /data/misc/integrity 0775 vendor_audit system
+# ] SEC_PRODUCT_FEATURE_SECURITY_SUPPORT_FIVE
+	
+# [ SEC_SELINUX_PORTING_COMMON
+    mkdir /data/misc/audit 0775 system system
+    chown vendor_audit vendor_audit /data/misc/audit/audit.log
+    chown vendor_audit vendor_audit /data/misc/audit/audit.old
+
+    # arcounter
+    mkdir /data/misc/arcounter 0700 system system
+
+    # start auditd
+    #start auditd
+# ] SEC_SELINUX_PORTING_COMMON
+
+# [ SEC_AASA_ASKS_PORTING
+    # Seperate location for storing security policy files on data
+    mkdir /data/security 0701 system system
+# ] SEC_AASA_ASKS_PORTING
+
     mkdir /data/vendor 0771 root root
     mkdir /data/vendor_ce 0771 root root
     mkdir /data/vendor_de 0771 root root
@@ -813,6 +842,16 @@ on post-fs-data
     # Check any timezone data in /data is newer than the copy in /system, delete if not.
     exec - system system -- /system/bin/tzdatacheck /system/usr/share/zoneinfo /data/misc/zoneinfo
 
+# [ SEC_SELINUX_PORTING_COMMON
+    restorecon --recursive --force /efs
+    restorecon --recursive --force /cpefs
+    restorecon --recursive --force /mnt/vendor/efs
+    restorecon --recursive --force /mnt/vendor/cpefs
+    restorecon --recursive --force /sec_efs
+    restorecon_recursive /carrier
+    restorecon /sys/kernel/debug/tracing/trace_marker
+# ] SEC_SELINUX_PORTING_COMMON
+
     # smart switch mobile
     mkdir /efs/ssm 0770 system system
 	
@@ -876,6 +915,10 @@ on zygote-start && property:ro.crypto.state=encrypted && property:ro.crypto.type
     start zygote_secondary
 
 on boot
+    # KNOX KAP
+    chown system system /dev/knox_kap
+    chmod 0644 /dev/knox_kap
+
     # basic network init
     ifup lo
     hostname localhost
@@ -1335,6 +1378,8 @@ on boot
     chmod 444 /sys/class/sec/sdcard/sdcard_summary
     chown system system /sys/class/sec/sdinfo/sd_count
     chmod 444 /sys/class/sec/sdinfo/sd_count
+    chown system system /sys/class/sec/sdinfo/data
+    chmod 444 /sys/class/sec/sdinfo/data
 
     # h2k
     mkdir /efs/cpk 0771 radio system
@@ -1657,9 +1702,12 @@ on property:vold.decrypt=trigger_reset_main
     stop vendor.hwcomposer-2-1
     stop vendor.hwcomposer-2-2
     stop ExynosHWCServiceTW
+    stop vndservicemanager
+    start vndservicemanager
     start ExynosHWCServiceTW
     start vendor.hwcomposer-2-1
     start vendor.hwcomposer-2-2
+    start ExynosHWCServiceTW
     start surfaceflinger
     class_reset main
 
@@ -1805,6 +1853,17 @@ service flash_recovery /system/bin/install-recovery.sh
     class main
     oneshot
 
+# [ SEC_SELINUX_PORTING_COMMON
+#service auditd /system/bin/auditd -k
+#    class main
+#    seclabel u:r:auditd:s0
+#    disabled
+#    oneshot
+
+on property:sys.seandroid.restoreapp=start
+    restore_appdata    
+# ] SEC_SELINUX_PORTING_COMMON
+
 # sem_daemon
 service sem_daemon /system/bin/sem_daemon
     class core
@@ -1943,6 +2002,39 @@ on property:security.edmaudit=true
 
 on property:security.edmaudit=false
     stop edmaudit
+## } SecProductFeature_KNOX.SEC_PRODUCT_FEATURE_KNOX_SUPPORT_MDM
+
+# knox_changer service
+# UCM ODE mode
+service ucs_enable /sbin/knox_changer -u
+    class main
+    seclabel u:r:kapd:s0
+    disabled
+    oneshot
+
+service ucs_disable /sbin/knox_changer -v
+    class main
+    seclabel u:r:kapd:s0
+    disabled
+    oneshot
+
+service ucs_reset /sbin/knox_changer -w
+    class main
+    seclabel u:r:kapd:s0
+    disabled
+    oneshot
+
+on property:security.knox_ucs_mode=true
+    chmod 0655 /efs/sec_efs/odeConfig
+    start ucs_enable
+
+on property:security.knox_ucs_mode=false
+    chmod 0655 /efs/sec_efs/odeConfig
+    start ucs_disable
+
+on property:security.knox_ucs_mode=reset
+    chmod 0655 /efs/sec_efs/odeConfig
+    start ucs_reset
     
 service SIDESYNC_service /system/bin/ss_conn_daemon
     class main

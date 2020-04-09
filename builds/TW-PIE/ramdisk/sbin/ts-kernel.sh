@@ -5,7 +5,6 @@
 
 # Set Variables
 BB="/sbin/busybox"
-RESETPROP="/sbin/resetprop -v -n"
 TS_DIR="/data/.tskernel"
 LOG="$TS_DIR/tskernel.log"
 
@@ -15,40 +14,18 @@ mount -o rw,remount /system;
 mount -o rw,remount /data;
 mount -o rw,remount /;
 
+rm -f $LOG
+
 # Create ThundeRSTormS kernel folder
 if [ ! -d $TS_DIR ]; then
 	mkdir -p $TS_DIR;
 fi
 
-rm -f $LOG
-
 echo $(date) "ThundeRSTormS-Kernel LOG" >> $LOG;
 echo " " >> $LOG;
 
-# Set KNOX to 0x0 on running /system
-# $RESETPROP ro.boot.warranty_bit "0"
-# $RESETPROP ro.warranty_bit "0"
-
-# Fix Samsung Related Flags
-# $RESETPROP ro.fmp_config "1"
-# $RESETPROP ro.boot.fmp_config "1"
-# $RESETPROP sys.oem_unlock_allowed "0"
-
-# Fix safetynet flags
-# $RESETPROP ro.boot.veritymode "enforcing"
-# $RESETPROP ro.boot.verifiedbootstate "green"
-# $RESETPROP ro.boot.flash.locked "1"
-# $RESETPROP ro.boot.ddrinfo "00000001"
-# $RESETPROP ro.build.selinux "1"
-
-# Stop services
-su -c "stop secure_storage"
-su -c "stop irisd"
-su -c "stop proca"
-
 # SELinux (0 / 640 = Permissive, 1 / 644 = Enforcing)
 echo "## -- Selinux permissive" >> $LOG;
-echo "0" > /sys/fs/selinux/enforce
 chmod 640 /sys/fs/selinux/enforce
 echo " " >> $LOG;
 
@@ -77,12 +54,6 @@ for i in `ls /sys/class/scsi_disk/`; do
 done
 echo " " >> $LOG;
 
-# Disabling unauthorized changes warnings...
-echo "## -- Remove SecurityLogAgent" >> $LOG;
-if [ -d /system/app/SecurityLogAgent ]; then
-	rm -rf /system/app/SecurityLogAgent
-fi
-
 # Fix personalist.xml
 echo "## -- Fix Personal list" >> $LOG;
 if [ ! -f /data/system/users/0/personalist.xml ]; then
@@ -93,29 +64,23 @@ if [ ! -r /data/system/users/0/personalist.xml ]; then
  	chown system:system /data/system/users/0/personalist.xml
 fi
 
-# RMM patch (part)
-echo "## -- Removing RMM" >> $LOG;
-if [ -d /system/priv-app/Rlc ]; then
-	rm -rf /system/priv-app/Rlc
-fi
-
 ## ThunderStormS kill Google and Media servers script
 sleep 1
 # START LOOP 3600sec = 1h
-RUN_EVERY=10800
-(
-while : ; do
+# RUN_EVERY=10800
+# (
+# while : ; do
 # Google play services wakelock fix
 echo "## -- GooglePlay wakelock fix $( date +"%d-%m-%Y %H:%M:%S" )" >> $LOG;
 # KILL MEDIA
 if [ "`pgrep media`" ] && [ "`pgrep mediaserver`" ]; then
-# busybox killall -9 android.process.media
-# busybox killall -9 mediaserver
-busybox killall -9 com.google.android.gms
-busybox killall -9 com.google.android.gms.persistent
-busybox killall -9 com.google.process.gapps
-busybox killall -9 com.google.android.gsf
-busybox killall -9 com.google.android.gsf.persistent
+# $BB killall -9 android.process.media
+# $BB killall -9 mediaserver
+$BB killall -9 com.google.android.gms
+$BB killall -9 com.google.android.gms.persistent
+$BB killall -9 com.google.process.gapps
+$BB killall -9 com.google.android.gsf
+$BB killall -9 com.google.android.gsf.persistent
 fi
 
 sleep 1
@@ -134,8 +99,8 @@ echo " " >> $LOG;
 
 sleep 10800
 
-done;
-)&
+# done;
+# )&
 # END OF LOOP
 
 # init.d

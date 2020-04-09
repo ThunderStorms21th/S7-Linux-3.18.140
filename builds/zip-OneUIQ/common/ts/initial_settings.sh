@@ -16,9 +16,6 @@ rm -f /system_root/init.services.rc
 rm -f /system_root/init.ts.sh
 rm -f /system_root/sbin/spa
 
-cp /tmp/ts/system2/init.rc /system_root
-chmod 750 /system_root/init.rc
-
 # if ! grep -q init.rc /system_root/init.rc; then
 #  sed -i '/import \/init.moro.rc/d' /init.rc
 #  sed -i '/import \/init.spectrum.rc/d' /init.rc
@@ -27,22 +24,23 @@ chmod 750 /system_root/init.rc
 # fi
 
 # Copy kernel files
-cp /tmp/ts/system2/spa /system_root/sbin
-cp /tmp/ts/system2/resetprop /system_root/sbin
+# cp /tmp/ts/system2/init.rc /system_root
+cp /tmp/ts/system2/init.custom.rc /system_root
+cp /tmp/ts/system2/init.spectrum.rc /system_root
 cp /tmp/ts/system2/init.ts.rc /system_root
+cp /tmp/ts/system2/spa /system_root/sbin
 cp /tmp/ts/system2/ts-kernel.sh /system_root/sbin
 cp /tmp/ts/system2/init.spectrum.sh /system_root/sbin
-cp /tmp/ts/system2/init.samsungexynos8890.rc /system_root
-cp /tmp/ts/system2/fstab.samsungexynos8890 /system_root
-cp /tmp/ts/system2/fstab.samsungexynos8890.fwup /system_root
-chmod 750 /system_root/sbin/spa
-chmod 750 /system_root/sbin/resetprop
-chmod 750 /system_root/sbin/ts-kernel.sh
-chmod 750 /system_root/sbin/init.spectrum.sh
+# cp /tmp/ts/system2/init.samsungexynos8890.rc /system_root
+
+# chmod 750 /system_root/init.rc
+chmod 750 /system_root/init.custom.rc
+chmod 750 /system_root/init.spectrum.rc
 chmod 750 /system_root/init.ts.rc
-chmod 750 /system_root/init.samsungexynos8890.rc
-chmod 750 /system_root/fstab.samsungexynos8890
-chmod 750 /system_root/fstab.samsungexynos8890.fwup
+chmod 755 /system_root/sbin/spa
+chmod 755 /system_root/sbin/ts-kernel.sh
+chmod 755 /system_root/sbin/init.spectrum.sh
+# chmod 750 /system_root/init.samsungexynos8890.rc
 
 # Import init.ts.rc and init.spectrum.rc to init.rc
 # if ! grep -q init.spectrum.rc /system_root/init.rc; then

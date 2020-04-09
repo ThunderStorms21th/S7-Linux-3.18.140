@@ -7,6 +7,7 @@ import init.fac.rc
 import init.exynos8890_fac.rc
 import init.remove_recovery.rc
 import atrace.rc
+import init.helios.rc
 
 on early-init
     mount debugfs /sys/kernel/debug /sys/kernel/debug
@@ -314,7 +315,7 @@ on boot
     # write /proc/sys/vm/min_free_order_shift 1
 
 # SSWAP
-    write /proc/sys/vm/swappiness 190
+    write /proc/sys/vm/swappiness 150
 
     # Allow to access debugfs for system:system
     chmod 755 /sys/kernel/debug
@@ -458,12 +459,12 @@ on boot
 
     # Assume HMP uses shared cpufreq policy for all LITTLE CPUs
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 
     chown system system sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster0_max_freq
-    chmod 0664 sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster0_max_freq
+    chmod 0660 sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster0_max_freq
     chown system system sys/devices/system/cpu/cpufreq/mp-cpufreq/boot_low_freq
-    chmod 0664 sys/devices/system/cpu/cpufreq/mp-cpufreq/boot_low_freq
+    chmod 0660 sys/devices/system/cpu/cpufreq/mp-cpufreq/boot_low_freq
 
 	#MST HW Support
     setprop ro.mst.support 1
@@ -530,7 +531,7 @@ on boot
     chmod 0666 /dev/cpuctl/bg_cached/tasks
     chmod 0664 /dev/cpuctl/bg_cached/cpu.cfs_period_us
     chmod 0664 /dev/cpuctl/bg_cached/cpu.cfs_quota_us
-    write /dev/cpuctl/bg_cached/cpu.rt_runtime_us 10000
+    write /dev/cpuctl/bg_cached/cpu.rt_runtime_us 950000
     write /dev/cpuctl/bg_cached/cpu.rt_period_us 1000000
     write /dev/cpuctl/bg_cached/cpu.cfs_period_us 20000
     write /dev/cpuctl/bg_cached/cpu.cfs_quota_us 10000
@@ -542,16 +543,16 @@ on boot
     chmod 0666 /dev/cpuctl/bg_abnormal/tasks
     chmod 0664 /dev/cpuctl/bg_abnormal/cpu.cfs_period_us
     chmod 0664 /dev/cpuctl/bg_abnormal/cpu.cfs_quota_us
-    write /dev/cpuctl/bg_abnormal/cpu.rt_runtime_us 10000
+    write /dev/cpuctl/bg_abnormal/cpu.rt_runtime_us 950000
     write /dev/cpuctl/bg_abnormal/cpu.rt_period_us 1000000
     write /dev/cpuctl/bg_abnormal/cpu.cfs_period_us 20000
     write /dev/cpuctl/bg_abnormal/cpu.cfs_quota_us 10000
 
     mkdir /dev/cpuset/cached
-    write /dev/cpuset/cached/cpus 0-2
+    write /dev/cpuset/cached/cpus 0-3
     copy /dev/cpuset/mems /dev/cpuset/cached/mems
     mkdir /dev/cpuset/abnormal
-    write /dev/cpuset/abnormal/cpus 0-2
+    write /dev/cpuset/abnormal/cpus 0-3
     copy /dev/cpuset/mems /dev/cpuset/abnormal/mems
 
     # change permissions for BarTender's cpusets we'll touch at runtime
@@ -571,25 +572,17 @@ on boot
     chown system system /dev/cpuset/foreground/cpus
     chown system system /dev/cpuset/background/cpus
     chown system system /dev/cpuset/system-background/cpus
-    chown system system /dev/cpuset/restricted/cpus
-    chown system system /dev/cpuset/cpus
-
     chmod 664 /dev/cpuset/top-app/cpus
     chmod 664 /dev/cpuset/foreground/cpus
     chmod 664 /dev/cpuset/background/cpus
     chmod 664 /dev/cpuset/system-background/cpus
-    chmod 664 /dev/cpuset/restricted/cpus
-    chmod 664 /dev/cpuset/cpus
-
     write /dev/cpuset/top-app/cpus 0-7
     write /dev/cpuset/top-app/mems 0
     write /dev/cpuset/foreground/cpus 0-2,4-7
     write /dev/cpuset/foreground/mems 0
     write /dev/cpuset/background/cpus 0-1
     write /dev/cpuset/background/mems 0
-    write /dev/cpuset/restricted/cpus 0-2
-    write /dev/cpuset/restricted/mems 0
-    write /dev/cpuset/system-background/cpus 0-3
+    write /dev/cpuset/system-background/cpus 0-2
     write /dev/cpuset/system-background/mems 0
 
 # Switch Device
@@ -688,7 +681,6 @@ on fs
     chmod 0664 /sys/class/input_booster/level
     chmod 0664 /sys/class/input_booster/head
     chmod 0664 /sys/class/input_booster/tail
-    chmod 0666 /sys/class/input_booster/touchkey/time
 
 # Performance
     chown system radio /sys/power/cpufreq_max_limit
@@ -1035,17 +1027,13 @@ on property:ro.bootmode=charger
     wait /dev/block/platform/155a0000.ufs/by-name/EFS
     mount ext4 /dev/block/platform/155a0000.ufs/by-name/EFS /efs nosuid nodev noatime noauto_da_alloc,discard,journal_async_commit,errors=panic
 
-on charger
-# Set cpu governor to powersave while in charging mode
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor powersave
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor powersave
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor powersave
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor powersave
+on property:ro.bootmode=charger
+    mkdir /efs/lpm 0775 system system
+    class_start sec-charger
 
-service charger /charger
-    class charger
+service lpm /system/bin/lpm
+    class sec-charger
     critical
-    seclabel u:r:charger:s0
 
 # sem_daemon permission
     chown system system /efs/sec_efs/ssp_data

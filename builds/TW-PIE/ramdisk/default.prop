@@ -13,7 +13,6 @@ ro.debuggable=1
 persist.sys.usb.config=mtp,adb
 persist.service.adb.enable=1
 persist.service.debuggable=1
-# persist.adb.notify=0
 ro.vendor.sec.radio.def_network=9
 ro.supportmodel.mptcp=1
 ro.radio.noril=no
@@ -72,30 +71,22 @@ wlan.wfd.hdcp=disable
 
 # MISC
 debug.enabler=false
-pm.sleep_mode=1
 power.saving.mode=1
-# ro.ril.disable.power.collapse=0
-# ro.ril.power_collapse=1
-persist.cust.tel_eons=1
-# ro.fast.dormancy=1
-# ro.ril.fast_dormancy.rule=1
-# ro.semc.enable.fast_dormancy=1
 ro.config.hw_power_saving=true
 dalvik.vm.checkjni=false
-ro.ril.sensor.sleep.control=1
-ro.config.hw_quickpoweron=true
-persist.sys.shutdown.mode=hibernate
-ro.config.nocheckin=1
 ro.wifi.hotspotUI=1
 ro.tether.denied=false
-debug.kill.allocating_task=0
 power_supply.wakeup=enable
-#ro.config.hw_fast_dormancy=1
-ro.config.hw_power_saving=1
 ring.delay=0
 fingerprint.unlock=1
 persist.sys.purgeable_assets=1
-wifi.supplicant_scan_interval=300
+wifi.supplicant_scan_interval=400
+logcat.live=disable
+profiler.force_disable_err_rpt=1
+profiler.force_disable_ulog=1
+ro.kernel.checkjni=0
+ro.kernel.android.checkjni=0
+ro.config.nocheckin=1
 
 #
 # BOOTIMAGE_BUILD_PROPERTIES
