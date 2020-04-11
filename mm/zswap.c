@@ -90,9 +90,9 @@ static atomic_t zswap_zero_pages = ATOMIC_INIT(0);
 /*********************************
 * tunables
 **********************************/
-/* Enable/disable zswap (disabled by default) */
-static bool zswap_enabled;
-module_param_named(enabled, zswap_enabled, bool, 0644);
+/* Enable/disable zswap (disabled by default, fixed at boot for now) */
+static bool zswap_enabled __read_mostly = 1;
+module_param_named(enabled, zswap_enabled, bool, 0444);
 
 /* Compressor to be used by zswap (fixed at boot for now) */
 #ifdef CONFIG_CRYPTO_LZ4
