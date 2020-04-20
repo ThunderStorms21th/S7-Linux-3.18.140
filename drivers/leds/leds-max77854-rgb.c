@@ -100,17 +100,17 @@ static unsigned int device_type = 0;
 static unsigned int brightness_ratio_r = 100;
 static unsigned int brightness_ratio_g = 100;
 static unsigned int brightness_ratio_b = 100;
-static unsigned int brightness_ratio_r_low = 20;
-static unsigned int brightness_ratio_g_low = 20;
-static unsigned int brightness_ratio_b_low = 20;
+static unsigned int brightness_ratio_r_low = 5;
+static unsigned int brightness_ratio_g_low = 5;
+static unsigned int brightness_ratio_b_low = 5;
 static u8 led_lowpower_mode = 0x0;
 
 static unsigned int octa_color = 0x0;
 
 /* added LED fade */
 unsigned int led_enable_fade = 1;
-unsigned int led_fade_time_up = 4000;
-unsigned int led_fade_time_down = 4000;
+unsigned int led_fade_time_up = 800;
+unsigned int led_fade_time_down = 800;
 unsigned int led_always_disable = 0;
 unsigned int led_debug_enable = 0;
 int led_block_leds_time_start = -1;
@@ -163,13 +163,13 @@ static struct leds_control {
 	u16 	noti_delay_on;
 	u16 	noti_delay_off;
 } leds_control = {
-	.current_low = 5,
-	.current_high = 20,
+	.current_low = 10,
+	.current_high = 30,
 	.noti_ramp_control = 1,
-	.noti_ramp_up = 3000,
-	.noti_ramp_down = 3000,
-	.noti_delay_on = 3000,
-	.noti_delay_off = 5000,
+	.noti_ramp_up = 800,
+	.noti_ramp_down = 1400,
+	.noti_delay_on = 800,
+	.noti_delay_off = 1400,
 };
 #endif
 /* end of LED FADE */
@@ -806,7 +806,7 @@ static ssize_t store_max77854_rgb_pattern(struct device *dev,
 				max77854_rgb_blink(dev, led_fade_time_up, 5000);
 			}
 		} else {
-			max77854_rgb_blink(dev, 3000, 5000);
+			max77854_rgb_blink(dev, 800, 5000);
 		}
 /* END LED FADE */
 
@@ -1253,7 +1253,6 @@ static ssize_t led_fade_time_up_store(struct device *dev,
 	int retval;
 	int val = 0;
 	retval = sscanf(buf, "%d", &val);
-//	if (retval != 0 && val >= 100  &&  val <= 4000)
 	if (retval != 0 && val >= 100  &&  val <= 5000)
 		led_fade_time_up = val;
 	printk(KERN_DEBUG "led_time_on is called\n");
@@ -1278,7 +1277,6 @@ static ssize_t led_fade_time_down_store(struct device *dev,
 	int retval;
 	int val = 0;
 	retval = sscanf(buf, "%d", &val);
-//	if (retval != 0 && val >= 100  &&  val <= 4000)
 	if (retval != 0 && val >= 100  &&  val <= 5000)
 		led_fade_time_down = val;
 	printk(KERN_DEBUG "led_time_off is called\n");
@@ -1490,13 +1488,11 @@ static ssize_t store_leds_property(struct device *dev,
 		leds_control.noti_ramp_down = val;
 		break;
 	case NOTIFICATION_DELAY_ON:
-//		sanitize_min_max(val, 0, 10000);
-		sanitize_min_max(val, 0, 5000);
+		sanitize_min_max(val, 0, 5000);	/* was 10000 */
 		leds_control.noti_delay_on = val;
 		break;
 	case NOTIFICATION_DELAY_OFF:
-//		sanitize_min_max(val, 0, 10000);
-		sanitize_min_max(val, 0, 5000);
+		sanitize_min_max(val, 0, 5000);	/* was 10000 */
 		leds_control.noti_delay_off = val;
 		break;
 	}
