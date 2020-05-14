@@ -1363,11 +1363,15 @@ static int __cpufreq_add_dev(struct device *dev, struct subsys_interface *sif)
 			goto err_init_policy_kobj;
 		}
 	}
-
 	write_lock_irqsave(&cpufreq_driver_lock, flags);
 	for_each_cpu(j, policy->cpus)
 		per_cpu(cpufreq_cpu_data, j) = policy;
 	write_unlock_irqrestore(&cpufreq_driver_lock, flags);
+
+	/* added restore min/max policy on CPU online */
+	policy->min = policy->user_policy.min;
+	policy->max = policy->user_policy.max;
+	/* end of adds */
 
 	if (cpufreq_driver->get && !cpufreq_driver->setpolicy) {
 		policy->cur = cpufreq_driver->get(policy->cpu);
