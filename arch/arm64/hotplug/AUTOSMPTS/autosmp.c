@@ -29,6 +29,7 @@
  */
 
 #include <linux/moduleparam.h>
+#include <linux/module.h>
 #include <linux/cpufreq.h>
 #include <linux/workqueue.h>
 #include <linux/cpu.h>
@@ -36,6 +37,7 @@
 #include <linux/hrtimer.h>
 #include <linux/notifier.h>
 #include <linux/fb.h>
+#include <linux/platform_device.h>
 
 #define ASMP_TAG "AutoSMP: "
 
@@ -74,9 +76,9 @@ static struct asmp_param_struct {
 	.max_cpus_lc = 4, 	/* Max cpu Little cluster ! */
 	.min_cpus_bc = 2, 	/* Minimum Big cluster online */
 	.min_cpus_lc = 4, 	/* Minimum Little cluster online */
-	.cpufreq_up_bc = 65,
-	.cpufreq_up_lc = 70,
-	.cpufreq_down_bc = 35,
+	.cpufreq_up_bc = 55,
+	.cpufreq_up_lc = 55,
+	.cpufreq_down_bc = 30,
 	.cpufreq_down_lc = 30,
 	.cycle_up = 1,
 	.cycle_down = 1,
@@ -337,10 +339,10 @@ static int asmp_notifier_cb(struct notifier_block *nb,
 
 	return 0;
 }
-
+/*
 #ifdef CONFIG_SCHED_CORE_CTL
 extern void disable_core_control(bool disable);
-#endif
+#endif */
 static int __ref asmp_start(void)
 {
 	unsigned int cpu = 0;
@@ -380,9 +382,10 @@ static int __ref asmp_start(void)
 	return ret;
 
 err_out:
+/*
 #ifdef CONFIG_SCHED_CORE_CTL
 	disable_core_control(false);
-#endif
+#endif */
 	asmp_enabled = 0;
 	return ret;
 }
@@ -431,9 +434,10 @@ static int set_enabled(const char *val,
 			return ret;
 		}
 #endif
+/*
 #ifdef CONFIG_SCHED_CORE_CTL
 		disable_core_control(true);
-#endif
+#endif */
 		asmp_start();
 	} else {
 // If AiO is ON
@@ -442,9 +446,10 @@ static int set_enabled(const char *val,
 			return ret;
 #endif
 		asmp_stop();
+/*
 #ifdef CONFIG_SCHED_CORE_CTL
 		disable_core_control(false);
-#endif
+#endif */
 	}
 	return ret;
 }
@@ -475,7 +480,7 @@ static ssize_t show_##file_name						\
 	return sprintf(buf, "%u\n", asmp_param.object);			\
 }
 show_one(delay, delay);
-show_one(scroff_single_core, scroff_single_core);
+// show_one(scroff_single_core, scroff_single_core);	/* disabled bcose 1 single core gives random reboots on EAS */
 show_one(min_cpus_lc, min_cpus_lc);
 show_one(min_cpus_bc, min_cpus_bc);
 show_one(max_cpus_lc, max_cpus_lc);
@@ -501,7 +506,7 @@ static ssize_t store_##file_name					\
 }									\
 define_one_global_rw(file_name);
 store_one(delay, delay);
-store_one(scroff_single_core, scroff_single_core);
+// store_one(scroff_single_core, scroff_single_core);	/* disabled bcose 1 single core gives random reboots on EAS */
 store_one(cpufreq_up_lc, cpufreq_up_lc);
 store_one(cpufreq_up_bc, cpufreq_up_bc);
 store_one(cpufreq_down_lc, cpufreq_down_lc);
@@ -520,8 +525,8 @@ static ssize_t store_max_cpus_lc(struct kobject *a,
 		input < asmp_param.min_cpus_lc)
 		return -EINVAL;
 
-	if (input < 1)
-		input = 1;
+	if (input < 2)		// for EAS 1 core gives unstable behavior so we use 2 min cores
+		input = 2;
 	else if  (input > 4)
 		input = 4;
 
@@ -541,8 +546,8 @@ static ssize_t store_max_cpus_bc(struct kobject *a,
 		input < asmp_param.min_cpus_bc)
 		return -EINVAL;
 
-	if (input < 1)
-		input = 1;
+	if (input < 2)		 // for EAS 1 core gives unstable behavior so we use 2 min cores
+		input = 2;
 	else if (input > 4)
 		input = 4;
 
@@ -562,8 +567,8 @@ static ssize_t store_min_cpus_lc(struct kobject *a,
 		input > asmp_param.max_cpus_lc)
 		return -EINVAL;
 
-	if (input < 1)
-		input = 1;
+	if (input < 2)		 // for EAS 1 core gives unstable behavior so we use 2 min cores
+		input = 2;
 	else if (input > 4)
 		input = 4;
 
@@ -583,8 +588,8 @@ static ssize_t store_min_cpus_bc(struct kobject *a,
 		input > asmp_param.max_cpus_bc)
 		return -EINVAL;
 
-	if (input < 1)
-		input = 1;
+	if (input < 2)		 // for EAS 1 core gives unstable behavior so we use 2 min cores
+		input = 2;
 	else if (input > 4)
 		input = 4;
 
@@ -600,7 +605,7 @@ define_one_global_rw(max_cpus_bc);
 
 static struct attribute *asmp_attributes[] = {
 	&delay.attr,
-	&scroff_single_core.attr,
+//	&scroff_single_core.attr,   /* disabled bcose 1 single core gives random reboots on EAS */
 	&min_cpus_lc.attr,
 	&min_cpus_bc.attr,
 	&max_cpus_lc.attr,
