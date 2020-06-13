@@ -21,6 +21,7 @@
 #include <linux/uaccess.h>
 #include <linux/irq.h>
 #include <linux/interrupt.h>
+#include <linux/version.h>	/* read VERSION of ANDROID */
 
 #include "public/mc_user.h"
 #include "public/mc_linux_api.h"
