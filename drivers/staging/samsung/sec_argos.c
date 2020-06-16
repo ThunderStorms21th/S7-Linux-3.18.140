@@ -379,14 +379,14 @@ int argos_hmpboost_apply(int dev_num, bool enable)
 		if (*hmpboost_enable == false) {
 			set_hmp_boost(true);
 			*hmpboost_enable = true;
-			pr_info("%s: hmp boost enable [%d]\n", __func__, dev_num);
+			pr_debug("%s: hmp boost enable [%d]\n", __func__, dev_num);
 		}
 	} else {
 		/* enable -> disable */
 		if (*hmpboost_enable == true) {
 			set_hmp_boost(false);
 			*hmpboost_enable = false;
-			pr_info("%s: hmp boost disable [%d]\n", __func__, dev_num);
+			pr_debug("%s: hmp boost disable [%d]\n", __func__, dev_num);
 		}
 	}
 
@@ -467,7 +467,7 @@ static void argos_freq_lock(int type, int level)
 	} else {
 		REMOVE_PM_QOS(&qos->int_qos_req);
 	}
-	pr_info("%s name:%s, CPU_MIN=%d, CPU_MAX=%d, KFC_MIN=%d, KFC_MAX=%d, MIF=%d, INT=%d\n",
+	pr_debug("%s name:%s, CPU_MIN=%d, CPU_MAX=%d, KFC_MIN=%d, KFC_MAX=%d, MIF=%d, INT=%d\n",
 		__func__, cname, cpu_min_freq, cpu_max_freq, kfc_min_freq, kfc_max_freq, mif_freq, int_freq);
 }
 
