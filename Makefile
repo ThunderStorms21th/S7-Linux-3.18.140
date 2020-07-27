@@ -650,7 +650,7 @@ KBUILD_AFLAGS	+= $(call cc-option,-fno-PIE)
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os $(call cc-disable-warning,maybe-uninitialized,)
 else
-KBUILD_CFLAGS	+= -O3
+KBUILD_CFLAGS   += -O2 -march=armv8-a+crc -mtune=exynos-m1
 endif
 
 KBUILD_CFLAGS 	+= $(call cc-disable-warning,maybe-uninitialized,) \
