@@ -76,7 +76,7 @@ static const struct of_device_id decon_device_table[] = {
 MODULE_DEVICE_TABLE(of, decon_device_table);
 #endif
 
-int decon_log_level = 6;
+int decon_log_level = 0;
 module_param(decon_log_level, int, 0644);
 
 struct decon_device *decon_f_drvdata;
@@ -126,6 +126,7 @@ static void decon_set_protected_content(struct decon_device *decon,
 
 static void tracing_mark_write( int pid, char id, char* str1, int value )
 {
+#if 0
 	char buf[80];
 
 	if(!pid) return;
@@ -145,6 +146,7 @@ static void tracing_mark_write( int pid, char id, char* str1, int value )
 	}
 
 	trace_puts(buf);
+#endif
 }
 /*-----------------------------------------------------------------*/
 
