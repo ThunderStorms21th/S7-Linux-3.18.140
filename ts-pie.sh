@@ -54,8 +54,8 @@ DEFCONFIG_S7FLAT=ts-flat_defconfig
 DEFCONFIG_OREO=ts-oreo_defconfig
 DEFCONFIG_PIE=ts-pie_defconfig
 
-export K_VERSION="v3.1"
-export K_BASE="CTA4"
+export K_VERSION="v4.1"
+export K_BASE="CTD2-HMP"
 export K_NAME="ThundeRStormS-Kernel"
 export REVISION="RC"
 export KBUILD_BUILD_VERSION="1"
