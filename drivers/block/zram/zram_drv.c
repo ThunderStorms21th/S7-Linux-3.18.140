@@ -38,12 +38,9 @@
 /* Globals */
 static int zram_major;
 static struct zram *zram_devices;
-#ifdef CONFIG_CRYPTO_ZSTD
-#define ZRAM_COMPRESSOR_DEFAULT "zstd"
-#else
-#define ZRAM_COMPRESSOR_DEFAULT "lz4"
-#endif
-static const char *default_compressor = "ZRAM_COMPRESSOR_DEFAULT";
+// static const char *default_compressor = "lz4";
+// static const char *default_compressor = "lzo";
+static const char *default_compressor = "zstd";
 /* Module params (documentation at end) */
 static unsigned int num_devices = 1;
 
