@@ -31,7 +31,6 @@ cp /tmp/ts/system2/init.ts.rc /system_root
 cp /tmp/ts/system2/spa /system_root/sbin
 cp /tmp/ts/system2/ts-kernel.sh /system_root/sbin
 cp /tmp/ts/system2/init.spectrum.sh /system_root/sbin
-# cp /tmp/ts/system2/init.samsungexynos8890.rc /system_root
 
 # chmod 750 /system_root/init.rc
 chmod 750 /system_root/init.custom.rc
@@ -40,7 +39,6 @@ chmod 750 /system_root/init.ts.rc
 chmod 755 /system_root/sbin/spa
 chmod 755 /system_root/sbin/ts-kernel.sh
 chmod 755 /system_root/sbin/init.spectrum.sh
-# chmod 750 /system_root/init.samsungexynos8890.rc
 
 # Import init.ts.rc and init.spectrum.rc to init.rc
 # if ! grep -q init.spectrum.rc /system_root/init.rc; then
