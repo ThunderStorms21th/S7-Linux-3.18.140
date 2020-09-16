@@ -2,8 +2,8 @@
 <b>KERNEL INFORMATION:</b>
 
 	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-Treble P/Q</#></b>	
-	VERSION	: <b><#selectbg_g>v3.1</#></b>
-	DATE	: <b><#selectbg_g>25/03/2020</#></b>
+	VERSION	: <b><#selectbg_g>v4.1</#></b>
+	DATE	: <b><#selectbg_g>15/09999999/2020</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
 <#53a6f4><b> Only For Galaxy S7/S7Edge Treble P/Q Vendor v2</b></#>
@@ -12,14 +12,14 @@
 <b>CHANGELOG:</b>
 
 --------------------------------------------------------------------------
-<u><b><#selectbg_g>ThunderStorms-Kernel-TPQ-v3.1 : 25.03.2020</#></b></u>
+<u><b><#selectbg_g>ThunderStorms-Kernel-P-v4.1 : 15.09.2020</#></b></u>
 <*>Samsung source : N935KKKU4CTA4 </*>
 <*>Linux source : 3.18.140.8 </*>
 <*>Ramdisk source: N935FXXU6CSK1 </*>
 <*>Added Kernel Drivers RP29R0 from Android Q </*>
 <*>Fixed device for Pokemon Go, Cod Mobile and similar games  </*>
 <*>ThunderStorm CPU gov updated to v2.1 : added max_freq_hysteresis </*>
-<*>ThunderTweaks v1.0.5.1 </*>
+<*>ThunderTweaks v1.0.6.0 </*>
 <*>Magisk 20.4 Offcial</*>
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------

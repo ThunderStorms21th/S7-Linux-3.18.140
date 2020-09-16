@@ -150,14 +150,6 @@ if [ "$(file_getprop /tmp/aroma/menu.prop chk3)" == 1 ]; then
 	# cp -rf /tmp/apps/com.thunder.thundertweaks-1 /data/app/com.thunder.thundertweaks-1
 fi
 
-## Private mode 
-if [ "$(file_getprop /tmp/aroma/menu.prop chk9)" == 1 ]; then
-	ui_print " "
-	ui_print "@Fix for Private Mode..."
-	sh /tmp/ts/privatemode.sh
-	cp -rf /tmp/ts/private_mode/*.* /system
-fi
-
 ## TS swap off
 if [ "$(file_getprop /tmp/aroma/menu.prop chk4)" == 1 ]; then
 	ui_print " "
