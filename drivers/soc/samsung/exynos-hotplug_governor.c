@@ -530,7 +530,7 @@ static void hpgov_boot_enable(struct work_struct *work)
 static int __init exynos_hpgov_init(void)
 {
 	int ret = 0;
-	const int attr_count = 5;
+	const int attr_count = 7;
 	int i_attr = attr_count;
 
 	hrtimer_init(&exynos_hpgov.slack_timer, CLOCK_MONOTONIC,
