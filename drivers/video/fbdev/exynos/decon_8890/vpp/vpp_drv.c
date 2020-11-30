@@ -1021,7 +1021,7 @@ static int vpp_probe(struct platform_device *pdev)
 	spin_lock_init(&vpp->slock);
 
 	ret = devm_request_irq(dev, irq, vpp_irq_handler,
-				IRQF_PERF_CRITICAL, pdev->name, vpp);
+				0, pdev->name, vpp);
 	if (ret) {
 		dev_err(DEV, "Failed to install irq\n");
 		return ret;
