@@ -118,8 +118,4 @@ obj-$(CONFIG_CRYPTO_ABLK_HELPER) += ablk_helper.o
 
 #Keep this at the bottom
 obj-$(CONFIG_CRYPTO_FIPS) += last_file.o
-# obj-$(CONFIG_CRYPTO_FIPS) += fips_helper.o
-
-# Squeeze a little bit more juice from GCC
-ccflags-y := -O3
-
+obj-$(CONFIG_CRYPTO_FIPS) += fips_helper.o
