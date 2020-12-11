@@ -2,8 +2,8 @@
 <b>KERNEL INFORMATION:</b>
 
 	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-AOSP Q</#></b>	
-	VERSION	: <b><#selectbg_g>v4.1</#></b>
-	DATE	: <b><#selectbg_g>15/09/2020</#></b>
+	VERSION	: <b><#selectbg_g>v4.2</#></b>
+	DATE	: <b><#selectbg_g>10/12/2020</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
 <#53a6f4><b> Only For Galaxy S7/S7Edge | AOSP Q Roms |</b></#>
@@ -12,14 +12,30 @@
 <b>CHANGELOG:</b>
 
 --------------------------------------------------------------------------
-<u><b><#selectbg_g>ThunderStorms-Kernel-P-v4.1 : 15.09.2020</#></b></u>
-<*>Samsung source : N935KKKU4CTA4 </*>
+<u><b><#selectbg_g>ThunderStorms-Kernel-AOSP-Q-v4.2 : 10.12.2020</#></b></u>
+<*>Samsung source : N935KKKU4CTH1 </*>
 <*>Linux source : 3.18.140.8 </*>
+<*>Support HMP samsung / EAS not supported </*>
 <*>Ramdisk source: N935FXXU6CSK1 </*>
+<*>Re-added Spectrum Support </*>
+<*>Removed some debuggers </*>
 <*>Added Kernel Drivers RP29R0 from Android Q </*>
 <*>Fixed device for Pokemon Go, Cod Mobile and similar games  </*>
 <*>ThunderStorm CPU gov updated to v2.1 : added max_freq_hysteresis </*>
-<*>ThunderTweaks v1.0.6.0 </*>
+<*>ThunderTweaks v1.0.7.2 </*>
+<*>Magisk 21.1 Offcial</*>
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+<u><b><#selectbg_g>ThunderStorms-Kernel-AOSP Q-v4.1 : 22.09.2020</#></b></u>
+<*>Samsung source : N935KKKU4CTA4 </*>
+<*>Linux source : 3.18.140.8 </*>
+<*>Support HMP samsung / EAS not supported </*>
+<*>Ramdisk source: N935FXXU6CSK1 </*>
+<*>Re-added Spectrum Support </*>
+<*>Added Kernel Drivers RP29R0 from Android Q </*>
+<*>Fixed device for Pokemon Go, Cod Mobile and similar games  </*>
+<*>ThunderStorm CPU gov updated to v2.1 : added max_freq_hysteresis </*>
+<*>ThunderTweaks v1.0.7.0 </*>
 <*>Magisk 20.4 Offcial</*>
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------

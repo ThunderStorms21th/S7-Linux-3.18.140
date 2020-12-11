@@ -65,7 +65,7 @@
    write /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/boostpulse_duration 20000
 
    # CPU HOTPLUG
-   write /sys/power/cpuhotplug/enabled 1
+   write /sys/power/cpuhotplug/enabled 0
    write /sys/module/autosmp/parameters/enabled N
    write /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_all_cores_max_freq 1
    write /sys/module/workqueue/parameters/power_efficient N

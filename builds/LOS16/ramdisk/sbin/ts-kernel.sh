@@ -32,10 +32,18 @@ fi
 	# deepsleep fix
 	echo "## -- DeepSleep Fix" >> $LOG;
 
-	dmesg -n 1 -C
-	echo "N" > /sys/kernel/debug/debug_enabled
-	echo "N" > /sys/kernel/debug/seclog/seclog_debug
-	echo "0" > /sys/kernel/debug/tracing/tracing_on
+    dmesg -n 1 -C
+    echo "N" > /sys/kernel/debug/debug_enabled
+    echo "N" > /sys/kernel/debug/seclog/seclog_debug
+    echo "0" > /sys/kernel/debug/tracing/tracing_on
+    echo "0" > /sys/module/lowmemorykiller/parameters/debug_level
+    echo "0" > /sys/module/alarm_dev/parameters/debug_mask
+    echo "0" > /sys/module/binder/parameters/debug_mask
+    echo "0" > /sys/module/binder_alloc/parameters/debug_mask
+    echo "0" > /sys/module/powersuspend/parameters/debug_mask
+    echo "0" > /sys/module/xt_qtaguid/parameters/debug_mask
+    echo "0" > /sys/module/lowmemorykiller/parameters/debug_level
+    echo "0" > /sys/module/kernel/parameters/initcall_debugn
 	
 	for i in `ls /sys/class/scsi_disk/`; do
 		cat /sys/class/scsi_disk/$i/write_protect 2>/dev/null | grep 1 >/dev/null;

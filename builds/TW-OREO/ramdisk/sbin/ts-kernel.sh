@@ -61,6 +61,14 @@ dmesg -n 1 -C
 echo "N" > /sys/kernel/debug/debug_enabled
 echo "N" > /sys/kernel/debug/seclog/seclog_debug
 echo "0" > /sys/kernel/debug/tracing/tracing_on
+echo "0" > /sys/module/lowmemorykiller/parameters/debug_level
+echo "0" > /sys/module/alarm_dev/parameters/debug_mask
+echo "0" > /sys/module/binder/parameters/debug_mask
+echo "0" > /sys/module/binder_alloc/parameters/debug_mask
+echo "0" > /sys/module/powersuspend/parameters/debug_mask
+echo "0" > /sys/module/xt_qtaguid/parameters/debug_mask
+echo "0" > /sys/module/lowmemorykiller/parameters/debug_level
+echo "0" > /sys/module/kernel/parameters/initcall_debug
 
 if [ -f /data/adb/su/su.d/000000deepsleep ]; then
 	rm -f /data/adb/su/su.d/000000deepsleep

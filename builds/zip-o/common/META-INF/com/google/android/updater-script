@@ -10,10 +10,11 @@ set_progress(0.01);
 # Thanks to @MoRoGoKu for oryginal script
 
 # Copy scripts
-package_extract_dir("ts", "/tmp/ts");
-package_extract_dir("tsk", "/tmp/tsk");
-set_perm_recursive(0, 0, 0777, 0777, "/tmp/ts");
-set_perm_recursive(0, 0, 0777, 0777, "/tmp/tsk");
+package_extract_dir("ts", "/data/tmp/ts");
+package_extract_dir("tsk", "/data/tmp/tsk");
+set_perm_recursive(0, 0, 0777, 0777, "/data/tmp/ts");
+set_perm_recursive(0, 0, 0777, 0777, "/data/tmp/tsk");
+set_perm_recursive(0, 0, 0777, 0777, "/tmp");
 
 # Prepare partitions
 run_program("/sbin/mount", "-t", "auto", "/system");
@@ -27,10 +28,10 @@ run_program("/sbin/mount", "/data");
 ui_print(" ");
 ui_print("@ThundeRStormS - System Patching...");
 # Run install script
-run_program("/tmp/ts/install_script.sh");
+run_program("/data/tmp/ts/install_script.sh");
 
 package_extract_dir("ts/system", "/system");
-run_program("/tmp/ts/tskernel.sh");
+run_program("/data/tmp/ts/tskernel.sh");
 
 ####################################################
 # OTHER OPTIONS
@@ -50,13 +51,13 @@ if file_getprop("/tmp/aroma/menu.prop", "chk3") == "1" then
 	delete_recursive("/data/data/com.thunder.thundertweaks*");
 	delete_recursive("/data/app/com.hades.hKtweaks*");
 	delete_recursive("/data/data/com.hades.hKtweaks*");
-	run_program("/tmp/ts/ts_clean.sh", "com.moro.mtweaks", "-as");
-	run_program("/tmp/ts/ts_clean.sh", "com.thunder.thundertweaks", "-as");
-	run_program("/tmp/ts/ts_clean.sh", "com.hades.hKtweaks", "-as");
-	package_extract_dir("apps/com.thunder.thundertweaks-1", "/data/app/com.thunder.thundertweaks-1");
-	package_extract_dir("ts/profiles", "/data/media/0/Spectrum/profiles/");
-	package_extract_dir("ts/profiles", "/sdcard/Spectrum/profiles/");
-	package_extract_dir("ts/profiles", "/storage/emulated/0/Spectrum/profiles/");
+	run_program("/data/tmp/ts/ts_clean.sh", "com.moro.mtweaks", "-as");
+	run_program("/data/tmp/ts/ts_clean.sh", "com.thunder.thundertweaks", "-as");
+	run_program("/data/tmp/ts/ts_clean.sh", "com.hades.hKtweaks", "-as");
+	package_extract_dir("data/apps/com.thunder.thundertweaks-1", "/data/app/com.thunder.thundertweaks-1");
+	package_extract_dir("data/ts/profiles", "/data/media/0/Spectrum/profiles/");
+	package_extract_dir("data/ts/profiles", "/sdcard/Spectrum/profiles/");
+	package_extract_dir("data/ts/profiles", "/storage/emulated/0/Spectrum/profiles/");
 endif;
 
 # Patch for deodexed and ported roms
@@ -64,13 +65,13 @@ if file_getprop("/tmp/aroma/menu.prop", "chk10") == "1" then
 	
 	ui_print("@Patching system for ported and deodexed roms");
 	ui_print(" ");
-	package_extract_dir("tsk", "/tmp/tsk");
-	run_program("/sbin/busybox", "unzip", "/tmp/tsk/TS-kernel-deodexed-v1.1.zip", "META-INF/com/google/android/*", "-d", "/tmp/tsk");
-	run_program("/sbin/sh", "/tmp/tsk/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/tsk/TS-kernel-deodexed-v1.1.zip");
-	delete_recursive("/tmp/tsk");
-	run_program("/sbin/busybox", "unzip", "/tmp/tsk/TS-kernel-deodexed-v1.2.zip", "META-INF/com/google/android/*", "-d", "/tmp/tsk");
-	run_program("/sbin/sh", "/tmp/tsk/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/tsk/TS-kernel-deodexed-v1.2.zip");
-	delete_recursive("/tmp/tsk");
+	package_extract_dir("tsk", "/data/tmp/tsk");
+	run_program("/sbin/busybox", "unzip", "/tmp/tsk/TS-kernel-deodexed-v1.1.zip", "META-INF/com/google/android/*", "-d", "/data/tmp/tsk");
+	run_program("/sbin/sh", "/data/tmp/tsk/META-INF/com/google/android/update-binary", "dummy", "1", "/data/tmp/tsk/TS-kernel-deodexed-v1.1.zip");
+	delete_recursive("/data/tmp/tsk");
+	run_program("/sbin/busybox", "unzip", "/data/tmp/tsk/TS-kernel-deodexed-v1.2.zip", "META-INF/com/google/android/*", "-d", "/data/tmp/tsk");
+	run_program("/sbin/sh", "/data/tmp/tsk/META-INF/com/google/android/update-binary", "dummy", "1", "/data/tmp/tsk/TS-kernel-deodexed-v1.2.zip");
+	delete_recursive("/data/tmp/tsk");
 endif;
 
 ui_print(" ");
@@ -84,9 +85,9 @@ set_metadata("/system/bin/logd", "uid", 1036, "gid", 1036, "mode", 0550, "capabi
 
 # PERMISSION
 ui_print("-- Fixing permission...");
-package_extract_file("ts/fix_permissions.sh", "/tmp/ts/fix_permissions.sh");
-set_perm(0, 0, 0777, "/tmp/ts/fix_permissions.sh");
-run_program("/tmp/ts/fix_permissions.sh");
+package_extract_file("ts/fix_permissions.sh", "/data/tmp/ts/fix_permissions.sh");
+set_perm(0, 0, 0777, "/data/tmp/ts/fix_permissions.sh");
+run_program("/data/tmp/ts/fix_permissions.sh");
 
 set_progress(0.59);
 
@@ -105,11 +106,11 @@ show_progress(0.61, "-5000");
 	ui_print("-- Without Root");
 	if file_getprop("/tmp/aroma/menu.prop", "chk7") == "1" then
 		ui_print("-- Clear root data...");
-		run_program("/tmp/ts/clean_supersu.sh");
-		run_program("/tmp/ts/clean_magisk.sh");
-		run_program("/tmp/ts/ts_clean.sh", "eu.chainfire.supersu", "-asd");
-		run_program("/tmp/ts/ts_clean.sh", "eu.chainfire.suhide", "-asd");
-		run_program("/tmp/ts/ts_clean.sh", "com.topjohnwu.magisk", "-asd");
+		run_program("/data/tmp/ts/clean_supersu.sh");
+		run_program("/data/tmp/ts/clean_magisk.sh");
+		run_program("/data/tmp/ts/ts_clean.sh", "eu.chainfire.supersu", "-asd");
+		run_program("/data/tmp/ts/ts_clean.sh", "eu.chainfire.suhide", "-asd");
+		run_program("/data/tmp/ts/ts_clean.sh", "com.topjohnwu.magisk", "-asd");
 	endif;
 endif;
 
@@ -118,22 +119,22 @@ if file_getprop("/tmp/aroma/menu.prop", "group1") == "opt2" then
 show_progress(0.62, "-40000");
 	
 	# Clean opposite kernel
-	run_program("/tmp/ts/clean_supersu.sh");
-	run_program("/tmp/ts/ts_clean.sh", "eu.chainfire.supersu", "-asd");
-	run_program("/tmp/ts/ts_clean.sh", "eu.chainfire.suhide", "-asd");
+	run_program("/data/tmp/ts/clean_supersu.sh");
+	run_program("/data/tmp/ts/ts_clean.sh", "eu.chainfire.supersu", "-asd");
+	run_program("/data/tmp/ts/ts_clean.sh", "eu.chainfire.suhide", "-asd");
 
 	if file_getprop("/tmp/aroma/menu.prop", "chk7") == "1" then
 		ui_print("-- Clearing root data...");
-		run_program("/tmp/ts/clean_magisk.sh");
-		run_program("/tmp/ts/ts_clean.sh", "com.topjohnwu.magisk", "-asd");
+		run_program("/data/tmp/ts/clean_magisk.sh");
+		run_program("/data/tmp/ts/ts_clean.sh", "com.topjohnwu.magisk", "-asd");
 	endif;
 		
 	ui_print("-- Rooting with Magisk Manager...");
 	ui_print(" ");
-	package_extract_dir("magisk", "/tmp/magisk");
-	run_program("/sbin/busybox", "unzip", "/tmp/magisk/magisk.zip", "META-INF/com/google/android/*", "-d", "/tmp/magisk");
-	run_program("/sbin/sh", "/tmp/magisk/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/magisk/magisk.zip");
-	delete_recursive("/tmp/magisk");
+	package_extract_dir("magisk", "/data/tmp/magisk");
+	run_program("/sbin/busybox", "unzip", "/data/tmp/magisk/magisk.zip", "META-INF/com/google/android/*", "-d", "/data/tmp/magisk");
+	run_program("/sbin/sh", "/data/tmp/magisk/META-INF/com/google/android/update-binary", "dummy", "1", "/data/tmp/magisk/magisk.zip");
+	delete_recursive("/data/tmp/magisk");
 endif;
 
 #####################################################
@@ -141,6 +142,7 @@ endif;
 # ui_print(" ");
 # ui_print("-- Cleaning temp files...");
 delete_recursive("/tmp");
+delete_recursive("/data/tmp");
 delete_recursive("/data/magisk_backup*");
 
 set_progress(1.00);

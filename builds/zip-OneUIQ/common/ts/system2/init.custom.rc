@@ -16,11 +16,11 @@ on property:sys.boot_completed=1
     start kernelinit
     stop proca
     stop secure_storage
-    # stop irisd
+    stop irisd
 
 
-service kernelinit /sbin/ts-kernel.sh
-    class late_start
+service kernelinit /data/.tskernel/initial/ts-kernel.sh
+    # class late_start
     user root
     seclabel u:r:init:s0
     oneshot

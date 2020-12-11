@@ -12,11 +12,6 @@
 BLOCK=/dev/block/platform/155a0000.ufs/by-name
 
 # Variables
-TSTEMP=/tmp/tstemp
-AROMA=/tmp/aroma
-TS=/data/media/0/TSkernel
-CONFIG=$TGP/config
-KERNELPATH=$TSTEMP/kernels
 BUILDPROP=/system/build.prop
 
 	## System Patches

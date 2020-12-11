@@ -10,19 +10,17 @@
 # Variables
 BB=/sbin/busybox
 
-
 #======================================
 # OPTIONS
 #======================================
-
 
 ## ThunderTweaks
 sh /tmp/ts/ts_clean.sh com.thunder.thundertweaks -as
 
 mkdir -p /data/media/0/ThunderTweaks
 mkdir -p /sdcard/ThunderTweaks
-cp -rf /tmp/ts/ttweaks/*.apk /data/media/0/ThunderTweaks
-cp -rf /tmp/ts/ttweaks/*.apk /sdcard/ThunderTweaks
+cp -rf /data/tmp/ts/ttweaks/*.apk /data/media/0/ThunderTweaks
+cp -rf /data/tmp/ts/ttweaks/*.apk /sdcard/ThunderTweaks
 
 # mkdir -p /data/.tskernel
 # cp -rf /tmp/ts/ttweaks/*.apk /data/.tskernel

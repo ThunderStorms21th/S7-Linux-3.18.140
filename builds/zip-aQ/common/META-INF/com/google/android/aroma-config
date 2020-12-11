@@ -25,7 +25,7 @@ anisplash(
     2,
   
   #-- Frame [ Image, duration in millisecond ]
-    	"splash/1", 200,
+    "splash/1", 200,
 	"splash/3", 50,
 	"splash/2", 50,
 	"splash/3", 50,
@@ -96,7 +96,7 @@ form(
 	"group1",     "<b><~menu.group1></b>",  "",                     	"group",
 	  "opt1",     "<b><~menu.1></b>",       "<~menu.1desc>",         	"select",
 	  "opt2",     "<b><~menu.2></b>",       "<~menu.2desc>",         	"select.selected",
-#	  "opt3",     "<b><~menu.5></b>",       "<~menu.5desc>",         	"select",
+	  "opt3",     "<b><~menu.5></b>",       "<~menu.5desc>",         	"select",
 	"group2",     "<b><~menu.group2></b>",  "",                     	"group",
 	  "chk3",     "<b><~menu.3></b>",       "<~menu.3desc>",		"check.checked",
 	  "chk6",     "<b><~menu.6></b>",       "<~menu.6desc>",		"check.checked",

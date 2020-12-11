@@ -41,6 +41,14 @@ dmesg -n 1 -C
 echo "N" > /sys/kernel/debug/debug_enabled
 echo "N" > /sys/kernel/debug/seclog/seclog_debug
 echo "0" > /sys/kernel/debug/tracing/tracing_on
+echo "0" > /sys/module/lowmemorykiller/parameters/debug_level
+echo "0" > /sys/module/alarm_dev/parameters/debug_mask
+echo "0" > /sys/module/binder/parameters/debug_mask
+echo "0" > /sys/module/binder_alloc/parameters/debug_mask
+echo "0" > /sys/module/powersuspend/parameters/debug_mask
+echo "0" > /sys/module/xt_qtaguid/parameters/debug_mask
+echo "0" > /sys/module/lowmemorykiller/parameters/debug_level
+echo "0" > /sys/module/kernel/parameters/initcall_debug
 
 if [ -f /data/adb/su/su.d/000000deepsleep ]; then
 	rm -f /data/adb/su/su.d/000000deepsleep
@@ -57,39 +65,36 @@ echo " " >> $LOG;
 # Fix personalist.xml
 echo "## -- Fix Personal list" >> $LOG;
 if [ ! -f /data/system/users/0/personalist.xml ]; then
-	touch /data/system/users/0/personalist.xml
-fi
-if [ ! -r /data/system/users/0/personalist.xml ]; then
- 	chmod 600 /data/system/users/0/personalist.xml
- 	chown system:system /data/system/users/0/personalist.xml
+	touch /data/system/users/0/personalist.xml;
+	chmod 600 /data/system/users/0/personalist.xml;
+	chown system:system /data/system/users/0/personalist.xml;
 fi
 
-	## ThunderStormS kill Google and Media servers script
-	sleep 2
+## ThunderStormS kill Google and Media servers script
+sleep 5
 
-	# Google play services wakelock fix
-	echo "## -- GooglePlay wakelock fix $( date +"%d-%m-%Y %H:%M:%S" )" >> $LOG;
+# Google play services wakelock fix
+echo "## -- GooglePlay wakelock fix $( date +"%d-%m-%Y %H:%M:%S" )" >> $LOG;
 	
-
-	# FIX GOOGLE PLAY SERVICE
-	su -c "pm enable com.google.android.gms/.ads.AdRequestBrokerService"
-	su -c "pm enable com.google.android.gms/.ads.identifier.service.AdvertisingIdService"
-	su -c "pm enable com.google.android.gms/.ads.social.GcmSchedulerWakeupService"
-	su -c "pm enable com.google.android.gms/.analytics.AnalyticsService"
-	su -c "pm enable com.google.android.gms/.analytics.service.PlayLogMonitorIntervalService"
-	su -c "pm enable com.google.android.gms/.backup.BackupTransportService"
-	su -c "pm enable com.google.android.gms/.update.SystemUpdateActivity"
-	su -c "pm enable com.google.android.gms/.update.SystemUpdateService"
-	su -c "pm enable com.google.android.gms/.update.SystemUpdateService\$ActiveReceiver"
-	su -c "pm enable com.google.android.gms/.update.SystemUpdateService\$Receiver"
-	su -c "pm enable com.google.android.gms/.update.SystemUpdateService\$SecretCodeReceiver"
-	su -c "pm enable com.google.android.gms/.thunderbird.settings.ThunderbirdSettingInjectorService"
-	su -c "pm enable com.google.android.gsf/.update.SystemUpdateActivity"
-	su -c "pm enable com.google.android.gsf/.update.SystemUpdatePanoActivity"
-	su -c "pm enable com.google.android.gsf/.update.SystemUpdateService"
-	su -c "pm enable com.google.android.gsf/.update.SystemUpdateService\$Receiver"
-	su -c "pm enable com.google.android.gsf/.update.SystemUpdateService\$SecretCodeReceiver"
-	echo " " >> $LOG;
+# FIX GOOGLE PLAY SERVICE
+su -c "pm enable com.google.android.gms/.ads.AdRequestBrokerService"
+su -c "pm enable com.google.android.gms/.ads.identifier.service.AdvertisingIdService"
+su -c "pm enable com.google.android.gms/.ads.social.GcmSchedulerWakeupService"
+su -c "pm enable com.google.android.gms/.analytics.AnalyticsService"
+su -c "pm enable com.google.android.gms/.analytics.service.PlayLogMonitorIntervalService"
+su -c "pm enable com.google.android.gms/.backup.BackupTransportService"
+su -c "pm enable com.google.android.gms/.update.SystemUpdateActivity"
+su -c "pm enable com.google.android.gms/.update.SystemUpdateService"
+su -c "pm enable com.google.android.gms/.update.SystemUpdateService\$ActiveReceiver"
+su -c "pm enable com.google.android.gms/.update.SystemUpdateService\$Receiver"
+su -c "pm enable com.google.android.gms/.update.SystemUpdateService\$SecretCodeReceiver"
+su -c "pm enable com.google.android.gms/.thunderbird.settings.ThunderbirdSettingInjectorService"
+su -c "pm enable com.google.android.gsf/.update.SystemUpdateActivity"
+su -c "pm enable com.google.android.gsf/.update.SystemUpdatePanoActivity"
+su -c "pm enable com.google.android.gsf/.update.SystemUpdateService"
+su -c "pm enable com.google.android.gsf/.update.SystemUpdateService\$Receiver"
+su -c "pm enable com.google.android.gsf/.update.SystemUpdateService\$SecretCodeReceiver"
+echo " " >> $LOG;
 
 # init.d
 echo "## -- Remove old Init.d scripts" >> $LOG

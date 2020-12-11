@@ -1,5 +1,5 @@
 ui_print("*******************************************************************");
-ui_print("                        ThunderStorm Kernel AOSP                   ");
+ui_print("                       ThunderStorm Kernel AOSP Q                  ");
 ui_print("                         For Samsung Galaxy S7                     ");
 ui_print("                Developed by ThundeRStormS Team                    ");
 ui_print("                                    TS Team                        ");
@@ -9,8 +9,9 @@ set_progress(0.01);
 # Thanks to @MoRoGoKu for oryginal script
 
 # Copy scripts
-package_extract_dir("ts", "/tmp/ts");
-set_perm_recursive(0, 0, 0777, 0777, "/tmp/ts");
+package_extract_dir("ts", "/data/tmp/ts");
+set_perm_recursive(0, 0, 0777, 0777, "/data/tmp/ts");
+set_perm_recursive(0, 0, 0777, 0777, "/data/tmp");
 set_perm_recursive(0, 0, 0777, 0777, "/tmp");
 
 ui_print(" ");
@@ -22,30 +23,29 @@ run_program("/sbin/mount", "/system");
 run_program("/sbin/mount", "/data");
 
 # Run install script
-run_program("/tmp/ts/install_script.sh");
-run_program("/tmp/ts/initial_settings.sh");
+run_program("/data/tmp/ts/install_script.sh");
+run_program("/data/tmp/ts/initial_settings.sh");
 
 ui_print(" ");
 ui_print("@ThundeRStormS - System Patching...");
-package_extract_dir("ts/system", "/system");
+package_extract_dir("data/tmp/ts/system", "/system");
 
 # TS swap off
 if file_getprop("/tmp/aroma/menu.prop", "chk4") == "1" then
 	ui_print(" ");
 	ui_print("@Installing ThundeRStormS VNSWAP OFF...");
-	package_extract_dir("ts/swapoff", "/system/etc/init.d");
-	package_extract_dir("/tmp/ts/swapoff", "/system/etc/init.d");
+	package_extract_dir("/data/tmp/ts/swapoff", "/system/etc/init.d");
 	set_perm_recursive(0, 0, 0755, 0755, "/system/etc/init.d/ts_swapoff.sh");
 endif;
 
 
 ui_print(" ");
 ui_print("@ThundeRStormS - Spectrum Patching...");
-package_extract_dir("ts/system2", "/system");
-set_perm_recursive(0, 0, 0755, 0755, "/system/sbin/spa");
-set_perm_recursive(0, 0, 0755, 0755, "/system/sbin/ts-kernel.sh");
-set_perm_recursive(0, 0, 0755, 0755, "/system/sbin/init.spectrum.sh");
-#set_perm_recursive(0, 0, 0755, 0755, "/system/init.rc");
+# package_extract_dir("data/ts/system2", "/system");
+set_perm_recursive(0, 0, 0755, 0755, "/data/.tskernel/initial/spa");
+set_perm_recursive(0, 0, 0755, 0755, "/data/.tskernel/initial/ts-kernel.sh");
+set_perm_recursive(0, 0, 0755, 0755, "/data/.tskernel/initial/init.spectrum.sh");
+# set_perm_recursive(0, 0, 0755, 0755, "/system/init.rc");
 set_perm_recursive(0, 0, 0755, 0755, "/system/init.spectrum.rc");
 set_perm_recursive(0, 0, 0755, 0755, "/system/init.ts.rc");
 
@@ -61,13 +61,13 @@ ui_print("@Root");
 if file_getprop("/tmp/aroma/menu.prop", "group1") == "opt1" then
 
 	ui_print("-- Without Root");
-	if file_getprop("/tmp/aroma/menu.prop", "chk7") == "1" then
+	if file_getprop("/data/tmp/aroma/menu.prop", "chk7") == "1" then
 		ui_print("-- Clear root data...");
-		run_program("/tmp/ts/clean_supersu.sh");
-		run_program("/tmp/ts/clean_magisk.sh");
-		run_program("/tmp/ts/ts_clean.sh", "eu.chainfire.supersu", "-asd");
-		run_program("/tmp/ts/ts_clean.sh", "eu.chainfire.suhide", "-asd");
-		run_program("/tmp/ts/ts_clean.sh", "com.topjohnwu.magisk", "-asd");
+		run_program("/data/tmp/ts/clean_supersu.sh");
+		run_program("/data/tmp/ts/clean_magisk.sh");
+		run_program("/data/tmp/ts/ts_clean.sh", "eu.chainfire.supersu", "-asd");
+		run_program("/data/tmp/ts/ts_clean.sh", "eu.chainfire.suhide", "-asd");
+		run_program("/data/tmp/ts/ts_clean.sh", "com.topjohnwu.magisk", "-asd");
 	endif;
 endif;
 
@@ -76,28 +76,52 @@ if file_getprop("/tmp/aroma/menu.prop", "group1") == "opt2" then
 show_progress(0.60, "-30000");
 	
 	# Clean opposite kernel
-	run_program("/tmp/ts/clean_supersu.sh");
-	run_program("/tmp/ts/ts_clean.sh", "eu.chainfire.supersu", "-asd");
-	run_program("/tmp/ts/ts_clean.sh", "eu.chainfire.suhide", "-asd");
+	run_program("/data/tmp/ts/clean_supersu.sh");
+	run_program("/data/tmp/ts/ts_clean.sh", "eu.chainfire.supersu", "-asd");
+	run_program("/data/tmp/ts/ts_clean.sh", "eu.chainfire.suhide", "-asd");
 
 	if file_getprop("/tmp/aroma/menu.prop", "chk7") == "1" then
 		ui_print("-- Clearing root data...");
-		run_program("/tmp/ts/clean_magisk.sh");
-		run_program("/tmp/ts/ts_clean.sh", "com.topjohnwu.magisk", "-asd");
+		run_program("/data/tmp/ts/clean_magisk.sh");
+		run_program("/data/tmp/ts/ts_clean.sh", "com.topjohnwu.magisk", "-asd");
 	endif;
 		
 	ui_print("-- Rooting with Magisk Manager...");
 	ui_print(" ");
-	package_extract_dir("magisk", "/tmp/magisk");
-	run_program("/sbin/busybox", "unzip", "/tmp/magisk/magisk.zip", "META-INF/com/google/android/*", "-d", "/tmp/magisk");
-	run_program("/sbin/sh", "/tmp/magisk/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/magisk/magisk.zip");
-	delete_recursive("/tmp/magisk");
+	package_extract_dir("magisk", "/data/tmp/magisk");
+	run_program("/sbin/busybox", "unzip", "/data/tmp/magisk/magisk.zip", "META-INF/com/google/android/*", "-d", "/data/tmp/magisk");
+	run_program("/sbin/sh", "/data/tmp/magisk/META-INF/com/google/android/update-binary", "dummy", "1", "/data/tmp/magisk/magisk.zip");
+	delete_recursive("/data/tmp/magisk");
+endif;
+
+# Magisk Root for Adnroid Q
+if file_getprop("/tmp/aroma/menu.prop", "group1") == "opt3" then
+show_progress(0.60, "-30000");
+	
+	# Clean opposite kernel
+	run_program("/data/tmp/ts/clean_supersu.sh");
+	run_program("/data/tmp/ts/ts_clean.sh", "eu.chainfire.supersu", "-asd");
+	run_program("/data/tmp/ts/ts_clean.sh", "eu.chainfire.suhide", "-asd");
+
+	if file_getprop("/tmp/aroma/menu.prop", "chk7") == "1" then
+		ui_print("-- Clearing root data...");
+		run_program("/data/tmp/ts/clean_magisk.sh");
+		run_program("/data/tmp/ts/ts_clean.sh", "com.topjohnwu.magisk", "-asd");
+	endif;
+		
+	ui_print("-- Rooting with Magisk Manager...");
+	ui_print(" ");
+	package_extract_dir("magiskQ", "/data/tmp/magiskQ");
+	run_program("/sbin/busybox", "unzip", "/data/tmp/magiskQ/magisk.zip", "META-INF/com/google/android/*", "-d", "/data/tmp/magiskQ");
+	run_program("/sbin/sh", "/data/tmp/magiskQ/META-INF/com/google/android/update-binary", "dummy", "1", "/data/tmp/magiskQ/magisk.zip");
+	delete_recursive("/data/tmp/magiskQ");
 endif;
 
 #####################################################
 
 # ui_print(" ");
 # ui_print("-- Unmounting Partition...");
+delete_recursive("/data/tmp");
 delete_recursive("/tmp");
 ifelse(is_mounted("/system"), unmount("/system"));
 

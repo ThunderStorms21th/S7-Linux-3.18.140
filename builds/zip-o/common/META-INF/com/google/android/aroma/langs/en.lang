@@ -83,7 +83,7 @@ The marked options are recommended.
 menu.group1=Root Options
 menu.1=Without root
 menu.1desc=Recommended if you are installing another type of root on your own.
-menu.2=Magisk 20.4 Official
+menu.2=Magisk 21.1 Official
 menu.2desc=Magisk Manager with Root integrated.
 #menu.5=SuperSU 2.82-SR5 + SuHide 1.09
 #menu.5desc=Famous Root of Chainfire.
@@ -93,7 +93,7 @@ menu.group2=Other options
 menu.3=ThunderTweaks
 menu.3desc=Application for kernel management modified by @nalas
 menu.4=VNSWAP OFF
-menu.4desc=Copy ts_swapoff script to init.d folder for turn it OFF. Default VNSWAP is ON - so use it only for desable it
+menu.4desc=Copy ts_swapoff script to init.d folder for turn it OFF. Default VNSWAP is ON - so use it only for disable it
 Necessary. Uncheck only if you have a higher version.
 menu.6=Spectrum (TS) Profiles
 menu.6desc=Simple way for the management of 10 predefined profiles, Balanced, Battery, Performance and Gaming. Copied to sdcard/Spectrum/profiles.
