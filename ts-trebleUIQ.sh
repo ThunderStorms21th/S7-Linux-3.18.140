@@ -53,8 +53,8 @@ DEFCONFIG_OREO=ts-oreo_defconfig
 DEFCONFIG_PIE=ts-pie_defconfig
 DEFCONFIG_TREBLE=ts-treble_defconfig
 
-export K_VERSION="v4.1"
-export K_BASE="CTD2-HMP"
+export K_VERSION="v4.2"
+export K_BASE="CTH1-HMP"
 export K_NAME="ThundeRStormS-Kernel"
 export REVISION="RC"
 export KBUILD_BUILD_VERSION="1"
@@ -277,7 +277,7 @@ echo ""
 read -p "Select an option to compile the kernel " prompt
 
 
-if [ $prompt == "1" ]; then
+if [ $prompt = "1" ]; then
     MODEL=G930
     DEVICE=$S7DEVICE
     KERNEL_DEFCONFIG=$DEFCONFIG_S7FLAT
@@ -287,7 +287,7 @@ if [ $prompt == "1" ]; then
     echo "S7 Flat G930F Selected"
     ZIP_NAME=$K_NAME-$MODEL-TrebleOneUI-$K_VERSION-$ZIP_DATE.zip
     MAIN
-elif [ $prompt == "2" ]; then
+elif [ $prompt = "2" ]; then
     MODEL=G935
     DEVICE=$S7DEVICE
     KERNEL_DEFCONFIG=$DEFCONFIG_S7EDGE
@@ -297,7 +297,7 @@ elif [ $prompt == "2" ]; then
     echo "S7 Edge G935F Selected"
     ZIP_NAME=$K_NAME-$MODEL-TrebleOneUI-$K_VERSION-$ZIP_DATE.zip
     MAIN
-elif [ $prompt == "3" ]; then
+elif [ $prompt = "3" ]; then
     MODEL=G935
     DEVICE=$S7DEVICE
     KERNEL_DEFCONFIG=$DEFCONFIG_S7EDGE

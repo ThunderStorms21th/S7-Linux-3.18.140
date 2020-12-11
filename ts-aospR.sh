@@ -51,7 +51,9 @@ DEFCONFIG_S7EDGE=ts-edge_defconfig
 DEFCONFIG_S7FLAT=ts-flat_defconfig
 DEFCONFIG_OREO=ts-oreo_defconfig
 DEFCONFIG_PIE=ts-pie_defconfig
-DEFCONFIG_TREBLE=ts-treble_defconfig
+DEFCONFIG_AOSP=ts-aosp_defconfig
+DEFCONFIG_AOSP_Q=ts-aospQ_defconfig
+DEFCONFIG_AOSP_R=ts-aospR_defconfig
 
 export K_VERSION="v4.2"
 export K_BASE="CTH1-HMP"
@@ -94,9 +96,7 @@ FUNC_BUILD_KERNEL()
 
 	cp -f $RDIR/arch/$ARCH/configs/$DEFCONFIG $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$KERNEL_DEFCONFIG >> $RDIR/arch/$ARCH/configs/tmp_defconfig
-	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_TREBLE >> $RDIR/arch/$ARCH/configs/tmp_defconfig
-
-	sed -i 's/CONFIG_USB_ANDROID_SAMSUNG_MTP=y/# CONFIG_USB_ANDROID_SAMSUNG_MTP is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
+	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_AOSP_R >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 
 	#FUNC_CLEAN_DTB
 
@@ -118,11 +118,11 @@ FUNC_BUILD_DTB()
 	}
 	case $MODEL in
 	G930)
-		DTSFILES="exynos8890-herolte_eur_open_treble_04 exynos8890-herolte_eur_open_treble_08
-				exynos8890-herolte_eur_open_treble_09 exynos8890-herolte_eur_open_treble_10"
+		DTSFILES="exynos8890-herolte_eur_open_aosp_04 exynos8890-herolte_eur_open_aosp_08
+				exynos8890-herolte_eur_open_aosp_09 exynos8890-herolte_eur_open_aosp_10"
 		;;
 	G935)
-		DTSFILES="exynos8890-hero2lte_eur_open_treble_04 exynos8890-hero2lte_eur_open_treble_08"
+		DTSFILES="exynos8890-hero2lte_eur_open_aosp_04 exynos8890-hero2lte_eur_open_aosp_08"
 		;;
 	*)
 
@@ -158,7 +158,7 @@ FUNC_BUILD_RAMDISK()
 	cd $RDIR/builds
 	mkdir temp
 	cp -rf aik/. temp
-	cp -rf TREBLE-P/. temp
+	cp -rf LOS18/. temp
 	
 	rm -f temp/split_img/boot.img-zImage
 	rm -f temp/split_img/boot.img-dtb
@@ -196,7 +196,7 @@ FUNC_BUILD_FLASHABLES()
 {
 	cd $RDIR/builds
 	mkdir temp2
-	cp -rf zip-tP/common/. temp2
+	cp -rf zip-aR/common/. temp2
     	mv *.img temp2/
 	cd temp2
 	echo ""
@@ -268,13 +268,13 @@ echo "    CUSTOMIZABLE STOCK SAMSUNG KERNEL"
 echo ""
 echo "           Build Kernel for:"
 echo ""
-echo "S7 Treble Pie vendor v1"
+echo "S7 AOSP-R"
 echo "(1) S7 Flat SM-G930F/FD"
 echo "(2) S7 Edge SM-G935F/FD"
 echo "(3) S7 Edge + Flat F/FD"
 echo ""
 echo ""
-read -p "Select an option to compile the kernel " prompt
+read -p "Select an option to compile the kernel" prompt
 
 
 if [ $prompt = "1" ]; then
@@ -283,9 +283,9 @@ if [ $prompt = "1" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7FLAT
     LOG=$FLAT_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-TREBLE-P-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-AOSP-R-$K_VERSION"
     echo "S7 Flat G930F Selected"
-    ZIP_NAME=$K_NAME-$MODEL-TREBLE-P-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-$MODEL-AOSP-R-$K_VERSION-$ZIP_DATE.zip
     MAIN
 elif [ $prompt = "2" ]; then
     MODEL=G935
@@ -293,9 +293,9 @@ elif [ $prompt = "2" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7EDGE
     LOG=$EDGE_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-TREBLE-P-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-AOSP-R-$K_VERSION"
     echo "S7 Edge G935F Selected"
-    ZIP_NAME=$K_NAME-$MODEL-TREBLE-P-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-$MODEL-AOSP-R-$K_VERSION-$ZIP_DATE.zip
     MAIN
 elif [ $prompt = "3" ]; then
     MODEL=G935
@@ -303,16 +303,16 @@ elif [ $prompt = "3" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7EDGE
     LOG=$EDGE_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-TREBLE-P-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-AOSP-R-$K_VERSION"
     echo "S7 EDGE + FLAT Selected"
     echo "Compiling EDGE ..."
     MAIN2
     MODEL=G930
     KERNEL_DEFCONFIG=$DEFCONFIG_S7FLAT
     LOG=$FLAT_LOG
-    export KERNEL_VERSION="$K_NAME-$K_BASE-TREBLE-P-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-AOSP-R-$K_VERSION"
     echo "Compiling FLAT ..."
-    ZIP_NAME=$K_NAME-G93X-TREBLE-P-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-G93X-AOSP-R-$K_VERSION-$ZIP_DATE.zip
     MAIN
 fi
 

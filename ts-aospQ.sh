@@ -29,13 +29,13 @@ export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9-o-mr1-io
 export CROSS_COMPILE=$BUILD_CROSS_COMPILE
 export BUILD_JOB_NUMBER=`grep processor /proc/cpuinfo|wc -l`
 
-export ANDROID_MAJOR_VERSION=o
-export PLATFORM_VERSION=8.0.0
-export ANDROID_VERSION=80000
-export CURRENT_ANDROID_MAJOR_VERSION=o
-KBUILD_CFLAGS += -DANDROID_VERSION=80000
-KBUILD_CFLAGS += -DANDROID_MAJOR_VERSION=o
-export BUILD_PLATFORM_VERSION=8.0.0
+export ANDROID_MAJOR_VERSION=p
+export PLATFORM_VERSION=9.0.0
+export ANDROID_VERSION=90000
+export CURRENT_ANDROID_MAJOR_VERSION=p
+KBUILD_CFLAGS += -DANDROID_VERSION=90000
+KBUILD_CFLAGS += -DANDROID_MAJOR_VERSION=p
+export BUILD_PLATFORM_VERSION=9.0.0
 
 RDIR=$(pwd)
 OUTDIR=$RDIR/arch/$ARCH/boot
@@ -52,9 +52,11 @@ DEFCONFIG_S7FLAT=ts-flat_defconfig
 DEFCONFIG_OREO=ts-oreo_defconfig
 DEFCONFIG_PIE=ts-pie_defconfig
 DEFCONFIG_AOSP=ts-aosp_defconfig
+DEFCONFIG_AOSP_Q=ts-aospQ_defconfig
+DEFCONFIG_AOSP_R=ts-aospR_defconfig
 
-export K_VERSION="v4.1"
-export K_BASE="CTD2-HMP"
+export K_VERSION="v4.2"
+export K_BASE="CTH1-HMP"
 export K_NAME="ThundeRStormS-Kernel"
 export REVISION="RC"
 export KBUILD_BUILD_VERSION="1"
@@ -94,7 +96,7 @@ FUNC_BUILD_KERNEL()
 
 	cp -f $RDIR/arch/$ARCH/configs/$DEFCONFIG $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$KERNEL_DEFCONFIG >> $RDIR/arch/$ARCH/configs/tmp_defconfig
-	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_AOSP >> $RDIR/arch/$ARCH/configs/tmp_defconfig
+	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_AOSP_Q >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 
 	#FUNC_CLEAN_DTB
 
@@ -275,7 +277,7 @@ echo ""
 read -p "Select an option to compile the kernel " prompt
 
 
-if [ $prompt == "1" ]; then
+if [ $prompt = "1" ]; then
     MODEL=G930
     DEVICE=$S7DEVICE
     KERNEL_DEFCONFIG=$DEFCONFIG_S7FLAT
@@ -285,7 +287,7 @@ if [ $prompt == "1" ]; then
     echo "S7 Flat G930F Selected"
     ZIP_NAME=$K_NAME-$MODEL-AOSP-Q-$K_VERSION-$ZIP_DATE.zip
     MAIN
-elif [ $prompt == "2" ]; then
+elif [ $prompt = "2" ]; then
     MODEL=G935
     DEVICE=$S7DEVICE
     KERNEL_DEFCONFIG=$DEFCONFIG_S7EDGE
@@ -295,7 +297,7 @@ elif [ $prompt == "2" ]; then
     echo "S7 Edge G935F Selected"
     ZIP_NAME=$K_NAME-$MODEL-AOSP-Q-$K_VERSION-$ZIP_DATE.zip
     MAIN
-elif [ $prompt == "3" ]; then
+elif [ $prompt = "3" ]; then
     MODEL=G935
     DEVICE=$S7DEVICE
     KERNEL_DEFCONFIG=$DEFCONFIG_S7EDGE
