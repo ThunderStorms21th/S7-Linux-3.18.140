@@ -45,9 +45,9 @@ ui_print("@ThundeRStormS - Spectrum Patching...");
 set_perm_recursive(0, 0, 0755, 0755, "/data/.tskernel/initial/spa");
 set_perm_recursive(0, 0, 0755, 0755, "/data/.tskernel/initial/ts-kernel.sh");
 set_perm_recursive(0, 0, 0755, 0755, "/data/.tskernel/initial/init.spectrum.sh");
-# set_perm_recursive(0, 0, 0755, 0755, "/system/init.rc");
-set_perm_recursive(0, 0, 0755, 0755, "/system/init.spectrum.rc");
-set_perm_recursive(0, 0, 0755, 0755, "/system/init.ts.rc");
+# set_perm_recursive(0, 0, 0750, 0750, "/system_root/init.rc");
+set_perm_recursive(0, 0, 0755, 0755, "/system_root/init.spectrum.rc");
+set_perm_recursive(0, 0, 0755, 0755, "/system_root/init.ts.rc");
 
 #################################################
 # ROOT

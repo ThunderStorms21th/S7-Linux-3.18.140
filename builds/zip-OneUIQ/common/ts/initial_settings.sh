@@ -23,10 +23,10 @@ rm -f /system_root/init.ts.sh
 rm -f /system_root/sbin/spa
 
 # Remove imported services
-sed -i '/init.moro.rc/d' /init.rc
-sed -i '/init.spectrum.rc/d' /init.rc
-# sed -i '/init.ts.rc/d' /init.rc
-sed -i '/init.services.rc/d' /init.rc
+sed -i '/init.moro.rc/d' /system_root/init.rc
+sed -i '/init.spectrum.rc/d' /system_root/init.rc
+sed -i '/init.ts.rc/d' /system_root/init.rc
+sed -i '/init.services.rc/d' /system_root/init.rc
 
 # Copy kernel files
 # cp /tmp/ts/system2/init.rc /system_root
@@ -46,5 +46,5 @@ chmod 755 /data/.tskernel/initial/ts-kernel.sh
 chmod 755 /data/.tskernel/initial/init.spectrum.sh
 
 # Import init.ts.rc to init.rc
-# sed -i '/import \/init.${ro.zygote}.rc\/init.rc/a import \/init.ts.rc' /system/init.rc
+sed -i '/import \/prism\/etc\/init\/init.rc/a\import \/init.ts.rc' /system_root/init.rc
 
