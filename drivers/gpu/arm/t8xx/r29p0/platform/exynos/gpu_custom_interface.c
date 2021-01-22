@@ -367,7 +367,7 @@ static ssize_t show_time_in_state(struct device *dev, struct device_attribute *a
 
 	for (i = gpu_dvfs_get_level(platform->gpu_min_clock); i >= gpu_dvfs_get_level(platform->gpu_max_clock); i--) {
 		ret += snprintf(buf+ret, PAGE_SIZE-ret, "%d %llu\n",
-				platform->table[i].clock,
+				platform->table[i].clock * 1000,
 				platform->table[i].time);
 	}
 
