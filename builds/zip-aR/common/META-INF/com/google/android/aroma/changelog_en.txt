@@ -2,8 +2,8 @@
 <b>KERNEL INFORMATION:</b>
 
 	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-AOSP Q</#></b>	
-	VERSION	: <b><#selectbg_g>v4.3</#></b>
-	DATE	: <b><#selectbg_g>19/01/2021</#></b>
+	VERSION	: <b><#selectbg_g>v4.4</#></b>
+	DATE	: <b><#selectbg_g>1/03/2021</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
 <#53a6f4><b> Only For Galaxy S7/S7Edge | AOSP R Roms |</b></#>
@@ -11,6 +11,21 @@
 
 <b>CHANGELOG:</b>
 
+--------------------------------------------------------------------------
+<u><b><#selectbg_g>ThunderStorms-Kernel-P-v4.4 : 1.03.2021</#></b></u>
+<*>Samsung source : N935KKKU4CTH1 </*>
+<*>Linux source : 3.18.140.8 </*>
+<*>Support HMP samsung </*>
+<*>Ramdisk source: N935FXXU6CSK1 </*>
+<*>Re-added Spectrum Support </*>
+<*>Removed some debuggers </*>
+<*>Updated Moro Sound Drivers to v2.2.0 - thx to Moro </*>
+<*>Set at CONFIG_HZ 50 Hz </*>
+<*>Kernel Drivers RP29R0 from Android Q </*>
+<*>Fixed device for Pokemon Go, Cod Mobile and similar games  </*>
+<*>ThunderTweaks v1.0.8.0 </*>
+<*>Magisk 21.4 Offcial</*>
+--------------------------------------------------------------------------
 --------------------------------------------------------------------------
 <u><b><#selectbg_g>ThunderStorms-Kernel-P-v4.3 : 19.01.2021</#></b></u>
 <*>Samsung source : N935KKKU4CTH1 </*>
