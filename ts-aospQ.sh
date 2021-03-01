@@ -55,7 +55,7 @@ DEFCONFIG_AOSP=ts-aosp_defconfig
 DEFCONFIG_AOSP_Q=ts-aospQ_defconfig
 DEFCONFIG_AOSP_R=ts-aospR_defconfig
 
-export K_VERSION="v4.2"
+export K_VERSION="v4.4"
 export K_BASE="CTH1-HMP"
 export K_NAME="ThundeRStormS-Kernel"
 export REVISION="RC"

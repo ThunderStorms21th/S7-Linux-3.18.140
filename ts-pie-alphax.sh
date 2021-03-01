@@ -10,22 +10,24 @@
 # -----
 export ARCH=arm64
 export SUBARCH=arm64
-# NO WORKS export BUILD_CROSS_COMPILE=~/kernel/toolchain/gcc-linaro-5.5.0-2017.10-i686_aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc
+# NOT WORKS export BUILD_CROSS_COMPILE=~/kernel/toolchain/gcc-linaro-5.5.0-2017.10-i686_aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc
+# export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-elf-gcc-9.x/bin/aarch64-elf-
 # export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9-master/bin/aarch64-linux-android-
 export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9-o-mr1-iot-preview-8/bin/aarch64-linux-android-
 # export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9-LAST/bin/aarch64-linux-android-
+# export BUILD_CROSS_COMPILE=~/kernel/toolchain/linaro-exynos/bin/aarch64-linux-gnu-
 # export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 # NO WORKS export BUILD_CROSS_COMPILE=~kernel/toolchain/arm-eabi-4.8-master/bin/arm-eabi-
 # NO WORKS export BUILD_CROSS_COMPILE=~/kernel/toolchain/arm32_arm64_cross_toolchain-master/bin/aarch64-linux-aarch64-linux-
 # BL - export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-gnu-7.3-master/bin/aarch64-linux-gnu-
 # BL export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linaro-linux-android-6.3.1/bin/aarch64-linux-android-
 # WORKS export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-4.9-945/bin/aarch64-linux-android-
-#export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-sabermod-7.0/bin/aarch64-
-#export BUILD_CROSS_COMPILE=~/kernel/kernel/toolchain/aarch64-uber-linux-android-4.9.4/bin/aarch64-linux-android-
+# NOT WORKS export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-sabermod-7.0/bin/aarch64-
+# NOT WORKS export BUILD_CROSS_COMPILE=~/kernel/kernel/toolchain/aarch64-uber-linux-android-4.9.4/bin/aarch64-linux-android-
 #export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-6.3/bin/aarch64-linux-android-
-#export BUILD_CROSS_COMPILE=~/kernel/toolchain/linaro-7.2.1-master/bin/arm-linaro-linux-androideabi-
-#export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-7.0-kernel/bin/aarch64-linux-android-
-#export BUILD_CROSS_COMPILE=~/kernel/toolchain/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
+# NOT WORKS export BUILD_CROSS_COMPILE=~/kernel/toolchain/linaro-7.2.1-master/bin/arm-linaro-linux-androideabi-
+# NOT WORKS export BUILD_CROSS_COMPILE=~/kernel/toolchain/aarch64-linux-android-7.0-kernel/bin/aarch64-linux-android-
+# export BUILD_CROSS_COMPILE=~/kernel/toolchain/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
 export CROSS_COMPILE=$BUILD_CROSS_COMPILE
 export BUILD_JOB_NUMBER=`grep processor /proc/cpuinfo|wc -l`
 
@@ -51,11 +53,10 @@ DEFCONFIG_S7EDGE=ts-edge_defconfig
 DEFCONFIG_S7FLAT=ts-flat_defconfig
 DEFCONFIG_OREO=ts-oreo_defconfig
 DEFCONFIG_PIE=ts-pie_defconfig
-DEFCONFIG_TREBLE=ts-treble_defconfig
 
-export K_VERSION="v4.4"
-export K_BASE="CTH1-HMP"
-export K_NAME="ThundeRStormS-Kernel"
+export K_VERSION="X"
+export K_BASE="Thunder"
+export K_NAME="AlphaPlus"
 export REVISION="RC"
 export KBUILD_BUILD_VERSION="1"
 S7DEVICE="PIE"
@@ -93,11 +94,9 @@ FUNC_BUILD_KERNEL()
         echo "build variant config="$MODEL ""
 
 	cp -f $RDIR/arch/$ARCH/configs/$DEFCONFIG $RDIR/arch/$ARCH/configs/tmp_defconfig
+	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_PIE >> $RDIR/arch/$ARCH/configs/tmp_defconfig
 	cat $RDIR/arch/$ARCH/configs/$KERNEL_DEFCONFIG >> $RDIR/arch/$ARCH/configs/tmp_defconfig
-	cat $RDIR/arch/$ARCH/configs/$DEFCONFIG_TREBLE >> $RDIR/arch/$ARCH/configs/tmp_defconfig
-
-	sed -i 's/CONFIG_USB_ANDROID_SAMSUNG_MTP=y/# CONFIG_USB_ANDROID_SAMSUNG_MTP is not set/g' $RDIR/arch/$ARCH/configs/tmp_defconfig
-
+	
 	#FUNC_CLEAN_DTB
 
 	make -j$BUILD_JOB_NUMBER ARCH=$ARCH \
@@ -118,11 +117,11 @@ FUNC_BUILD_DTB()
 	}
 	case $MODEL in
 	G930)
-		DTSFILES="exynos8890-herolte_eur_open_treble_04 exynos8890-herolte_eur_open_treble_08
-				exynos8890-herolte_eur_open_treble_09 exynos8890-herolte_eur_open_treble_10"
+		DTSFILES="exynos8890-herolte_eur_open_04 exynos8890-herolte_eur_open_08
+				exynos8890-herolte_eur_open_09 exynos8890-herolte_eur_open_10"
 		;;
 	G935)
-		DTSFILES="exynos8890-hero2lte_eur_open_treble_04 exynos8890-hero2lte_eur_open_treble_08"
+		DTSFILES="exynos8890-hero2lte_eur_open_04 exynos8890-hero2lte_eur_open_08"
 		;;
 	*)
 
@@ -158,7 +157,7 @@ FUNC_BUILD_RAMDISK()
 	cd $RDIR/builds
 	mkdir temp
 	cp -rf aik/. temp
-	cp -rf TREBLE-P/. temp
+	cp -rf TW-PIE-alpha/. temp
 	
 	rm -f temp/split_img/boot.img-zImage
 	rm -f temp/split_img/boot.img-dtb
@@ -169,6 +168,7 @@ FUNC_BUILD_RAMDISK()
 	case $MODEL in
 	G935)
 		echo "Ramdisk for G935"
+		sed -i 's/8.0.0/9.0.0/g' split_img/boot.img-osversion
 		;;
 	G930)
 		echo "Ramdisk for G930"
@@ -177,6 +177,8 @@ FUNC_BUILD_RAMDISK()
 
 		sed -i 's/G935/G930/g' ramdisk/default.prop
 		sed -i 's/hero2/hero/g' ramdisk/default.prop
+		sed -i 's/8.0.0/9.0.0/g' split_img/boot.img-osversion
+		sed -i 's/G935/G930/g' ramdisk/sepolicy_version
 		;;
 	esac
 
@@ -196,7 +198,7 @@ FUNC_BUILD_FLASHABLES()
 {
 	cd $RDIR/builds
 	mkdir temp2
-	cp -rf zip-tP/common/. temp2
+	cp -rf zip-p-alpha/common/. temp2
     	mv *.img temp2/
 	cd temp2
 	echo ""
@@ -268,7 +270,7 @@ echo "    CUSTOMIZABLE STOCK SAMSUNG KERNEL"
 echo ""
 echo "           Build Kernel for:"
 echo ""
-echo "S7 Treble Pie vendor v1"
+echo "S7 OneUI PIE"
 echo "(1) S7 Flat SM-G930F/FD"
 echo "(2) S7 Edge SM-G935F/FD"
 echo "(3) S7 Edge + Flat F/FD"
@@ -283,9 +285,9 @@ if [ $prompt = "1" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7FLAT
     LOG=$FLAT_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-TREBLE-P-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-$K_VERSION"
     echo "S7 Flat G930F Selected"
-    ZIP_NAME=$K_NAME-$MODEL-TREBLE-P-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-$MODEL-OneUI-PIE-$K_VERSION-$ZIP_DATE.zip
     MAIN
 elif [ $prompt = "2" ]; then
     MODEL=G935
@@ -293,9 +295,9 @@ elif [ $prompt = "2" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7EDGE
     LOG=$EDGE_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-TREBLE-P-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-$K_VERSION"
     echo "S7 Edge G935F Selected"
-    ZIP_NAME=$K_NAME-$MODEL-TREBLE-P-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-$MODEL-OneUI-PIE-$K_VERSION-$ZIP_DATE.zip
     MAIN
 elif [ $prompt = "3" ]; then
     MODEL=G935
@@ -303,16 +305,16 @@ elif [ $prompt = "3" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7EDGE
     LOG=$EDGE_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-TREBLE-P-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-$K_VERSION"
     echo "S7 EDGE + FLAT Selected"
     echo "Compiling EDGE ..."
     MAIN2
     MODEL=G930
     KERNEL_DEFCONFIG=$DEFCONFIG_S7FLAT
     LOG=$FLAT_LOG
-    export KERNEL_VERSION="$K_NAME-$K_BASE-TREBLE-P-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-$K_VERSION"
     echo "Compiling FLAT ..."
-    ZIP_NAME=$K_NAME-G93X-TREBLE-P-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-G93X-OneUI-PIE-$K_VERSION-$ZIP_DATE.zip
     MAIN
 fi
 
