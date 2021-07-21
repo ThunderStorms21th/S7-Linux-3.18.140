@@ -7,9 +7,9 @@
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1586000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/go_hispeed_load
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/go_hispeed_load 95
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/go_hispeed_load 90
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/above_hispeed_delay "50000 650000:20000 754000:25000 962000:30000"
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/above_hispeed_delay "30000 650000:20000 754000:25000 962000:30000"
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/timer_rate
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/timer_rate 30000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/hispeed_freq
@@ -43,7 +43,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/go_hispeed_load
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/go_hispeed_load 97
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/above_hispeed_delay "75000 728000:40000 1040000:30000 1248000:30000"
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/above_hispeed_delay "65000 728000:40000 1040000:30000 1248000:30000"
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/timer_rate
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/timer_rate 30000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/hispeed_freq
@@ -70,7 +70,7 @@
    # CPU HOTPLUG
    write /sys/power/cpuhotplug/enabled 0
    write /sys/module/autosmp/parameters/enabled N
-   write /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_all_cores_max_freq 0
+   # write /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_all_cores_max_freq 0
    write /sys/module/workqueue/parameters/power_efficient Y
 
    # Samsung Hotplug settings
@@ -118,11 +118,11 @@
    write /proc/sys/kernel/random/write_wakeup_threshold 256
    write /proc/sys/kernel/random/read_wakeup_threshold 64
    write /proc/sys/vm/dirty_expire_centisecs 1000
-   write /proc/sys/vm/dirty_writeback_centisecs 3000
+   write /proc/sys/vm/dirty_writeback_centisecs 2000
 
    # GPU
    chmod 0664 /sys/devices/14ac0000.mali/max_clock
-   write /sys/devices/14ac0000.mali/max_clock 650
+   write /sys/devices/14ac0000.mali/max_clock 702
    chmod 0664 /sys/devices/14ac0000.mali/min_clock
    write /sys/devices/14ac0000.mali/min_clock 112
    chmod 0664 /sys/devices/14ac0000.mali/power_policy
@@ -130,7 +130,7 @@
    chmod 0664 /sys/devices/14ac0000.mali/dvfs_governor
    write /sys/devices/14ac0000.mali/dvfs_governor 1
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_clock
-   write /sys/devices/14ac0000.mali/highspeed_clock 419
+   write /sys/devices/14ac0000.mali/highspeed_clock 260
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_load
    write /sys/devices/14ac0000.mali/highspeed_load 92
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_delay
@@ -141,8 +141,8 @@
    write /sys/block/sda/queue/read_ahead_kb 256
    write /sys/block/mmcblk0/queue/scheduler row
    write /sys/block/mmcblk0/queue/read_ahead_kb 512
-   write /sys/block/sda/queue/iostats 1
-   write /sys/block/mmcblk0/queue/iostats 1
+   write /sys/block/sda/queue/iostats 0
+   write /sys/block/mmcblk0/queue/iostats 0
    write /sys/block/sda/queue/rq_affinity 1
    write /sys/block/mmcblk0/queue/rq_affinity 1
    write /sys/block/sda/queue/nr_requests 256
@@ -155,10 +155,10 @@
    write /sys/module/wakeup/parameters/enable_wlan_rx_wake_wl 0
    write /sys/module/wakeup/parameters/enable_wlan_ctrl_wake_wl 0
    write /sys/module/wakeup/parameters/enable_ssp_wl 0
-   write /sys/module/wakeup/parameters/enable_bcmdhd4359_wl 0
-   write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 0
-   write /sys/module/wakeup/parameters/enable_wlan_wake_wl 0
-   write /sys/module/sec_battery/parameters/wl_polling 3
+   write /sys/module/wakeup/parameters/enable_bcmdhd4359_wl 1
+   write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 1
+   write /sys/module/wakeup/parameters/enable_wlan_wake_wl 1
+   write /sys/module/sec_battery/parameters/wl_polling 4
    write /sys/module/sec_nfc/parameters/wl_nfc 1
 
    # Misc
@@ -174,7 +174,7 @@
 
    # SWAP
    write /proc/sys/vm/swappiness 140
-   write /proc/sys/vm/vfs_cache_pressure 70
+   write /proc/sys/vm/vfs_cache_pressure 80
 
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18920,23552,32256,42472,65536,82400"

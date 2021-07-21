@@ -29,10 +29,9 @@ clean_magisk() {
         /data/user*/*/magisk.db /data/user*/*/com.topjohnwu.magisk /data/user*/*/.tmp.magisk.config \
         /data/adb/*magisk* /data/adb/post-fs-data.d /data/adb/service.d /data/adb/modules* 2>/dev/null
         
-        if [ -f /system/addon.d/99-magisk.sh ]; then
-	  mount -o rw,remount /system
-	  rm -f /system/addon.d/99-magisk.sh
-	fi
+        if [ -f ${SYSTEM_MOUNT}/addon.d/99-magisk.sh ]; then
+	    rm -f ${SYSTEM_MOUNT}/addon.d/99-magisk.sh
+	    fi
 }
 
 abort() {
@@ -50,8 +49,9 @@ unmount_system() {
 export SYSTEM_ROOT=false
 
 block=/dev/block/platform/155a0000.ufs/by-name/SYSTEM
+mount -o rw "$block" /system
 SYSTEM_MOUNT=/system
-SYSTEM=$SYSTEM_MOUNT
+SYSTEM=$SYSTEM_MOU
 
 # Try to detect system-as-root through $SYSTEM_MOUNT/init.rc like Magisk does
 # Mount whatever $SYSTEM_MOUNT is, sometimes remount is necessary if mounted read-only
@@ -60,11 +60,20 @@ grep -q "$SYSTEM_MOUNT.*\sro[\s,]" /proc/mounts && mount -o remount,rw $SYSTEM_M
 
 # Remount /system to /system_root if we have system-as-root and bind /system to /system_root/system (like Magisk does)
 # For reference, check https://github.com/topjohnwu/Magisk/blob/master/scripts/util_functions.sh
-if [ -f /system/init.rc ]; then
-  mkdir /system_root
-  mount --move /system /system_root
-  mount -o bind /system_root/system /system
-  export SYSTEM_ROOT=true
+#if [ -f /system/init.rc ]; then
+#  mkdir /system_root 2>/dev/null
+#  mount --move /system /system_root
+#  mount -o bind /system_root/system /system
+#  export SYSTEM_ROOT=true
+#fi
+
+if [ ! -d /system_root ]; then
+    mkdir /system_root 2>/dev/null
+    mount --move /system /system_root
+    mount -o bind /system_root/system /system
+else
+    mount --move /system /system_root
+    SYSTEM_MOUNT="/system_root/system"
 fi
 
 # Initialice TSkernel folder
@@ -74,7 +83,7 @@ rm -rf /data/.helios
 # mkdir -p -m 777 /data/.tskernel/apk 2>/dev/null
 
 # Variables
-BB=/sbin/busybox
+BB=/sbin/busybox || /data/tmp/ts/busybox
 SDK="$(file_getprop /system/build.prop ro.build.version.sdk)"
 BL=`getprop ro.bootloader`
 MODEL=${BL:0:4}
@@ -117,7 +126,7 @@ set_progress 0.49
 # OPTIONS
 #======================================
 set_progress 0.50
-show_progress 0.56 -4000
+show_progress 0.57 -4000
 
 ## System patch
 	ui_print " "
@@ -171,5 +180,5 @@ if [ "$(file_getprop /tmp/aroma/menu.prop chk11)" == 1 ]; then
 	rm -rf /system/app/GameOptimizingService
 fi
 
-set_progress 0.57
+set_progress 0.58
 

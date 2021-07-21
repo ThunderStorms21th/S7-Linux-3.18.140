@@ -7,7 +7,6 @@
 # @dwander for bits of code
 # @MoRo
 
-
 # Functions
 ui_print() { echo -n -e "ui_print $1\n"; }
 
@@ -30,10 +29,9 @@ clean_magisk() {
         /data/user*/*/magisk.db /data/user*/*/com.topjohnwu.magisk /data/user*/*/.tmp.magisk.config \
         /data/adb/*magisk* /data/adb/post-fs-data.d /data/adb/service.d /data/adb/modules* 2>/dev/null
         
-        if [ -f /system/addon.d/99-magisk.sh ]; then
-	  mount -o rw,remount /system
-	  rm -f /system/addon.d/99-magisk.sh
-	fi
+        if [ -f ${SYSTEM_MOUNT}/addon.d/99-magisk.sh ]; then
+	    rm -f ${SYSTEM_MOUNT}/addon.d/99-magisk.sh
+	    fi
 }
 
 abort() {
@@ -43,17 +41,25 @@ abort() {
 }
 
 unmount_system() {
+    ui_print " "
+    ui_print "@Unmount partitions"
 	umount -l /system_root 2>/dev/null
 	umount -l /system 2>/dev/null
 }
 
+
 # Mount system
+ui_print " "
+ui_print "@Mount partitions"
+ui_print "-- mount /system"
+
 export SYSTEM_ROOT=false
 
 block=/dev/block/platform/155a0000.ufs/by-name/SYSTEM
+mount -o rw "$block" /system
 SYSTEM_MOUNT=/system
 SYSTEM=$SYSTEM_MOUNT
-
+    
 # Try to detect system-as-root through $SYSTEM_MOUNT/init.rc like Magisk does
 # Mount whatever $SYSTEM_MOUNT is, sometimes remount is necessary if mounted read-only
 
@@ -61,19 +67,35 @@ grep -q "$SYSTEM_MOUNT.*\sro[\s,]" /proc/mounts && mount -o remount,rw $SYSTEM_M
 
 # Remount /system to /system_root if we have system-as-root and bind /system to /system_root/system (like Magisk does)
 # For reference, check https://github.com/topjohnwu/Magisk/blob/master/scripts/util_functions.sh
-if [ -f /system/init.rc ]; then
-  mkdir /system_root
-  mount --move /system /system_root
-  mount -o bind /system_root/system /system
-  export SYSTEM_ROOT=true
+#if [ -f /system/init.rc ]; then
+#  mkdir /system_root 2>/dev/null
+#  mount --move /system /system_root
+#  mount -o bind /system_root/system /system
+#  export SYSTEM_ROOT=true
+#fi
+
+if [ ! -d /system_root ]; then
+    mkdir /system_root 2>/dev/null
+    mount --move /system /system_root
+    mount -o bind /system_root/system /system
+else
+    mount --move /system /system_root
+    SYSTEM_MOUNT="/system_root/system"
 fi
 
+# Mount system
+# mount_parts
+
 # Initialice TSkernel folder
-mkdir -p -m 777 /data/.tskernel/apk 2>/dev/null
+rm -rf /data/.morokernel
+rm -rf /data/.helioskernel
+rm -rf /data/.helios
+mkdir -p -m 777 /data/.tskernel/initial 2>/dev/null
+# mkdir -p -m 777 /data/.tskernel/apk 2>/dev/null
 
 # Variables
-BB=/sbin/busybox
-SDK="$(file_getprop /system/build.prop ro.build.version.sdk)"
+BB=/sbin/busybox || /data/tmp/ts/busybox
+SDK="$(file_getprop ${SYSTEM_MOUNT}/build.prop ro.build.version.sdk)"
 BL=`getprop ro.bootloader`
 MODEL=${BL:0:4}
 MODEL1=G930
@@ -83,13 +105,11 @@ MODEL2_DESC="S7 Edge G935"
 if [ $MODEL == $MODEL1 ]; then MODEL_DESC=$MODEL1_DESC; fi
 if [ $MODEL == $MODEL2 ]; then MODEL_DESC=$MODEL2_DESC; fi
 
-
-
 #======================================
 # AROMA INIT
 #======================================
 
-set_progress 0.01
+set_progress 0.02
 
 ui_print "@Mount partitions"
 ui_print "-- Mount /system RW"
@@ -105,31 +125,31 @@ show_progress 0.49 -4000
 ui_print " "
 ui_print "@Flashing ThundeRStormS kernel..."
 
-cd /tmp/ts
+cd /data/tmp/ts
 ui_print "-- Extracting"
 $BB tar -Jxf kernel.tar.xz $MODEL-boot.img
 ui_print "-- Flashing ThundeRStormS kernel $MODEL-boot.img"
-dd of=/dev/block/platform/155a0000.ufs/by-name/BOOT if=/tmp/ts/$MODEL-boot.img
+dd of=/dev/block/platform/155a0000.ufs/by-name/BOOT if=/data/tmp/ts/$MODEL-boot.img
 ui_print "-- Done"
 
 ## RUN INITIAL SCRIPT IMPLEMENTATOR
-sh /tmp/ts/initial_settings.sh
+sh /data/tmp/ts/initial_settings.sh
 	
 set_progress 0.49
-
 
 #======================================
 # OPTIONS
 #======================================
-
+set_progress 0.50
+show_progress 0.57 -4000
 
 ## THUNDERTWEAKS
 if [ "$(file_getprop /tmp/aroma/menu.prop chk3)" == 1 ]; then
 	ui_print " "
 	ui_print "@Installing ThunderTweaks App..."
 	sh /tmp/ts/ts_clean.sh com.moro.mtweaks -as
-        sh /tmp/ts/ts_clean.sh com.thunder.thundertweaks -as
-        sh /tmp/ts/ts_clean.sh com.hades.hKtweaks -as
+        sh /data/tmp/ts/ts_clean.sh com.thunder.thundertweaks -as
+        sh /data/tmp/ts/ts_clean.sh com.hades.hKtweaks -as
 
 	mkdir -p /data/media/0/ThunderTweaks
 	mkdir -p /sdcard/ThunderTweaks
@@ -139,8 +159,15 @@ if [ "$(file_getprop /tmp/aroma/menu.prop chk3)" == 1 ]; then
 ##	rm -rf /sdcard/ThunderTweaks/*.*
 
 # COPY NEW APP
-	cp -rf /tmp/ts/ttweaks/*.apk /data/media/0/ThunderTweaks
-	cp -rf /tmp/ts/ttweaks/*.apk /sdcard/ThunderTweaks
+	cp -rf /data/tmp/ts/ttweaks/*.apk /data/media/0/ThunderTweaks
+	cp -rf /data/tmp/ts/ttweaks/*.apk /sdcard/ThunderTweaks
+fi
+
+## TS swap off
+if [ "$(file_getprop /tmp/aroma/menu.prop chk4)" == 1 ]; then
+	ui_print " "
+	ui_print "@Installing ThundeRStormS VNSWAP OFF..."
+	cp -rf /data/tmp/ts/swapoff/*.* /system/etc/init.d
 fi
 
 ## SPECTRUM PROFILES
@@ -149,10 +176,12 @@ if [ "$(file_getprop /tmp/aroma/menu.prop chk6)" == 1 ]; then
 	ui_print "@Install Spectrum Profiles..."
 	mkdir -p /data/media/0/Spectrum/profiles 2>/dev/null;
 	mkdir -p /sdcard/Spectrum/profiles 2>/dev/null;
-	cp -rf /tmp/ts/profiles/. /data/media/0/Spectrum/profiles/
-	cp -rf /tmp/ts/profiles/. /sdcard/Spectrum/profiles/
+	cp -rf /data/tmp/ts/profiles/. /data/media/0/Spectrum/profiles/
+	cp -rf /data/tmp/ts/profiles/. /sdcard/Spectrum/profiles/
 fi
 
-set_progress 0.50
+set_progress 0.58
 
+# Unmount partitions
+# unmount_parts
 

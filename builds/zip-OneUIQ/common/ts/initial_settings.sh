@@ -30,21 +30,22 @@ sed -i '/init.services.rc/d' /system_root/init.rc
 
 # Copy kernel files
 # cp /tmp/ts/system2/init.rc /system_root
-cp /tmp/ts/system2/init.custom.rc /system_root/vendor/etc/init/
-cp /tmp/ts/system2/init.spectrum.rc /system_root
-cp /tmp/ts/system2/init.ts.rc /system_root
-cp /tmp/ts/system2/spa /data/.tskernel/initial
-cp /tmp/ts/system2/ts-kernel.sh /data/.tskernel/initial
-cp /tmp/ts/system2/init.spectrum.sh /data/.tskernel/initial
+cp /data/tmp/ts/system2/init.custom.rc /system_root/vendor/etc/init/
+cp /data/tmp/ts/system2/init.spectrum.rc /system_root/vendor/etc/init/
+cp /data/tmp/ts/system2/init.ts.rc /system_root/vendor/etc/init/
+cp /data/tmp/ts/system2/spa /system_root/vendor/etc/init/
+cp /data/tmp/ts/system2/ts-kernel.sh //system_root/vendor/etc/init/
+cp /data/tmp/ts/system2/init.spectrum.sh /system_root/vendor/etc/init/
 
 # chmod 750 /system_root/init.rc
 chmod 750 /system_root/vendor/etc/init/init.custom.rc
-chmod 750 /system_root/init.spectrum.rc
-chmod 750 /system_root/init.ts.rc
-chmod 755 /data/.tskernel/initial/spa
-chmod 755 /data/.tskernel/initial/ts-kernel.sh
-chmod 755 /data/.tskernel/initial/init.spectrum.sh
+chmod 750 /system_root/vendor/etc/init/init.spectrum.rc
+chmod 750 /system_root/vendor/etc/init/init.ts.rc
+chmod 755 /system_root/vendor/etc/init/spa
+chmod 755 /system_root/vendor/etc/init/ts-kernel.sh
+chmod 755 /system_root/vendor/etc/init/init.spectrum.sh
 
 # Import init.ts.rc to init.rc
 sed -i '/import \/prism\/etc\/init\/init.rc/a\import \/init.ts.rc' /system_root/init.rc
+sed -i '/import \/init.ts.rc/a\import \/init.spectrum.rc' /system_root/init.rc
 

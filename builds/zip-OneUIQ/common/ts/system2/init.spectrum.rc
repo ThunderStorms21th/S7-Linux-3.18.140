@@ -6,7 +6,7 @@
 # Initialization
 on property:sys.boot_completed=1
    # Set default profile on first boot
-   exec u:r:init:s0 root root -- /data/.tskernel/initial/init.spectrum.sh
+   exec u:r:init:s0 root root -- /vendor/etc/init/init.spectrum.sh
 
    # Enable TS PROFILES support
    setprop spectrum.support 1
@@ -14,45 +14,45 @@ on property:sys.boot_completed=1
 
 # Balance (stock profile)
 on property:persist.spectrum.profile=0
-   exec u:r:init:s0 root root -- /data/.tskernel/initial/spa balance
+   exec u:r:init:s0 root root -- /vendor/etc/init/spa balance
 
 # Performance
 on property:persist.spectrum.profile=1
-   exec u:r:init:s0 root root -- /data/.tskernel/initial/spa performance
+   exec u:r:init:s0 root root -- /vendor/etc/init/spa performance
 
 # Battery
 on property:persist.spectrum.profile=2
-   exec u:r:init:s0 root root -- /data/.tskernel/initial/spa battery
+   exec u:r:init:s0 root root -- /vendor/etc/init/spa battery
 
 # Gaming
 on property:persist.spectrum.profile=3
-   exec u:r:init:s0 root root -- /data/.tskernel/initial/spa gaming
+   exec u:r:init:s0 root root -- /vendor/etc/init/spa gaming
 
 # Thunderstorms
 on property:persist.spectrum.profile=4
-   exec u:r:init:s0 root root -- /data/.tskernel/initial/spa thunderstorms
+   exec u:r:init:s0 root root -- /vendor/etc/init/spa thunderstorms
 
 # Kevin
 on property:persist.spectrum.profile=5
-   exec u:r:init:s0 root root -- /data/.tskernel/initial/spa kevin
+   exec u:r:init:s0 root root -- /vendor/etc/init/spa kevin
 
 # rtakak
 on property:persist.spectrum.profile=6
-   exec u:r:init:s0 root root -- /data/.tskernel/initial/spa rtakak
+   exec u:r:init:s0 root root -- /vendor/etc/init/spa rtakak
 
 # Shariq
 on property:persist.spectrum.profile=7
-   exec u:r:init:s0 root root -- /data/.tskernel/initial/spa shariq
+   exec u:r:init:s0 root root -- /vendor/etc/init/spa shariq
 
 # Franz
 on property:persist.spectrum.profile=8
-   exec u:r:init:s0 root root -- /data/.tskernel/initial/spa franz
+   exec u:r:init:s0 root root -- /vendor/etc/init/spa franz
 
 # Thunderstorms - II
 on property:persist.spectrum.profile=9
-   exec u:r:init:s0 root root -- /data/.tskernel/initial/spa thunder2
+   exec u:r:init:s0 root root -- /vendor/etc/init/spa thunder2
 
 # Ankit
 on property:persist.spectrum.profile=10
-   exec u:r:init:s0 root root -- /data/.tskernel/initial/spa ankit
+   exec u:r:init:s0 root root -- /vendor/etc/init/spa ankit
 

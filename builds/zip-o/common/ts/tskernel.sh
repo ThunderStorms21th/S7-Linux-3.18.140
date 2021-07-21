@@ -8,11 +8,6 @@
 # @dwander for bits of code
 # ------------------------------
 
-# Block location
-BLOCK=/dev/block/platform/155a0000.ufs/by-name
-
-# Variables
-BUILDPROP=/system/build.prop
 
 	## System Patches
 

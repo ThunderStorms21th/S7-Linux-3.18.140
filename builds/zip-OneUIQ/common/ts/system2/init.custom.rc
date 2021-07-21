@@ -19,7 +19,7 @@ on property:sys.boot_completed=1
     stop irisd
 
 
-service kernelinit /data/.tskernel/initial/ts-kernel.sh
+service kernelinit /vendor/etc/init//ts-kernel.sh
     # class late_start
     user root
     seclabel u:r:init:s0
